@@ -1,0 +1,42 @@
+/** Modal CSS **/
+#edd-free-downloads-modal {
+    display: none;
+}
+
+#edd-free-downloads-modal label {
+    font-weight: bold;
+    display: block;
+    position: relative;
+    line-height: 100%;
+    font-size: 95%;
+    margin: 0 0 5px;
+}
+
+#edd-free-downloads-modal span.edd-free-downloads-required {
+    color: #B94A48;
+    display: inline;
+}
+
+#edd-free-downloads-modal input[type='text'] {
+    width: 300px;
+}
+
+#edd-free-downloads-modal input[type='submit'] {
+    width: 300px;
+}
+
+/** Modal Errors **/
+.edd-free-download-errors {
+    border-radius: 2px;
+    border: 1px solid #E6DB55;
+    margin: 0 0 21px;
+    background: #FFFFE0;
+    color: #333;
+    display: none;
+}
+
+.edd-free-download-errors p {
+    margin: 0;
+    padding: 10px;
+    display: none;
+}
