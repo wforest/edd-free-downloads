@@ -73,8 +73,8 @@ function edd_free_downloads_modal() {
     }
 
     $modal .= '<div class="edd-free-download-errors">';
-    $modal .= '<p id="edd-free-download-error-email-required"><strong>' . __( 'Error', 'edd-free-downloads' ) . '</strong> ' . __( 'Please enter a valid email address', 'edd-free-downloads' ) . '</p>';
-    $modal .= '<p id="edd-free-download-error-email-invalid"><strong>' . __( 'Error', 'edd-free-downloads' ) . '</strong> ' . __( 'Invalid email', 'edd-free-downloads' ) . '</p>';
+    $modal .= '<p id="edd-free-download-error-email-required"><strong>' . __( 'Error:', 'edd-free-downloads' ) . '</strong> ' . __( 'Please enter a valid email address', 'edd-free-downloads' ) . '</p>';
+    $modal .= '<p id="edd-free-download-error-email-invalid"><strong>' . __( 'Error:', 'edd-free-downloads' ) . '</strong> ' . __( 'Invalid email', 'edd-free-downloads' ) . '</p>';
     $modal .= '</div>';
 
     $modal .= '<input type="hidden" name="edd_action" value="free_download_process" />';
