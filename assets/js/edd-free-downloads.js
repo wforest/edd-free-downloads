@@ -3,6 +3,7 @@ jQuery(document).ready(function($) {
     new jBox('Modal', {
         attach: $('.edd-free-download'),
         content: $('#edd-free-downloads-modal'),
+        width: 350,
         closeButton: edd_free_downloads_vars.close_button
     });
 

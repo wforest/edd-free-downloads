@@ -18,11 +18,11 @@
 }
 
 #edd-free-downloads-modal input[type='text'] {
-    width: 300px;
+    width: 100%;
 }
 
 #edd-free-downloads-modal input[type='submit'] {
-    width: 300px;
+    width: 100%;
 }
 
 /** Modal Errors **/
