@@ -100,6 +100,11 @@ if( ! class_exists( 'EDD_Free_Downloads' ) ) {
 
             // Replace download form
             add_filter( 'edd_purchase_download_form', array( $this, 'download_form' ), 200, 2 );
+
+            // Handle licensing
+            if( class_exists( 'EDD_License' ) ) {
+                $license = new EDD_License( __FILE__, 'Free Downloads', EDD_FREE_DOWNLOADS_VER, 'Daniel J Griffiths' );
+            }
         }
 
 
