@@ -79,6 +79,11 @@ function edd_free_download_process() {
     edd_insert_payment_note( $payment_id, __( 'Purchased through EDD Free Downloads', 'edd-free-downloads' ) );
     edd_empty_cart();
     edd_set_purchase_session( $purchase_data );
-    edd_send_to_success_page();
+
+    $redirect_url = edd_get_option( 'edd_free_downloads_redirect', false );
+    $redirect_url = $redirect_url ? $redirect_url : edd_get_success_page_url();
+
+    wp_redirect( apply_filters( 'edd_free_downloads_redirect', $redirect_url, $payment_id, $purchase_data ) );
+    edd_die();
 }
 add_action( 'edd_free_download_process', 'edd_free_download_process' );

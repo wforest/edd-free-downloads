@@ -137,6 +137,12 @@ if( ! class_exists( 'EDD_Free_Downloads' ) ) {
                     'name'  => __( 'Display Close Button', 'edd-free-downloads' ),
                     'desc'  => __( 'Should we display a close button on the email collection form?', 'edd-free-downloads' ),
                     'type'  => 'checkbox'
+                ),
+                array(
+                    'id'    => 'edd_free_downloads_redirect',
+                    'name'  => __( 'Custom Redirect', 'edd-free-downloads' ),
+                    'desc'  => __( 'Enter a URL to redirect to on completion, or leave blank for the receipt page.', 'edd-free-downloads' ),
+                    'type'  => 'text'
                 )
             );
 
