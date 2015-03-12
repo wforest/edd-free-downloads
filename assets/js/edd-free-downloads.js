@@ -4,9 +4,11 @@ jQuery(document).ready(function($) {
         attach: $('.edd-free-download'),
         content: $('#edd-free-downloads-modal'),
         width: 350,
+        maxWidth: $(window).width() * .80,
+        maxHeight: $(window).height() * .80,
         closeButton: edd_free_downloads_vars.close_button
     });
-
+    
     $('.edd-free-download').click(function (e) {
         e.preventDefault();
 
