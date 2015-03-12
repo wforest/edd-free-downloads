@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name:     Easy Digital Downloads - Free Downloads
- * Plugin URI:      https://wordpress.org/plugins/easy-digital-downloads-free-downloads
+ * Plugin URI:      https://easydigitaldownloads.com/extensions/free-downloads/
  * Description:     Adds better handling for directly downloading free products to EDD
  * Version:         1.0.0
  * Author:          Daniel J Griffiths
