@@ -79,7 +79,8 @@ function edd_free_downloads_modal() {
 
     $modal .= '<input type="hidden" name="edd_action" value="free_download_process" />';
     $modal .= '<input type="hidden" name="edd_free_download_id" />';
-    $modal .= '<input type="submit" name="edd_free_download_submit" class="edd-free-download-submit edd-submit button ' . $color . '" value="' . $label . '" />';
+    $modal .= '<input type="button" name="edd_free_download_submit" class="edd-free-download-submit edd-submit button ' . $color . '" value="' . $label . '" />';
+    $modal .= '<input type="button" name="edd_free_download_cancel" class="edd-free-download-cancel edd-submit button ' . $color . '" value="' . __( 'Cancel', 'edd-free-downloads' ) . '" />';
 
     $modal .= '</form>';
     $modal .= '</div>';

@@ -1,13 +1,37 @@
-/*global jQuery, document, edd_free_downloads_vars*/
+/*global jQuery, document, window, edd_free_downloads_vars*/
 jQuery(document).ready(function($) {
-    new jBox('Modal', {
-        attach: $('.edd-free-download'),
-        content: $('#edd-free-downloads-modal'),
-        width: 350,
-        maxWidth: $(window).width() * .80,
-        maxHeight: $(window).height() * .80,
-        closeButton: edd_free_downloads_vars.close_button
-    });
+    var windowWidth, windowHeight, newModal;
+
+    windowWidth = $(window).width();
+    windowHeight = $(window).height();
+
+    if ((windowWidth < 800 && windowHeight < 600) || (windowWidth < 600 && windowHeight < 800)) {
+        $('.edd-free-download-cancel').css('display', 'block');
+
+        newModal = new jBox('Modal', {
+            attach: $('.edd-free-download'),
+            content: $('#edd-free-downloads-modal'),
+            width: windowWidth,
+            height: windowHeight,
+            fade: false,
+            animation: false,
+            reposition: true,
+            addClass: 'edd-free-downloads-mobile'
+        });
+
+        $('.edd-free-download-cancel').click(function () {
+            newModal.close();
+        });
+    } else {
+        new jBox('Modal', {
+            attach: $('.edd-free-download'),
+            content: $('#edd-free-downloads-modal'),
+            width: 350,
+            maxWidth: windowWidth * .80,
+            maxHeight: windowHeight * .80,
+            closeButton: edd_free_downloads_vars.close_button
+        });
+    }
     
     $('.edd-free-download').click(function (e) {
         e.preventDefault();

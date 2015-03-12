@@ -21,8 +21,18 @@
     width: 100%;
 }
 
-#edd-free-downloads-modal input[type='submit'] {
+#edd-free-downloads-modal input[type='button'] {
     width: 100%;
+}
+
+.edd-free-download-cancel {
+    margin-top: 25px;
+    display: none;
+}
+
+/** Mobile CSS **/
+.edd-free-downloads-mobile #edd-free-downloads-modal {
+    padding: 10px;
 }
 
 /** Modal Errors **/
