@@ -1,8 +1,4 @@
 /** Modal CSS **/
-#edd-free-downloads-modal {
-    display: none;
-}
-
 #edd-free-downloads-modal label {
     font-weight: bold;
     display: block;
@@ -25,14 +21,16 @@
     width: 100%;
 }
 
-.edd-free-download-cancel {
-    margin-top: 25px;
+.edd-free-downloads-hidden {
     display: none;
 }
 
-/** Mobile CSS **/
-.edd-free-downloads-mobile #edd-free-downloads-modal {
-    padding: 10px;
+.edd-free-downloads-mobile {
+    padding: 25px;
+}
+
+.edd-free-download-cancel {
+    margin-top: 25px;
 }
 
 /** Modal Errors **/

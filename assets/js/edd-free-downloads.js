@@ -1,49 +1,36 @@
-/*global jQuery, document, window, edd_free_downloads_vars, jBox*/
+/*global jQuery, document, edd_free_downloads_vars*/
 /*jslint newcap: true*/
 jQuery(document).ready(function ($) {
     'use strict';
 
-    var windowWidth, windowHeight, newModal;
+    var newModal, formURL;
 
-    windowWidth = $(window).width();
-    windowHeight = $(window).height();
+    if (isMobile.any) {
+        $('.edd-free-download').click(function (e) {
+            e.preventDefault();
 
-    if ((windowWidth < 800 && windowHeight < 600) || (windowWidth < 600 && windowHeight < 800)) {
-        $('.edd-free-download-cancel').css('display', 'block');
-
-        newModal = new jBox('Modal', {
-            attach: $('.edd-free-download'),
-            content: $('#edd-free-downloads-modal'),
-            width: windowWidth,
-            height: windowHeight,
-            fade: false,
-            animation: false,
-            reposition: true,
-            addClass: 'edd-free-downloads-mobile'
+            window.location.href = $(this).attr('href');
         });
 
         $('.edd-free-download-cancel').click(function () {
-            $('#edd-free-downloads-modal').find('input[type=text]').val('');
-
-            newModal.close();
+            parent.history.back();
+            return false;
         });
     } else {
         newModal = new jBox('Modal', {
             attach: $('.edd-free-download'),
             content: $('#edd-free-downloads-modal'),
             width: 350,
-            maxWidth: windowWidth * 0.80,
-            maxHeight: windowHeight * 0.80,
-            closeButton: edd_free_downloads_vars.close_button
+            closeButton: edd_free_downloads_vars.close_button,
+        });
+
+        $('.edd-free-download').click(function (e) {
+            e.preventDefault();
+
+            var download_id = $(this).closest('form').attr('id').replace('edd_purchase_', '');
+            $('input[name="edd_free_download_id"]').val(download_id);
         });
     }
-
-    $('.edd-free-download').click(function (e) {
-        e.preventDefault();
-
-        var download_id = $(this).closest('form').attr('id').replace('edd_purchase_', '');
-        $('input[name="edd_free_download_id"]').val(download_id);
-    });
 
     $('.edd-free-download-submit').click(function () {
         var email, regex, has_error = false;

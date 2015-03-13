@@ -35,6 +35,9 @@ if( ! class_exists( 'EDD_Free_Downloads' ) ) {
         private static $instance;
 
 
+        public $maybe_exit = false;
+
+
         /**
          * Get active instance
          *
@@ -95,11 +98,25 @@ if( ! class_exists( 'EDD_Free_Downloads' ) ) {
          * @return      void
          */
         private function hooks() {
+            global $wp_query;
+
             // Add our extension settings
             add_filter( 'edd_settings_extensions', array( $this, 'add_settings' ) );
 
             // Replace download form
             add_filter( 'edd_purchase_download_form', array( $this, 'download_form' ), 200, 2 );
+
+            // Add rewrite endpoint
+            add_action( 'init', array( $this, 'add_endpoint' ) );
+
+            // Add query var
+            add_filter( 'query_vars', array( $this, 'query_vars' ), -1 );
+
+            // Handle template redirect
+            add_action( 'wp_head', array( $this, 'display_redirect' ) );
+
+            // Handle inline display
+            add_action( 'wp_footer', array( $this, 'display_inline' ) );
 
             // Handle licensing
             if( class_exists( 'EDD_License' ) ) {
@@ -182,15 +199,21 @@ if( ! class_exists( 'EDD_Free_Downloads' ) ) {
                         $form  = '<form id="' . $form_id . '" class="edd_download_purchase_form">';
                         $form .= '<div class="edd_purchase_submit_wrapper">';
 
+                        if( wp_is_mobile() ) {
+                            $href = add_query_arg( array( 'edd-free-download' => 'true', 'download_id' => $args['download_id'] ) );
+                        } else {
+                            $href = '#edd-free-download-modal';
+                        }
+
                         if( edd_is_ajax_enabled() ) {
                             $form .= sprintf(
-                                '<div class="edd-add-to-cart %1$s" href="#edd-free-download-modal"><span>%2$s</span></div>',
+                                '<div class="edd-add-to-cart %1$s" href="' . $href . '"><span>%2$s</span></div>',
                                 $download_class,
                                 esc_attr( $download_label )
                             );
                         } else {
                             $form .= sprintf(
-                                '<input type="submit" class="edd-no-js %1$s" name="edd_purchase_download" value="%2$s" href="#edd-free-download-modal" />',
+                                '<input type="submit" class="edd-no-js %1$s" name="edd_purchase_download" value="%2$s" href="' . $href . '" />',
                                 $download_class,
                                 esc_attr( $download_label )
                             );
@@ -236,6 +259,164 @@ if( ! class_exists( 'EDD_Free_Downloads' ) ) {
                 // Load the default language files
                 load_plugin_textdomain( 'edd-free-downloads', false, $lang_dir );
             }
+        }
+
+
+        /**
+         * Registers a new rewrite endpoint
+         *
+         * @access      public
+         * @since       1.0.1
+         * @param       array $rewrite_rules The existing rewrite rules
+         * @return      void
+         */
+        public function add_endpoint( $rewrite_rules ) {
+            add_rewrite_endpoint( 'edd-free-download', EP_ALL );
+        }
+
+
+        /**
+         * Add a new query var
+         *
+         * @access      public
+         * @since       1.0.1
+         * @param       array $vars The current query vars
+         * @return      array $vars The new query vars
+         */
+        public function query_vars( $vars ) {
+            $vars[] = 'download_id';
+
+            return $vars;
+        }
+
+
+        /**
+         * Listen for edd-free-download queries and handle accordingly
+         *
+         * @access      public
+         * @since       1.0.1
+         * @return      void
+         */
+        public function display_redirect() {
+            global $wp_query;
+
+            // Check for edd-free-download variable
+            if( ! isset( $wp_query->query_vars['edd-free-download'] ) ) {
+                return;
+            }
+
+            // Pull user data if available
+            if( is_user_logged_in() ) {
+                $user = new WP_User( get_current_user_id() );
+            }
+
+            $email = isset( $user ) ? $user->user_email : '';
+            $fname = isset( $user ) ? $user->user_firstname : '';
+            $lname = isset( $user ) ? $user->user_lastname : '';
+
+            // Get EDD vars
+            $color = edd_get_option( 'checkout_color', 'blue' );
+            $color = ( $color == 'inherit' ) ? '' : $color;
+            $label = edd_get_option( 'edd_free_downloads_button_label', __( 'Download Now', 'edd-free-downloads' ) );
+
+            // Build the modal
+            $modal  = '<div id="edd-free-downloads-modal" class="edd-free-downloads-mobile">';
+            $modal .= '<form id="edd_free_download_form" method="post">';
+
+            // Email is always required
+            $modal .= '<p>';
+            $modal .= '<label for="edd_free_download_email" class="edd-free-downloads-label">' . __( 'Email Address', 'edd-free-downloads' ) . ' <span class="edd-free-downloads-required">*</span></label>';
+            $modal .= '<input type="text" name="edd_free_download_email" id="edd_free_download_email" placeholder="' . __( 'Email Address', 'edd-free-downloads' ) . '" value="' . $email . '" />';
+            $modal .= '</p>';
+            
+            if( edd_get_option( 'edd_free_downloads_get_name', false ) ) {
+                $modal .= '<p>';
+                $modal .= '<label for="edd_free_download_fname" class="edd-free-downloads-label">' . __( 'First Name', 'edd-free-downloads' ) . '</label>';
+                $modal .= '<input type="text" name="edd_free_download_fname" id="edd_free_download_fname" placeholder="' . __( 'First Name', 'edd-free-downloads' ) . '" value="' . $fname . '" />';
+                $modal .= '</p>';
+
+                $modal .= '<p>';
+                $modal .= '<label for="edd_free_download_lname" class="edd-free-downloads-label">' . __( 'Last Name', 'edd-free-downloads' ) . '</label>';
+                $modal .= '<input type="text" name="edd_free_download_lname" id="edd_free_download_lname" placeholder="' . __( 'Last Name', 'edd-free-downloads' ) . '" value="' . $lname . '" />';
+                $modal .= '</p>';
+            }
+
+            $modal .= '<div class="edd-free-download-errors">';
+            $modal .= '<p id="edd-free-download-error-email-required"><strong>' . __( 'Error:', 'edd-free-downloads' ) . '</strong> ' . __( 'Please enter a valid email address', 'edd-free-downloads' ) . '</p>';
+            $modal .= '<p id="edd-free-download-error-email-invalid"><strong>' . __( 'Error:', 'edd-free-downloads' ) . '</strong> ' . __( 'Invalid email', 'edd-free-downloads' ) . '</p>';
+            $modal .= '</div>';
+
+            $modal .= '<input type="hidden" name="edd_action" value="free_download_process" />';
+            $modal .= '<input type="hidden" name="edd_free_download_id" value="' . $wp_query->query_vars['edd-free-download'] . '" />';
+            $modal .= '<input type="button" name="edd_free_download_submit" class="edd-free-download-submit edd-submit button ' . $color . '" value="' . $label . '" />';
+            $modal .= '<input type="button" name="edd_free_download_cancel" class="edd-free-download-cancel edd-submit button ' . $color . '" value="' . __( 'Cancel', 'edd-free-downloads' ) . '" />';
+
+            $modal .= '</form>';
+            $modal .= '</div>';
+
+            echo $modal;
+
+            exit;
+        }
+
+
+        /**
+         * Listen for edd-free-download queries and handle accordingly
+         *
+         * @access      public
+         * @since       1.0.1
+         * @return      void
+         */
+        public function display_inline() {
+            // Pull user data if available
+            if( is_user_logged_in() ) {
+                $user = new WP_User( get_current_user_id() );
+            }
+
+            $email = isset( $user ) ? $user->user_email : '';
+            $fname = isset( $user ) ? $user->user_firstname : '';
+            $lname = isset( $user ) ? $user->user_lastname : '';
+
+            // Get EDD vars
+            $color = edd_get_option( 'checkout_color', 'blue' );
+            $color = ( $color == 'inherit' ) ? '' : $color;
+            $label = edd_get_option( 'edd_free_downloads_button_label', __( 'Download Now', 'edd-free-downloads' ) );
+
+            // Build the modal
+            $modal  = '<div id="edd-free-downloads-modal" class="edd-free-downloads-hidden">';
+            $modal .= '<form id="edd_free_download_form" method="post">';
+
+            // Email is always required
+            $modal .= '<p>';
+            $modal .= '<label for="edd_free_download_email" class="edd-free-downloads-label">' . __( 'Email Address', 'edd-free-downloads' ) . ' <span class="edd-free-downloads-required">*</span></label>';
+            $modal .= '<input type="text" name="edd_free_download_email" id="edd_free_download_email" placeholder="' . __( 'Email Address', 'edd-free-downloads' ) . '" value="' . $email . '" />';
+            $modal .= '</p>';
+            
+            if( edd_get_option( 'edd_free_downloads_get_name', false ) ) {
+                $modal .= '<p>';
+                $modal .= '<label for="edd_free_download_fname" class="edd-free-downloads-label">' . __( 'First Name', 'edd-free-downloads' ) . '</label>';
+                $modal .= '<input type="text" name="edd_free_download_fname" id="edd_free_download_fname" placeholder="' . __( 'First Name', 'edd-free-downloads' ) . '" value="' . $fname . '" />';
+                $modal .= '</p>';
+
+                $modal .= '<p>';
+                $modal .= '<label for="edd_free_download_lname" class="edd-free-downloads-label">' . __( 'Last Name', 'edd-free-downloads' ) . '</label>';
+                $modal .= '<input type="text" name="edd_free_download_lname" id="edd_free_download_lname" placeholder="' . __( 'Last Name', 'edd-free-downloads' ) . '" value="' . $lname . '" />';
+                $modal .= '</p>';
+            }
+
+            $modal .= '<div class="edd-free-download-errors">';
+            $modal .= '<p id="edd-free-download-error-email-required"><strong>' . __( 'Error:', 'edd-free-downloads' ) . '</strong> ' . __( 'Please enter a valid email address', 'edd-free-downloads' ) . '</p>';
+            $modal .= '<p id="edd-free-download-error-email-invalid"><strong>' . __( 'Error:', 'edd-free-downloads' ) . '</strong> ' . __( 'Invalid email', 'edd-free-downloads' ) . '</p>';
+            $modal .= '</div>';
+
+            $modal .= '<input type="hidden" name="edd_action" value="free_download_process" />';
+            $modal .= '<input type="hidden" name="edd_free_download_id" />';
+            $modal .= '<input type="button" name="edd_free_download_submit" class="edd-free-download-submit edd-submit button ' . $color . '" value="' . $label . '" />';
+
+            $modal .= '</form>';
+            $modal .= '</div>';
+
+            echo $modal;
         }
     }
 }
