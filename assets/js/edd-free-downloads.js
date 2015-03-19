@@ -30,6 +30,12 @@ jQuery(document).ready(function ($) {
             var download_id = $(this).closest('form').attr('id').replace('edd_purchase_', '');
             $('input[name="edd_free_download_id"]').val(download_id);
         });
+
+        // Select email field on click
+        $('.edd-free-download').click(function (e) {
+            $('input[name="edd_free_download_email"]').focus();
+            $('input[name="edd_free_download_email"]').select();
+        });
     }
 
     $('.edd-free-download-submit').click(function () {

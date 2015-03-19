@@ -354,6 +354,13 @@ if( ! class_exists( 'EDD_Free_Downloads' ) ) {
             $modal .= '</form>';
             $modal .= '</div>';
 
+            $modal .= '<script type="text/javascript">';
+            $modal .= 'jQuery(document).ready(function ($) {';
+            $modal .= '    $("#edd_free_download_email").focus();';
+            $modal .= '    $("#edd_free_download_email").select();';
+            $modal .= '});';
+            $modal .= '</script>';
+
             echo $modal;
 
             exit;
