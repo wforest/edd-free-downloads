@@ -11,6 +11,12 @@
 if( ! defined( 'ABSPATH' ) ) exit;
 
 
+/**
+ * Process downloads
+ *
+ * @since       1.0.0
+ * @return      void
+ */
 function edd_free_download_process() {
     $user = get_user_by( 'email', $_POST['edd_free_download_email'] );
 
