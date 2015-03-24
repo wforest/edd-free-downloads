@@ -93,3 +93,29 @@ function edd_free_download_process() {
     edd_die();
 }
 add_action( 'edd_free_download_process', 'edd_free_download_process' );
+
+
+/**
+ * Check if a download should use the modal dialog
+ *
+ * @since       1.0.0
+ * @param       int $download_id The ID to check
+ * @return      bool $ret True if we should use the modal, false otherwise
+ */
+function edd_free_downloads_use_modal( $download_id = false ) {
+    $ret = false;
+
+    if( $download_id && ! edd_has_variable_prices( $download_id ) && ! edd_is_bundled_product( $download_id ) ) {
+        $price = floatval( edd_get_lowest_price_option( $download_id ) );
+
+        if( $price == 0 ) {
+            $download_file = edd_get_download_files( $download_id );
+
+            if( count( $download_file ) < 2 ) {
+                $ret = true;
+            }
+        }
+    }
+
+    return $ret;
+}
