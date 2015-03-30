@@ -190,7 +190,6 @@ if( ! class_exists( 'EDD_Free_Downloads' ) ) {
 
             if( edd_free_downloads_use_modal( $download_id ) ) {
                 $form_id        = ! empty( $args['form_id'] ) ? $args['form_id'] : 'edd_purchase_' . $args['download_id'];
-                $download_url   = $download_file[0]['file'];
                 $download_label = edd_get_option( 'edd_free_downloads_button_label', __( 'Download Now', 'edd-free-downloads' ) );
                 $download_class = implode( ' ', array( $args['style'], $args['color'], trim( $args['class'] ), 'edd-free-download' ) );
 
