@@ -20,7 +20,6 @@ if( ! defined( 'ABSPATH' ) ) exit;
 function edd_free_download_process() {
     $user = get_user_by( 'email', $_POST['edd_free_download_email'] );
 
-    $user_id    = $user ? $user->ID : 0;
     $email      = strip_tags( trim( $_POST['edd_free_download_email'] ) );
     $download_id= $_POST['edd_free_download_id'];
 
@@ -37,7 +36,7 @@ function edd_free_download_process() {
     }
 
     $user_info = array(
-        'id'        => $user_id,
+        'id'        => 0,
         'email'     => $email,
         'first_name'=> $user_first,
         'last_name' => $user_last,
