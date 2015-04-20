@@ -3,7 +3,7 @@
  * Plugin Name:     Easy Digital Downloads - Free Downloads
  * Plugin URI:      https://easydigitaldownloads.com/extensions/free-downloads/
  * Description:     Adds better handling for directly downloading free products to EDD
- * Version:         1.0.3
+ * Version:         1.0.4
  * Author:          Daniel J Griffiths
  * Author URI:      http://section214.com
  * Text Domain:     edd-free-downloads
@@ -67,8 +67,8 @@ if( ! class_exists( 'EDD_Free_Downloads' ) ) {
          */
         private function setup_constants() {
             // Plugin version
-            define( 'EDD_FREE_DOWNLOADS_VER', '1.0.3' );
-            
+            define( 'EDD_FREE_DOWNLOADS_VER', '1.0.4' );
+
             // Plugin path
             define( 'EDD_FREE_DOWNLOADS_DIR', plugin_dir_path( __FILE__ ) );
 
@@ -197,7 +197,7 @@ if( ! class_exists( 'EDD_Free_Downloads' ) ) {
                 $form .= '<div class="edd_purchase_submit_wrapper">';
 
                 if( wp_is_mobile() ) {
-                    $href = add_query_arg( array( 'edd-free-download' => 'true', 'download_id' => $args['download_id'] ) );
+                    $href = esc_url( add_query_arg( array( 'edd-free-download' => 'true', 'download_id' => $args['download_id'] ) ) );
                 } else {
                     $href = '#edd-free-download-modal';
                 }
@@ -239,7 +239,7 @@ if( ! class_exists( 'EDD_Free_Downloads' ) ) {
 
             if( is_single( $id ) && get_post_type( $id ) == 'download' && edd_free_downloads_use_modal( $id ) ) {
                 add_filter( 'edd_straight_to_checkout', '__return_false' );
-            }            
+            }
         }
 
 
@@ -342,7 +342,7 @@ if( ! class_exists( 'EDD_Free_Downloads' ) ) {
             $modal .= '<label for="edd_free_download_email" class="edd-free-downloads-label">' . __( 'Email Address', 'edd-free-downloads' ) . ' <span class="edd-free-downloads-required">*</span></label>';
             $modal .= '<input type="text" name="edd_free_download_email" id="edd_free_download_email" placeholder="' . __( 'Email Address', 'edd-free-downloads' ) . '" value="' . $email . '" />';
             $modal .= '</p>';
-            
+
             if( edd_get_option( 'edd_free_downloads_get_name', false ) ) {
                 $modal .= '<p>';
                 $modal .= '<label for="edd_free_download_fname" class="edd-free-downloads-label">' . __( 'First Name', 'edd-free-downloads' ) . '</label>';
@@ -412,7 +412,7 @@ if( ! class_exists( 'EDD_Free_Downloads' ) ) {
             $modal .= '<label for="edd_free_download_email" class="edd-free-downloads-label">' . __( 'Email Address', 'edd-free-downloads' ) . ' <span class="edd-free-downloads-required">*</span></label>';
             $modal .= '<input type="text" name="edd_free_download_email" id="edd_free_download_email" placeholder="' . __( 'Email Address', 'edd-free-downloads' ) . '" value="' . $email . '" />';
             $modal .= '</p>';
-            
+
             if( edd_get_option( 'edd_free_downloads_get_name', false ) ) {
                 $modal .= '<p>';
                 $modal .= '<label for="edd_free_download_fname" class="edd-free-downloads-label">' . __( 'First Name', 'edd-free-downloads' ) . '</label>';
@@ -458,7 +458,7 @@ function edd_free_downloads() {
 
         $activation = new S214_EDD_Activation( plugin_dir_path( __FILE__ ), basename( __FILE__ ) );
         $activation = $activation->run();
-        
+
         return EDD_Free_Downloads::instance();
     } else {
         return EDD_Free_Downloads::instance();
