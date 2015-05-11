@@ -18,6 +18,11 @@ if( ! defined( 'ABSPATH' ) ) exit;
  * @return      void
  */
 function edd_free_download_process() {
+    // No spammers please!
+    if( isset( $_POST['edd_free_download_check'] ) && $_POST['edd_free_download_check'] != '' ) {
+        wp_die( __( 'Bad spammer, no download!', 'edd-free-downloads' ), __( 'Oops!', 'edd-free-downloads' ) );
+    }
+
     $user = get_user_by( 'email', $_POST['edd_free_download_email'] );
 
     $email      = strip_tags( trim( $_POST['edd_free_download_email'] ) );
