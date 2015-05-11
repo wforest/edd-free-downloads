@@ -355,6 +355,9 @@ if( ! class_exists( 'EDD_Free_Downloads' ) ) {
                 $modal .= '</p>';
             }
 
+            // Honeypot
+            $modal .= '<input type="hidden" name="edd_free_download_check" value="" />';
+
             $modal .= '<div class="edd-free-download-errors">';
             $modal .= '<p id="edd-free-download-error-email-required"><strong>' . __( 'Error:', 'edd-free-downloads' ) . '</strong> ' . __( 'Please enter a valid email address', 'edd-free-downloads' ) . '</p>';
             $modal .= '<p id="edd-free-download-error-email-invalid"><strong>' . __( 'Error:', 'edd-free-downloads' ) . '</strong> ' . __( 'Invalid email', 'edd-free-downloads' ) . '</p>';
@@ -364,9 +367,6 @@ if( ! class_exists( 'EDD_Free_Downloads' ) ) {
             $modal .= '<input type="hidden" name="edd_free_download_id" value="' . $wp_query->query_vars['download_id'] . '" />';
             $modal .= '<input type="button" name="edd_free_download_submit" class="edd-free-download-submit edd-submit button ' . $color . '" value="' . $label . '" />';
             $modal .= '<input type="button" name="edd_free_download_cancel" class="edd-free-download-cancel edd-submit button ' . $color . '" value="' . __( 'Cancel', 'edd-free-downloads' ) . '" />';
-
-            // Honeypot
-            $modal .= '<input type="hidden" name="edd_free_download_check" value="" />';
 
             $modal .= '</form>';
             $modal .= '</div>';
@@ -428,6 +428,9 @@ if( ! class_exists( 'EDD_Free_Downloads' ) ) {
                 $modal .= '</p>';
             }
 
+            // Honeypot
+            $modal .= '<input type="hidden" name="edd_free_download_check" value="" />';
+
             $modal .= '<div class="edd-free-download-errors">';
             $modal .= '<p id="edd-free-download-error-email-required"><strong>' . __( 'Error:', 'edd-free-downloads' ) . '</strong> ' . __( 'Please enter a valid email address', 'edd-free-downloads' ) . '</p>';
             $modal .= '<p id="edd-free-download-error-email-invalid"><strong>' . __( 'Error:', 'edd-free-downloads' ) . '</strong> ' . __( 'Invalid email', 'edd-free-downloads' ) . '</p>';
@@ -436,9 +439,6 @@ if( ! class_exists( 'EDD_Free_Downloads' ) ) {
             $modal .= '<input type="hidden" name="edd_action" value="free_download_process" />';
             $modal .= '<input type="hidden" name="edd_free_download_id" />';
             $modal .= '<input type="button" name="edd_free_download_submit" class="edd-free-download-submit edd-submit button ' . $color . '" value="' . $label . '" />';
-
-            // Honeypot
-            $modal .= '<input type="hidden" name="edd_free_download_check" value="" />';
 
             $modal .= '</form>';
             $modal .= '</div>';
