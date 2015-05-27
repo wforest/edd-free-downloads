@@ -54,6 +54,7 @@ function edd_free_download_process() {
     );
 
     $cart_details   = array();
+    $download_files = edd_get_download_files( $download_id );
     $item_price     = edd_get_download_price( $download_id );
 
     $cart_details[0] = array(
@@ -67,9 +68,11 @@ function edd_free_download_process() {
 
     $date = date( 'Y-m-d H:i:s', current_time( 'timestamp' ) );
 
-    $downloads[0] = array(
-        'id'    => $download_id
-    );
+    foreach( $download_files as $file ) {
+        $downloads[] = array(
+            'id'    => $file['attachment_id']
+        );
+    }
 
     /**
      * Gateway set to manual because manual + free lists as 'Free Purchase' in order details
@@ -118,11 +121,7 @@ function edd_free_downloads_use_modal( $download_id = false ) {
         $price = floatval( edd_get_lowest_price_option( $download_id ) );
 
         if( $price == 0 ) {
-            $download_file = edd_get_download_files( $download_id );
-
-            if( count( $download_file ) < 2 ) {
-                $ret = true;
-            }
+            $ret = true;
         }
     }
 
