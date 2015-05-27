@@ -28,6 +28,11 @@ function edd_free_download_process() {
     $email      = strip_tags( trim( $_POST['edd_free_download_email'] ) );
     $download_id= $_POST['edd_free_download_id'];
 
+    // No banned emails please!
+    if( edd_is_email_banned( $email ) ) {
+        wp_die( __( 'An internal error has occurred, please try again or contact support.', 'edd-free-downloads' ), __( 'Oops!', 'edd-free-downloads' ) );
+    }
+    
     if( isset( $_POST['edd_free_download_fname'] ) ) {
         $user_first = sanitize_text_field( $_POST['edd_free_download_fname'] );
     } else {
