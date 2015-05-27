@@ -1,0 +1,129 @@
+# Copyright (C) 2015 Easy Digital Downloads - Free Downloads
+# This file is distributed under the same license as the Easy Digital Downloads - Free Downloads package.
+msgid ""
+msgstr ""
+"Project-Id-Version: Easy Digital Downloads - Free Downloads 1.0.5\n"
+"Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/edd-free-"
+"downloads\n"
+"POT-Creation-Date: 2015-05-13 10:19:56+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2015-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+
+#: edd-free-downloads.php:143
+msgid "Free Downloads Settings"
+msgstr ""
+
+#: edd-free-downloads.php:149
+msgid "Button Label"
+msgstr ""
+
+#: edd-free-downloads.php:150
+msgid "Specify the label for the download button."
+msgstr ""
+
+#: edd-free-downloads.php:152 edd-free-downloads.php:193
+#: edd-free-downloads.php:334 edd-free-downloads.php:407
+msgid "Download Now"
+msgstr ""
+
+#: edd-free-downloads.php:156
+msgid "Collect Name"
+msgstr ""
+
+#: edd-free-downloads.php:157
+msgid "Should we collect the first and last name of the purchaser?"
+msgstr ""
+
+#: edd-free-downloads.php:162
+msgid "Display Close Button"
+msgstr ""
+
+#: edd-free-downloads.php:163
+msgid "Should we display a close button on the email collection form?"
+msgstr ""
+
+#: edd-free-downloads.php:168
+msgid "Custom Redirect"
+msgstr ""
+
+#: edd-free-downloads.php:169
+msgid ""
+"Enter a URL to redirect to on completion, or leave blank for the receipt "
+"page."
+msgstr ""
+
+#: edd-free-downloads.php:342 edd-free-downloads.php:343
+#: edd-free-downloads.php:415 edd-free-downloads.php:416
+msgid "Email Address"
+msgstr ""
+
+#: edd-free-downloads.php:348 edd-free-downloads.php:349
+#: edd-free-downloads.php:421 edd-free-downloads.php:422
+msgid "First Name"
+msgstr ""
+
+#: edd-free-downloads.php:353 edd-free-downloads.php:354
+#: edd-free-downloads.php:426 edd-free-downloads.php:427
+msgid "Last Name"
+msgstr ""
+
+#: edd-free-downloads.php:362 edd-free-downloads.php:363
+#: edd-free-downloads.php:435 edd-free-downloads.php:436
+msgid "Error:"
+msgstr ""
+
+#: edd-free-downloads.php:362 edd-free-downloads.php:435
+msgid "Please enter a valid email address"
+msgstr ""
+
+#: edd-free-downloads.php:363 edd-free-downloads.php:436
+msgid "Invalid email"
+msgstr ""
+
+#: edd-free-downloads.php:369
+msgid "Cancel"
+msgstr ""
+
+#: includes/class.s214-edd-activation.php:77
+msgid " requires Easy Digital Downloads! Please activate it to continue!"
+msgstr ""
+
+#: includes/class.s214-edd-activation.php:79
+msgid " requires Easy Digital Downloads! Please install it to continue!"
+msgstr ""
+
+#: includes/functions.php:23
+msgid "Bad spammer, no download!"
+msgstr ""
+
+#: includes/functions.php:23
+msgid "Oops!"
+msgstr ""
+
+#: includes/functions.php:89
+msgid "Purchased through EDD Free Downloads"
+msgstr ""
+
+#. Plugin Name of the plugin/theme
+msgid "Easy Digital Downloads - Free Downloads"
+msgstr ""
+
+#. Plugin URI of the plugin/theme
+msgid "https://easydigitaldownloads.com/extensions/free-downloads/"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid "Adds better handling for directly downloading free products to EDD"
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "Daniel J Griffiths"
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "http://section214.com"
+msgstr ""
