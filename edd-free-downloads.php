@@ -140,7 +140,7 @@ if( ! class_exists( 'EDD_Free_Downloads' ) ) {
             $new_settings = array(
                 array(
                     'id'    => 'edd_free_downloads_settings',
-                    'name'  => '<strong>' . __( 'Free Downloads Settings', 'edd-free-downloads' ) . '</strong>',
+                    'name'  => '<span class="field-section-title">' . __( 'Free Downloads', 'edd-free-downloads' ) . '</span>',
                     'desc'  => '',
                     'type'  => 'header'
                 ),
