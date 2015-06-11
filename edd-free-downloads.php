@@ -361,6 +361,9 @@ if( ! class_exists( 'EDD_Free_Downloads' ) ) {
             // Honeypot
             $modal .= '<input type="hidden" name="edd_free_download_check" value="" />';
 
+            // Nonce
+            $modal .= wp_nonce_field( 'edd_free_download_nonce', 'edd_free_download_nonce', true, false );
+
             $modal .= '<div class="edd-free-download-errors">';
             $modal .= '<p id="edd-free-download-error-email-required"><strong>' . __( 'Error:', 'edd-free-downloads' ) . '</strong> ' . __( 'Please enter a valid email address', 'edd-free-downloads' ) . '</p>';
             $modal .= '<p id="edd-free-download-error-email-invalid"><strong>' . __( 'Error:', 'edd-free-downloads' ) . '</strong> ' . __( 'Invalid email', 'edd-free-downloads' ) . '</p>';
@@ -433,6 +436,9 @@ if( ! class_exists( 'EDD_Free_Downloads' ) ) {
 
             // Honeypot
             $modal .= '<input type="hidden" name="edd_free_download_check" value="" />';
+
+            // Nonce
+            $modal .= wp_nonce_field( 'edd_free_download_nonce', 'edd_free_download_nonce', true, false );
 
             $modal .= '<div class="edd-free-download-errors">';
             $modal .= '<p id="edd-free-download-error-email-required"><strong>' . __( 'Error:', 'edd-free-downloads' ) . '</strong> ' . __( 'Please enter a valid email address', 'edd-free-downloads' ) . '</p>';
