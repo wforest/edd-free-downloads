@@ -119,7 +119,7 @@ if( ! class_exists( 'EDD_Free_Downloads' ) ) {
             add_action( 'wp_footer', array( $this, 'display_inline' ) );
 
             // Maybe override straight to checkout
-            add_action( 'template_redirect', array( $this, 'override_redirect' ) );
+            add_filter( 'edd_straight_to_checkout', array( $this, 'override_redirect' ) );
 
             // Handle licensing
             if( class_exists( 'EDD_License' ) ) {
@@ -229,17 +229,20 @@ if( ! class_exists( 'EDD_Free_Downloads' ) ) {
          *
          * @access      public
          * @since       1.0.0
+         * @param       bool $ret Whether or not to go straight to checkout
          * @global      object $post The WordPress post object
-         * @return      void
+         * @return      bool $ret Whether or not to go straight to checkout
          */
-        public function override_redirect() {
+        public function override_redirect( $ret ) {
             global $post;
 
             $id = get_the_ID();
 
-            if( is_single( $id ) && get_post_type( $id ) == 'download' && edd_free_downloads_use_modal( $id ) ) {
-                add_filter( 'edd_straight_to_checkout', '__return_false' );
+            if( is_single( $id ) && get_post_type( $id ) == 'download' && edd_is_free_download( $id ) ) {
+                $ret = false;
             }
+
+            return $ret;
         }
 
 
