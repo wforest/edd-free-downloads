@@ -30,6 +30,7 @@ function edd_free_download_process() {
 
     $email       = strip_tags( trim( $_POST['edd_free_download_email'] ) );
     $user        = get_user_by( 'email', $email );
+
     // No banned emails please!
     if( edd_is_email_banned( $email ) ) {
         wp_die( __( 'An internal error has occurred, please try again or contact support.', 'edd-free-downloads' ), __( 'Oops!', 'edd-free-downloads' ) );
@@ -69,7 +70,7 @@ function edd_free_download_process() {
     $download_files = edd_get_download_files( $download_id );
     $item_price     = edd_get_download_price( $download_id );
 
-    if ( $item_price > 0 ) {
+    if ( ! edd_is_free_download( $download_id ) ) {
         wp_die( __( 'An internal error has occurred, please try again or contact support.', 'edd-free-downloads' ), __( 'Oops!', 'edd-free-downloads' ) );
     }
 
