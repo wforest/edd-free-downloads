@@ -18,21 +18,34 @@ if( ! defined( 'ABSPATH' ) ) exit;
  * @return      void
  */
 function edd_free_download_process() {
+
     // No spammers please!
     if( isset( $_POST['edd_free_download_check'] ) && $_POST['edd_free_download_check'] != '' ) {
         wp_die( __( 'Bad spammer, no download!', 'edd-free-downloads' ), __( 'Oops!', 'edd-free-downloads' ) );
     }
 
-    $user = get_user_by( 'email', $_POST['edd_free_download_email'] );
+    if ( ! isset( $_POST['edd_free_download_email'] ) || ! is_email( $_POST['edd_free_download_email'] ) ) {
+        wp_die( __( 'An internal error has occurred, please try again or contact support.', 'edd-free-downloads' ), __( 'Oops!', 'edd-free-downloads' ) );
+    }
 
-    $email      = strip_tags( trim( $_POST['edd_free_download_email'] ) );
-    $download_id= $_POST['edd_free_download_id'];
+    $email       = strip_tags( trim( $_POST['edd_free_download_email'] ) );
+    $user        = get_user_by( 'email', $email );
 
     // No banned emails please!
     if( edd_is_email_banned( $email ) ) {
         wp_die( __( 'An internal error has occurred, please try again or contact support.', 'edd-free-downloads' ), __( 'Oops!', 'edd-free-downloads' ) );
     }
-    
+
+    $download_id = isset( $_POST['edd_free_download_id'] ) ? intval( $_POST['edd_free_download_id'] ) : false;
+    if ( empty( $download_id ) ) {
+        wp_die( __( 'An internal error has occurred, please try again or contact support.', 'edd-free-downloads' ), __( 'Oops!', 'edd-free-downloads' ) );
+    }
+
+    $post_type = get_post_type( $download_id );
+    if ( 'download' !== $post_type ) {
+        wp_die( __( 'An internal error has occurred, please try again or contact support.', 'edd-free-downloads' ), __( 'Oops!', 'edd-free-downloads' ) );
+    }
+
     if( isset( $_POST['edd_free_download_fname'] ) ) {
         $user_first = sanitize_text_field( $_POST['edd_free_download_fname'] );
     } else {
@@ -57,6 +70,10 @@ function edd_free_download_process() {
     $download_files = edd_get_download_files( $download_id );
     $item_price     = edd_get_download_price( $download_id );
 
+    if ( ! edd_is_free_download( $download_id ) ) {
+        wp_die( __( 'An internal error has occurred, please try again or contact support.', 'edd-free-downloads' ), __( 'Oops!', 'edd-free-downloads' ) );
+    }
+
     $cart_details[0] = array(
         'name'      => get_the_title( $download_id ),
         'id'        => $download_id,
@@ -68,6 +85,7 @@ function edd_free_download_process() {
 
     $date = date( 'Y-m-d H:i:s', current_time( 'timestamp' ) );
 
+    $downloads = array();
     foreach( $download_files as $file ) {
         $downloads[] = array(
             'id'    => $file['attachment_id']
