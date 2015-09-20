@@ -38,6 +38,13 @@ jQuery(document).ready(function ($) {
         });
     }
 
+    $('.edd-free-download-field').keypress(function (e) {
+        if (e.which == 13) {
+            $('.edd-free-download-submit').click();
+            return false;
+        }
+    });
+
     $('.edd-free-download-submit').click(function () {
         var email, regex, has_error = 0;
 
