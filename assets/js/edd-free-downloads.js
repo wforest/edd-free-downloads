@@ -110,6 +110,7 @@ jQuery(document).ready(function ($) {
         }
 
         if (has_error === 0) {
+            $('.edd-free-download-errors').css('display', 'none');
             $('#edd_free_download_form').submit();
         } else {
             $('.edd-free-download-errors').css('display', 'block');
