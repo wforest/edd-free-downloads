@@ -163,8 +163,8 @@ if( ! class_exists( 'EDD_Free_Downloads' ) ) {
                 ),
                 array(
                     'id'    => 'edd_free_downloads_auto_register',
-                    'name'  => __( 'Allow User Registration', 'edd-free-downloads' ),
-                    'desc'  => __( 'Allow users to register on the site when a guest downloads a free item.' ),
+                    'name'  => __( 'User Registration', 'edd-free-downloads' ),
+                    'desc'  => __( 'Auto register user on the site when a guest downloads a free item.' ),
                     'type'  => 'checkbox'
                 ),
                 array(
