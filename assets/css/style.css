@@ -13,7 +13,8 @@
     display: inline;
 }
 
-#edd-free-downloads-modal input[type='text'] {
+#edd-free-downloads-modal input[type='text'],
+#edd-free-downloads-modal input[type='password'] {
     width: 100%;
 }
 

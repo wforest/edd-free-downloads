@@ -12,6 +12,26 @@ if( ! defined( 'ABSPATH' ) ) exit;
 
 
 /**
+ * Setup form fields
+ *
+ * @since       1.1.0
+ * @return      array $fields The configured fields
+ */
+function edd_free_downloads_get_form_fields() {
+    $fields = array(
+        array(
+            'id'        => 'edd_free_download_email',
+            'type'      => 'text',
+            'label'     => edd_get_option( 'edd_free_downloads_email_label', __( 'Email Address', 'edd-free-downloads' ) ),
+            'required'  => true
+        )
+    );
+
+    return apply_filters( 'edd_free_downloads_form_fields', $fields );
+}
+
+
+/**
  * Process downloads
  *
  * @since       1.0.0
@@ -29,7 +49,37 @@ function edd_free_download_process() {
     }
 
     if ( ! isset( $_POST['edd_free_download_email'] ) || ! is_email( $_POST['edd_free_download_email'] ) ) {
-        wp_die( __( 'An internal error has occurred, please try again or contact support.', 'edd-free-downloads' ), __( 'Oops!', 'edd-free-downloads' ) );
+        wp_die( __( 'An internal error has occurred, please try again or contact support.', 'edd-free-downloads' ), __( 'Oops!', 'edd-free-downloads' ), array( 'back_link' => true ) );
+    }
+
+    if( edd_get_option( 'edd_free_downloads_auto_register', false ) && ! is_user_logged_in() ) {
+        // If we are registering a user, make sure the required fields are filled out
+        if( ! isset( $_POST['edd_free_download_username'] ) || ! isset( $_POST['edd_free_download_pass'] ) || ! isset( $_POST['edd_free_download_pass2'] ) ) {
+            wp_die( __( 'The username and password fields are required, please try again.', 'edd-free-downloads' ), __( 'Oops!', 'edd-free-downloads' ), array( 'back_link' => true ) );
+        }
+
+        if( $_POST['edd_free_download_pass'] != $_POST['edd_free_download_pass2'] ) {
+            wp_die( __( 'Password and password confirmation fields don\'t match, please try again,', 'edd-free-downloads' ), __( 'Oops!', 'edd-free-downloads' ), array( 'back_link' => true ) );
+        }
+
+        // Make sure the username doesn't already exist
+        $username = trim( $_POST['edd_free_download_username'] );
+
+        if( username_exists( $username ) ) {
+            wp_die( __( 'The specified username already exists, please log in or try again.', 'edd-free-downloads' ), __( 'Oops!', 'edd-free-downloads' ), array( 'back_link' => true ) );
+        } elseif( ! edd_validate_username( $username ) ) {
+            // Invalid username
+            if( is_multisite() ) {
+                wp_die( __( 'Invalid username. Only lowercase letters (a-z) and numbers are allowed.', 'edd-free-downloads' ), __( 'Oops!', 'edd-free-downloads' ), array( 'back_link' => true ) );
+            } else {
+                wp_die( __( 'Invalid username.', 'edd-free-downloads' ), __( 'Oops!', 'edd-free-downloads' ), array( 'back_link' => true ) );
+            }
+        }
+
+        // Make sure the email doesn't already exist
+        if( email_exists( $_POST['edd_free_download_email'] ) ) {
+            wp_die( __( 'The specified email has already been used, please log in or try again.', 'edd-free-downloads' ), __( 'Oops!', 'edd-free-downloads' ), array( 'back_link' => true ) );
+        }
     }
 
     $email       = strip_tags( trim( $_POST['edd_free_download_email'] ) );
@@ -119,6 +169,18 @@ function edd_free_download_process() {
     edd_insert_payment_note( $payment_id, __( 'Purchased through EDD Free Downloads', 'edd-free-downloads' ) );
     edd_empty_cart();
     edd_set_purchase_session( $purchase_data );
+
+    if( edd_get_option( 'edd_free_downloads_auto_register', false ) && ! is_user_logged_in() ) {
+        $account = array(
+            'user_login'    => trim( $_POST['edd_free_download_username'] ),
+            'user_pass'     => trim( $_POST['edd_free_download_pass'] ),
+            'user_email'    => $email,
+            'first_name'    => $user_first,
+            'last_name'     => $user_last
+        );
+
+        edd_register_and_login_new_user( $account );
+    }
 
     $redirect_url = edd_get_option( 'edd_free_downloads_redirect', false );
     $redirect_url = $redirect_url ? esc_url( $redirect_url ) : edd_get_success_page_url();
