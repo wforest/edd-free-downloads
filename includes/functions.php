@@ -52,7 +52,7 @@ function edd_free_download_process() {
         wp_die( __( 'An internal error has occurred, please try again or contact support.', 'edd-free-downloads' ), __( 'Oops!', 'edd-free-downloads' ), array( 'back_link' => true ) );
     }
 
-    if( edd_get_option( 'edd_free_downloads_user_registration', false ) && ! is_user_logged_in() ) {
+    if( edd_get_option( 'edd_free_downloads_user_registration', false ) && ! is_user_logged_in() && ! class_exists( 'EDD_Auto_Register' ) ) {
         // If we are registering a user, make sure the required fields are filled out
         if( ! isset( $_POST['edd_free_download_username'] ) || ! isset( $_POST['edd_free_download_pass'] ) || ! isset( $_POST['edd_free_download_pass2'] ) ) {
             wp_die( __( 'The username and password fields are required, please try again.', 'edd-free-downloads' ), __( 'Oops!', 'edd-free-downloads' ), array( 'back_link' => true ) );
@@ -170,7 +170,7 @@ function edd_free_download_process() {
     edd_empty_cart();
     edd_set_purchase_session( $purchase_data );
 
-    if( edd_get_option( 'edd_free_downloads_user_registration', false ) && ! is_user_logged_in() ) {
+    if( edd_get_option( 'edd_free_downloads_user_registration', false ) && ! is_user_logged_in() && ! class_exists( 'EDD_Auto_Register' ) ) {
         $account = array(
             'user_login'    => trim( $_POST['edd_free_download_username'] ),
             'user_pass'     => trim( $_POST['edd_free_download_pass'] ),
