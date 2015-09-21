@@ -113,7 +113,7 @@ function edd_free_download_process() {
     }
 
     $user_info = array(
-        'id'        => 0,
+        'id'        => $user ? $user->ID : '-1',
         'email'     => $email,
         'first_name'=> $user_first,
         'last_name' => $user_last,
