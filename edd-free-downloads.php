@@ -87,10 +87,6 @@ if( ! class_exists( 'EDD_Free_Downloads' ) ) {
         private function includes() {
             require_once EDD_FREE_DOWNLOADS_DIR . 'includes/scripts.php';
             require_once EDD_FREE_DOWNLOADS_DIR . 'includes/functions.php';
-
-            if( is_admin() ) {
-                require_once EDD_FREE_DOWNLOADS_DIR . 'includes/admin/payments/view-order-details.php';
-            }
         }
 
 
