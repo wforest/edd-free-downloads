@@ -161,12 +161,22 @@ if( ! class_exists( 'EDD_Free_Downloads' ) ) {
                     'desc'  => __( 'Should we collect the first and last name of the purchaser?', 'edd-free-downloads' ),
                     'type'  => 'checkbox'
                 ),
-                array(
-                    'id'    => 'edd_free_downloads_user_registration',
-                    'name'  => __( 'User Registration', 'edd-free-downloads' ),
-                    'desc'  => __( 'Add a registration form to the download modal.' ),
-                    'type'  => 'checkbox'
-                ),
+            );
+
+            if( ! class_exists( 'EDD_Auto_Register' ) ) {
+                $more_settings = array(
+                    array(
+                        'id'    => 'edd_free_downloads_user_registration',
+                        'name'  => __( 'User Registration', 'edd-free-downloads' ),
+                        'desc'  => __( 'Add a registration form to the download modal.' ),
+                        'type'  => 'checkbox'
+                    )
+                );
+
+                $new_settings = array_merge( $new_settings, $more_settings );
+            }
+
+            $more_settings = array(
                 array(
                     'id'    => 'edd_free_downloads_close_button',
                     'name'  => __( 'Display Close Button', 'edd-free-downloads' ),
@@ -193,7 +203,7 @@ if( ! class_exists( 'EDD_Free_Downloads' ) ) {
                 )
             );
 
-            return array_merge( $settings, $new_settings );
+            return array_merge( $settings, $new_settings, $more_settings );
         }
 
 
