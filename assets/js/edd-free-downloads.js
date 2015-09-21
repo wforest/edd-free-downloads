@@ -67,7 +67,7 @@ jQuery(document).ready(function ($) {
             }
         }
 
-        if (edd_free_downloads_vars.auto_register) {
+        if (edd_free_downloads_vars.user_registration) {
             var username, password, password2;
 
             username = $('input[name="edd_free_download_username"]');

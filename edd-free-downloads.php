@@ -162,7 +162,7 @@ if( ! class_exists( 'EDD_Free_Downloads' ) ) {
                     'type'  => 'checkbox'
                 ),
                 array(
-                    'id'    => 'edd_free_downloads_auto_register',
+                    'id'    => 'edd_free_downloads_user_registration',
                     'name'  => __( 'User Registration', 'edd-free-downloads' ),
                     'desc'  => __( 'Add a registration form to the download modal.' ),
                     'type'  => 'checkbox'
@@ -380,7 +380,7 @@ if( ! class_exists( 'EDD_Free_Downloads' ) ) {
                 $modal .= '</p>';
             }
 
-            if( edd_get_option( 'edd_free_downloads_auto_register', false ) && ! is_user_logged_in() ) {
+            if( edd_get_option( 'edd_free_downloads_user_registration', false ) && ! is_user_logged_in() ) {
                 $modal .= '<hr />';
 
                 $modal .= '<p>';
@@ -479,7 +479,7 @@ if( ! class_exists( 'EDD_Free_Downloads' ) ) {
                 $modal .= '</p>';
             }
 
-            if( edd_get_option( 'edd_free_downloads_auto_register', false ) && ! is_user_logged_in() ) {
+            if( edd_get_option( 'edd_free_downloads_user_registration', false ) && ! is_user_logged_in() ) {
                 $modal .= '<hr />';
 
                 $modal .= '<p>';
