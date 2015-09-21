@@ -164,7 +164,7 @@ if( ! class_exists( 'EDD_Free_Downloads' ) ) {
                 array(
                     'id'    => 'edd_free_downloads_auto_register',
                     'name'  => __( 'User Registration', 'edd-free-downloads' ),
-                    'desc'  => __( 'Auto register user on the site when a guest downloads a free item.' ),
+                    'desc'  => __( 'Add a registration form to the download modal.' ),
                     'type'  => 'checkbox'
                 ),
                 array(
