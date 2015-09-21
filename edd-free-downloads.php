@@ -174,6 +174,12 @@ if( ! class_exists( 'EDD_Free_Downloads' ) ) {
                     'type'  => 'checkbox'
                 ),
                 array(
+                    'id'    => 'edd_free_downloads_auto_download',
+                    'name'  => __( 'Auto Download', 'edd-free-downloads' ),
+                    'desc'  => __( 'Automatically download files rather than redirecting to the redirect URL set below. Only applies if download has a single downloadable file.', 'edd-free-downloads' ),
+                    'type'  => 'checkbox'
+                ),
+                array(
                     'id'    => 'edd_free_downloads_redirect',
                     'name'  => __( 'Custom Redirect', 'edd-free-downloads' ),
                     'desc'  => __( 'Enter a URL to redirect to on completion, or leave blank for the receipt page.', 'edd-free-downloads' ),
