@@ -157,6 +157,12 @@ if( ! class_exists( 'EDD_Free_Downloads' ) ) {
                     'desc'  => __( 'Should we collect the first and last name of the purchaser?', 'edd-free-downloads' ),
                     'type'  => 'checkbox'
                 ),
+                array(
+                    'id'    => 'edd_free_downloads_require_name',
+                    'name'  => __( 'Require Name', 'edd-free-downloads' ),
+                    'desc'  => __( 'Should we make the first and last name fields required?', 'edd-free-downloads' ),
+                    'type'  => 'checkbox'
+                )
             );
 
             if( ! class_exists( 'EDD_Auto_Register' ) ) {
@@ -359,6 +365,8 @@ if( ! class_exists( 'EDD_Free_Downloads' ) ) {
             $fname = isset( $user ) ? $user->user_firstname : '';
             $lname = isset( $user ) ? $user->user_lastname : '';
 
+            $rname = edd_get_option( 'edd_free_downloads_require_name', false ) ? ' <span class="edd-free-downloads-required">*</span>' : '';
+
             // Get EDD vars
             $color = edd_get_option( 'checkout_color', 'blue' );
             $color = ( $color == 'inherit' ) ? '' : $color;
@@ -376,12 +384,12 @@ if( ! class_exists( 'EDD_Free_Downloads' ) ) {
 
             if( edd_get_option( 'edd_free_downloads_get_name', false ) ) {
                 $modal .= '<p>';
-                $modal .= '<label for="edd_free_download_fname" class="edd-free-downloads-label">' . __( 'First Name', 'edd-free-downloads' ) . '</label>';
+                $modal .= '<label for="edd_free_download_fname" class="edd-free-downloads-label">' . __( 'First Name', 'edd-free-downloads' ) . $rname . '</label>';
                 $modal .= '<input type="text" name="edd_free_download_fname" id="edd_free_download_fname" class="edd-free-download-field" placeholder="' . __( 'First Name', 'edd-free-downloads' ) . '" value="' . $fname . '" />';
                 $modal .= '</p>';
 
                 $modal .= '<p>';
-                $modal .= '<label for="edd_free_download_lname" class="edd-free-downloads-label">' . __( 'Last Name', 'edd-free-downloads' ) . '</label>';
+                $modal .= '<label for="edd_free_download_lname" class="edd-free-downloads-label">' . __( 'Last Name', 'edd-free-downloads' ) . $rname . '</label>';
                 $modal .= '<input type="text" name="edd_free_download_lname" id="edd_free_download_lname" class="edd-free-download-field" placeholder="' . __( 'Last Name', 'edd-free-downloads' ) . '" value="' . $lname . '" />';
                 $modal .= '</p>';
             }
@@ -414,6 +422,8 @@ if( ! class_exists( 'EDD_Free_Downloads' ) ) {
             $modal .= '<div class="edd-free-download-errors">';
             $modal .= '<p id="edd-free-download-error-email-required"><strong>' . __( 'Error:', 'edd-free-downloads' ) . '</strong> ' . __( 'Please enter a valid email address', 'edd-free-downloads' ) . '</p>';
             $modal .= '<p id="edd-free-download-error-email-invalid"><strong>' . __( 'Error:', 'edd-free-downloads' ) . '</strong> ' . __( 'Invalid email', 'edd-free-downloads' ) . '</p>';
+            $modal .= '<p id="edd-free-download-error-fname-required"><strong>' . __( 'Error:', 'edd-free-downloads' ) . '</strong> ' . __( 'Please enter your first name', 'edd-free-downloads' ) . '</p>';
+            $modal .= '<p id="edd-free-download-error-lname-required"><strong>' . __( 'Error:', 'edd-free-downloads' ) . '</strong> ' . __( 'Please enter your last name', 'edd-free-downloads' ) . '</p>';
             $modal .= '<p id="edd-free-download-error-username-required"><strong>' . __( 'Error:', 'edd-free-downloads' ) . '</strong> ' . __( 'Please enter a username', 'edd-free-downloads' ) . '</p>';
             $modal .= '<p id="edd-free-download-error-password-required"><strong>' . __( 'Error:', 'edd-free-downloads' ) . '</strong> ' . __( 'Please enter a password', 'edd-free-downloads' ) . '</p>';
             $modal .= '<p id="edd-free-download-error-password2-required"><strong>' . __( 'Error:', 'edd-free-downloads' ) . '</strong> ' . __( 'Please confirm your password', 'edd-free-downloads' ) . '</p>';
@@ -458,6 +468,8 @@ if( ! class_exists( 'EDD_Free_Downloads' ) ) {
             $fname = isset( $user ) ? $user->user_firstname : '';
             $lname = isset( $user ) ? $user->user_lastname : '';
 
+            $rname = edd_get_option( 'edd_free_downloads_require_name', false ) ? ' <span class="edd-free-downloads-required">*</span>' : '';
+
             // Get EDD vars
             $color = edd_get_option( 'checkout_color', 'blue' );
             $color = ( $color == 'inherit' ) ? '' : $color;
@@ -475,12 +487,12 @@ if( ! class_exists( 'EDD_Free_Downloads' ) ) {
 
             if( edd_get_option( 'edd_free_downloads_get_name', false ) ) {
                 $modal .= '<p>';
-                $modal .= '<label for="edd_free_download_fname" class="edd-free-downloads-label">' . __( 'First Name', 'edd-free-downloads' ) . '</label>';
+                $modal .= '<label for="edd_free_download_fname" class="edd-free-downloads-label">' . __( 'First Name', 'edd-free-downloads' ) . $rname . '</label>';
                 $modal .= '<input type="text" name="edd_free_download_fname" id="edd_free_download_fname" class="edd-free-download-field" placeholder="' . __( 'First Name', 'edd-free-downloads' ) . '" value="' . $fname . '" />';
                 $modal .= '</p>';
 
                 $modal .= '<p>';
-                $modal .= '<label for="edd_free_download_lname" class="edd-free-downloads-label">' . __( 'Last Name', 'edd-free-downloads' ) . '</label>';
+                $modal .= '<label for="edd_free_download_lname" class="edd-free-downloads-label">' . __( 'Last Name', 'edd-free-downloads' ) . $rname . '</label>';
                 $modal .= '<input type="text" name="edd_free_download_lname" id="edd_free_download_lname" class="edd-free-download-field" placeholder="' . __( 'Last Name', 'edd-free-downloads' ) . '" value="' . $lname . '" />';
                 $modal .= '</p>';
             }
@@ -513,6 +525,8 @@ if( ! class_exists( 'EDD_Free_Downloads' ) ) {
             $modal .= '<div class="edd-free-download-errors">';
             $modal .= '<p id="edd-free-download-error-email-required"><strong>' . __( 'Error:', 'edd-free-downloads' ) . '</strong> ' . __( 'Please enter a valid email address', 'edd-free-downloads' ) . '</p>';
             $modal .= '<p id="edd-free-download-error-email-invalid"><strong>' . __( 'Error:', 'edd-free-downloads' ) . '</strong> ' . __( 'Invalid email', 'edd-free-downloads' ) . '</p>';
+            $modal .= '<p id="edd-free-download-error-fname-required"><strong>' . __( 'Error:', 'edd-free-downloads' ) . '</strong> ' . __( 'Please enter your first name', 'edd-free-downloads' ) . '</p>';
+            $modal .= '<p id="edd-free-download-error-lname-required"><strong>' . __( 'Error:', 'edd-free-downloads' ) . '</strong> ' . __( 'Please enter your last name', 'edd-free-downloads' ) . '</p>';
             $modal .= '<p id="edd-free-download-error-username-required"><strong>' . __( 'Error:', 'edd-free-downloads' ) . '</strong> ' . __( 'Please enter a username', 'edd-free-downloads' ) . '</p>';
             $modal .= '<p id="edd-free-download-error-password-required"><strong>' . __( 'Error:', 'edd-free-downloads' ) . '</strong> ' . __( 'Please enter a password', 'edd-free-downloads' ) . '</p>';
             $modal .= '<p id="edd-free-download-error-password2-required"><strong>' . __( 'Error:', 'edd-free-downloads' ) . '</strong> ' . __( 'Please confirm your password', 'edd-free-downloads' ) . '</p>';

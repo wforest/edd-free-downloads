@@ -67,6 +67,30 @@ jQuery(document).ready(function ($) {
             }
         }
 
+        if (edd_free_downloads_vars.require_name) {
+            var fname, lname;
+
+            fname = $('input[name="edd_free_download_fname"]');
+            lname = $('input[name="edd_free_download_lname"]');
+
+            if (fname.val() === '') {
+                $('#edd-free-download-error-fname-required').css('display', 'block');
+
+                has_error++;
+            } else {
+                $('#edd-free-download-error-fname-required').css('display', 'none');
+            }
+
+            if (lname.val() === '') {
+                $('#edd-free-download-error-lname-required').css('display', 'block');
+
+                has_error++;
+            } else {
+                $('#edd-free-download-error-lname-required').css('display', 'none');
+            }
+        }
+
+
         if (edd_free_downloads_vars.user_registration) {
             var username, password, password2;
 
