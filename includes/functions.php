@@ -139,13 +139,6 @@ function edd_free_download_process() {
 
     $date = date( 'Y-m-d H:i:s', current_time( 'timestamp' ) );
 
-    $downloads = array();
-    foreach( $download_files as $file ) {
-        $downloads[] = array(
-            'id'    => $file['attachment_id']
-        );
-    }
-
     /**
      * Gateway set to manual because manual + free lists as 'Free Purchase' in order details
      */
@@ -157,7 +150,7 @@ function edd_free_download_process() {
         'user_email'    => $email,
         'user_info'     => $user_info,
         'currency'      => edd_get_currency(),
-        'downloads'     => $downloads,
+        'downloads'     => array( $download_id ),
         'cart_details'  => $cart_details,
         'gateway'       => 'manual',
         'status'        => 'pending'
