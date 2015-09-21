@@ -180,6 +180,12 @@ if( ! class_exists( 'EDD_Free_Downloads' ) ) {
                     'type'  => 'checkbox'
                 ),
                 array(
+                    'id'    => 'edd_free_downloads_auto_download_redirect',
+                    'name'  => __( 'Redirect On Download', 'edd-free-downloads' ),
+                    'desc'  => __( 'With Auto Download enabled, users will not leave the download page. Check this to enforce redirects after download.', 'edd-free-downloads' ),
+                    'type'  => 'checkbox'
+                ),
+                array(
                     'id'    => 'edd_free_downloads_redirect',
                     'name'  => __( 'Custom Redirect', 'edd-free-downloads' ),
                     'desc'  => __( 'Enter a URL to redirect to on completion, or leave blank for the receipt page.', 'edd-free-downloads' ),

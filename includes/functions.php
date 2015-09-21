@@ -182,24 +182,53 @@ function edd_free_download_process() {
         edd_register_and_login_new_user( $account );
     }
 
-    if( edd_get_option( 'edd_free_downloads_auto_download', false ) && count( $download_files ) == 1 ) {
-        $payment_meta = edd_get_payment_meta( $payment_id );
+    $payment_meta = edd_get_payment_meta( $payment_id );
 
-        foreach( $download_files as $filekey => $file ) {
-            $download_url = edd_get_download_file_url( $payment_meta['key'], $email, $filekey, $download_id );
+    $redirect_url = edd_get_option( 'edd_free_downloads_redirect', false );
+    $redirect_url = $redirect_url ? esc_url( $redirect_url ) : edd_get_success_page_url();
+
+    // Support Conditional Success Redirects
+    if( function_exists( 'edd_csr_is_redirect_active' ) ) {
+        if( edd_csr_is_redirect_active( edd_csr_get_redirect_id( $payment_meta['cart_details'][0]['id'] ) ) ) {
+            $redirect_id = edd_csr_get_redirect_id( $payment_meta['cart_details'][0]['id'] );
+
+            $redirect_url = edd_csr_get_redirect_page_id( $redirect_id );
+            $redirect_url = get_permalink( $redirect_url );
+        }
+    }
+
+    if( edd_get_option( 'edd_free_downloads_auto_download', false ) && count( $download_files ) == 1 ) {
+        if( edd_get_option( 'edd_free_downloads_auto_download_redirect', false ) ) {
+            $redirect_url = add_query_arg( 'auto-download', $payment_id, $redirect_url );
+        } else {
+            $download_url = edd_get_download_file_url( $payment_meta['key'], $payment_meta['user_info']['email'], 0, $payment_meta['cart_details'][0]['id'] );
 
             wp_safe_redirect( $download_url );
             edd_die();
         }
     }
 
-    $redirect_url = edd_get_option( 'edd_free_downloads_redirect', false );
-    $redirect_url = $redirect_url ? esc_url( $redirect_url ) : edd_get_success_page_url();
-
     wp_redirect( apply_filters( 'edd_free_downloads_redirect', $redirect_url, $payment_id, $purchase_data ) );
     edd_die();
 }
 add_action( 'edd_free_download_process', 'edd_free_download_process' );
+
+
+/**
+ * Process auto download
+ *
+ * @since       1.0.8
+ * @return      void
+ */
+function edd_free_downloads_process_auto_download() {
+    if( isset( $_GET['auto-download'] ) ) {
+        $payment_meta = edd_get_payment_meta( $_GET['auto-download'] );
+        $download_url = edd_get_download_file_url( $payment_meta['key'], $payment_meta['user_info']['email'], 0, $payment_meta['cart_details'][0]['id'] );
+
+        echo '<script type="text/javascript">jQuery(document).ready(function($){$(location).attr("href", "' . $download_url . '")});</script>';
+    }
+}
+add_action( 'wp_head', 'edd_free_downloads_process_auto_download' );
 
 
 /**
