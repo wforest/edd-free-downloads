@@ -238,7 +238,7 @@ if( ! class_exists( 'EDD_Free_Downloads' ) ) {
 
                 if( edd_is_ajax_enabled() ) {
                     $form .= sprintf(
-                        '<div class="edd-add-to-cart %1$s" href="' . $href . '"><span>%2$s</span></div>',
+                        '<button class="edd-add-to-cart %1$s" href="' . $href . '"><span>%2$s</span></button>',
                         $download_class,
                         esc_attr( $download_label )
                     );

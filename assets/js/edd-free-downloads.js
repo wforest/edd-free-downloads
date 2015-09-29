@@ -143,6 +143,7 @@ jQuery(document).ready(function ($) {
             $('#edd_free_download_form').submit();
             newModal.close();
             $('.edd-free-download span').html('<img src="' + edd_free_downloads_vars.ajax_loader + '"/>');
+            $('.edd-free-download').attr('disabled', 'disabled');
         } else {
             $('.edd-free-download-errors').css('display', 'block');
         }
