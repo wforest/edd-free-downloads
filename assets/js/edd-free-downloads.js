@@ -21,13 +21,7 @@ jQuery(document).ready(function ($) {
             attach: $('.edd-free-download'),
             content: $('#edd-free-downloads-modal'),
             width: 350,
-            closeButton: edd_free_downloads_vars.close_button,
-            onOpen: function () {
-                $('.edd-free-download span').append('<span class="edd-free-downloads-loader"><img src="' + edd_free_downloads_vars.ajax_loader + '"/></span>');
-            },
-            onClose: function () {
-            	$('.edd-free-downloads-loader').remove();
-            }
+            closeButton: edd_free_downloads_vars.close_button
         });
 
         $('.edd-free-download').click(function (e) {
