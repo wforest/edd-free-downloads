@@ -22,6 +22,12 @@ jQuery(document).ready(function ($) {
             content: $('#edd-free-downloads-modal'),
             width: 350,
             closeButton: edd_free_downloads_vars.close_button,
+            onOpen: function () {
+                $('.edd-free-download span').append('<span class="edd-free-downloads-loader"><img src="' + edd_free_downloads_vars.ajax_loader + '"/></span>');
+            },
+            onClose: function () {
+            	$('.edd-free-downloads-loader').remove();
+            }
         });
 
         $('.edd-free-download').click(function (e) {
@@ -136,6 +142,7 @@ jQuery(document).ready(function ($) {
         if (has_error === 0) {
             $('#edd_free_download_form').submit();
             newModal.close();
+            $('.edd-free-download span').html('<img src="' + edd_free_downloads_vars.ajax_loader + '"/>');
         } else {
             $('.edd-free-download-errors').css('display', 'block');
         }

@@ -29,7 +29,8 @@ function edd_free_downloads_scripts() {
     wp_localize_script( 'edd-free-downloads', 'edd_free_downloads_vars', array(
         'close_button'      => $close_button,
         'user_registration' => ( edd_get_option( 'edd_free_downloads_user_registration', false ) && ! class_exists( 'EDD_Auto_Register' ) ) ? 'true' : 'false',
-        'require_name'      => edd_get_option( 'edd_free_downloads_require_name', false ) ? 'true' : 'false'
+        'require_name'      => edd_get_option( 'edd_free_downloads_require_name', false ) ? 'true' : 'false',
+        'ajax_loader'       => set_url_scheme( EDD_PLUGIN_URL . 'assets/images/loading.gif', 'relative' ), // Ajax loading image
     ) );
 }
 add_action( 'wp_enqueue_scripts', 'edd_free_downloads_scripts' );
