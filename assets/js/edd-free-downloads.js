@@ -136,7 +136,8 @@ jQuery(document).ready(function ($) {
         if (has_error === 0) {
             $('#edd_free_download_form').submit();
             newModal.close();
-            $('.edd-free-download span').html('<img src="' + edd_free_downloads_vars.ajax_loader + '"/>');
+            $('.edd-free-download span').html(edd_free_downloads_vars.download_loading);
+            $('.edd-free-download span').append('<i class="edd-icon-spinner edd-icon-spin"></i>');
             $('.edd-free-download').attr('disabled', 'disabled');
         } else {
             $('.edd-free-download-errors').css('display', 'block');
