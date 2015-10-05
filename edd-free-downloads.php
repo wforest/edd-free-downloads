@@ -432,8 +432,8 @@ if( ! class_exists( 'EDD_Free_Downloads' ) ) {
 
             $modal .= '<input type="hidden" name="edd_action" value="free_download_process" />';
             $modal .= '<input type="hidden" name="edd_free_download_id" value="' . $wp_query->query_vars['download_id'] . '" />';
-            $modal .= '<input type="button" name="edd_free_download_submit" class="edd-free-download-submit edd-submit button ' . $color . '" value="' . $label . '" />';
-            $modal .= '<input type="button" name="edd_free_download_cancel" class="edd-free-download-cancel edd-submit button ' . $color . '" value="' . __( 'Cancel', 'edd-free-downloads' ) . '" />';
+            $modal .= '<button name="edd_free_download_submit" class="edd-free-download-submit edd-submit button ' . $color . '"><span>' . $label . '</span></button>';
+            $modal .= '<button name="edd_free_download_cancel" class="edd-free-download-cancel edd-submit button ' . $color . '"><span>' . __( 'Cancel', 'edd-free-downloads' ) . '</span></button>';
 
             $modal .= '</form>';
             $modal .= '</div>';
@@ -535,7 +535,7 @@ if( ! class_exists( 'EDD_Free_Downloads' ) ) {
 
             $modal .= '<input type="hidden" name="edd_action" value="free_download_process" />';
             $modal .= '<input type="hidden" name="edd_free_download_id" />';
-            $modal .= '<input type="button" name="edd_free_download_submit" class="edd-free-download-submit edd-submit button ' . $color . '" value="' . $label . '" />';
+            $modal .= '<button name="edd_free_download_submit" class="edd-free-download-submit edd-submit button ' . $color . '"><span>' . $label . '</span></button>';
 
             $modal .= '</form>';
             $modal .= '</div>';
