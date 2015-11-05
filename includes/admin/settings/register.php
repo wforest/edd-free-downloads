@@ -159,10 +159,17 @@ function edd_free_downloads_newsletter_settings( $settings ) {
 	if( class_exists( 'EDD_GetResponse' ) || class_exists( 'EDD_MailChimp' ) || class_exists( 'EDD_Aweber' ) || class_exists( 'EDD_MailPoet' ) || class_exists( 'EDD_Sendy' ) ) {
 		$newsletter_settings = array(
 			array(
-				'id'    => 'edd_free_downloads_newsletter_opt_in',
+				'id'    => 'edd_free_downloads_newsletter_optin',
 				'name'  => __( 'Display Opt-In', 'edd-free-downloads' ),
 				'desc'  => __( 'Display a newsletter opt-in checkbox in the download window.', 'edd-free-downloads' ),
 				'type'  => 'checkbox'
+			),
+			array(
+				'id'    => 'edd_free_downloads_newsletter_optin_label',
+				'name'  => __( 'Opt-In Field Label', 'edd-free-downloads' ),
+				'desc'  => __( 'Specify the text to display for the opt-in field label.', 'edd-free-downloads' ),
+				'type'  => 'text',
+				'std'   => __( 'Subscribe to our newsletter', 'edd-free-downloads' )
 			)
 		);
 

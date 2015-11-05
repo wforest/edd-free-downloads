@@ -134,6 +134,13 @@ function edd_free_downloads_display_redirect() {
 		$modal .= '</p>';
 	}
 
+	if( edd_get_option( 'edd_free_downloads_newsletter_optin', false ) ) {
+		$modal .= '<p>';
+		$modal .= '<input type="checkbox" name="edd_free_download_optin" id="edd_free_download_optin" checked="checked" />';
+		$modal .= '<label for="edd_free_download_optin" class="edd-free-downloads-checkbox-label">' . edd_get_option( 'edd_free_downloads_newsletter_optin_label', __( 'Subscribe to our newsletter', 'edd-free-downloads' ) ) . '</label>';
+		$modal .= '</p>';
+	}
+
 	// Honeypot
 	$modal .= '<input type="hidden" name="edd_free_download_check" value="" />';
 
@@ -234,6 +241,13 @@ function edd_free_downloads_display_inline() {
 		$modal .= '<p>';
 		$modal .= '<label for="edd_free_download_pass2" class="edd-free-downloads-label">' . __( 'Confirm Password', 'edd-free-downloads' ) . ' <span class="edd-free-downloads-required">*</span></label>';
 		$modal .= '<input type="password" name="edd_free_download_pass2" id="edd_free_download_pass2" class="edd-free-download-field" />';
+		$modal .= '</p>';
+	}
+
+	if( edd_get_option( 'edd_free_downloads_newsletter_optin', false ) ) {
+		$modal .= '<p>';
+		$modal .= '<input type="checkbox" name="edd_free_download_optin" id="edd_free_download_optin" checked="checked" />';
+		$modal .= '<label for="edd_free_download_optin" class="edd-free-downloads-checkbox-label">' . edd_get_option( 'edd_free_downloads_newsletter_optin_label', __( 'Subscribe to our newsletter', 'edd-free-downloads' ) ) . '</label>';
 		$modal .= '</p>';
 	}
 
