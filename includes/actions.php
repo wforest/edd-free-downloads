@@ -470,3 +470,46 @@ function edd_free_downloads_process_auto_download() {
 	}
 }
 add_action( 'wp_head', 'edd_free_downloads_process_auto_download' );
+
+
+/**
+ * Handle newsletter opt-in
+ *
+ * @since       1.1.0
+ * @return      void
+ */
+function edd_free_downloads_remove_optin() {
+	if( ! isset( $_POST['edd_free_download_email'] ) ) {
+		return;
+	}
+
+	// Are we allowing opt-outs?
+	if( edd_get_option( 'edd_free_downloads_newsletter_optin', false ) && ! isset( $_POST['edd_free_download_optin'] ) ) {
+		// Opt-out for MailChimp
+		if( class_exists( 'EDD_MailChimp' ) ) {
+			global $edd_mc;
+			remove_action( 'edd_complete_download_purchase', array( $edd_mc, 'completed_download_purchase_signup' ) );
+		}
+
+		// Opt-out for GetResponse
+		if( class_exists( 'EDD_GetResponse' ) ) {
+			remove_action( 'edd_complete_download_purchase', array( EDD_GetResponse_load()->newsletter, 'completed_download_purchase_signup' ) );
+		}
+
+		// Opt-out for Aweber
+		if( class_exists( 'EDD_Aweber' ) ) {
+			global $edd_aweber;
+			remove_action( 'edd_complete_download_purchase', array( $edd_aweber, 'completed_download_purchase_signup' ) );
+		}
+
+		// Opt-out for MailPoet
+		if( class_exists( 'EDD_MailPoet' ) ) {
+			global $edd_mp;
+			remove_action( 'edd_complete_download_purchase', array( $edd_mp, 'completed_download_purchase_signup' ) );
+		}
+
+		// Opt-out for Sendy
+		if( class_exists( 'EDD_Sendy' ) ) {}
+	}
+}
+add_action( 'edd_update_payment_status', 'edd_free_downloads_remove_optin', -10 );
