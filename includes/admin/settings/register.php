@@ -146,3 +146,29 @@ function edd_free_downloads_auto_register_settings( $settings ) {
 	return $settings;
 }
 add_filter( 'edd_free_downloads_misc_settings', 'edd_free_downloads_auto_register_settings' );
+
+
+/**
+ * Add newsletter opt-out checkbox if relevant
+ *
+ * @since       1.1.0
+ * @param       array $settings The existing settings
+ * @return      array $settings The updated settings
+ */
+function edd_free_downloads_newsletter_settings( $settings ) {
+	if( class_exists( 'EDD_GetResponse' ) || class_exists( 'EDD_MailChimp' ) || class_exists( 'EDD_Aweber' ) || class_exists( 'EDD_MailPoet' ) || class_exists( 'EDD_Sendy' ) ) {
+		$newsletter_settings = array(
+			array(
+				'id'    => 'edd_free_downloads_newsletter_opt_in',
+				'name'  => __( 'Display Opt-In', 'edd-free-downloads' ),
+				'desc'  => __( 'Display a newsletter opt-in checkbox in the download window.', 'edd-free-downloads' ),
+				'type'  => 'checkbox'
+			)
+		);
+
+		$settings = array_merge( $settings, $newsletter_settings );
+	}
+
+	return $settings;
+}
+add_filter( 'edd_free_downloads_integration_settings', 'edd_free_downloads_newsletter_settings' );
