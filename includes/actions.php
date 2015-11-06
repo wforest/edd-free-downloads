@@ -296,7 +296,7 @@ function edd_free_download_process() {
 		wp_die( __( 'Cheatin&#8217; huh?', 'edd-free-downloads' ), __( 'Oops!', 'edd-free-downloads' ) );
 	}
 
-	if ( ! isset( $_POST['edd_free_download_email'] ) || ! is_email( $_POST['edd_free_download_email'] ) ) {
+	if ( ! isset( $_POST['edd_free_download_email'] ) ) {
 		wp_die( __( 'An internal error has occurred, please try again or contact support.', 'edd-free-downloads' ), __( 'Oops!', 'edd-free-downloads' ), array( 'back_link' => true ) );
 	}
 
