@@ -135,7 +135,7 @@ function edd_free_downloads_display_redirect() {
 	}
 
 	if( edd_get_option( 'edd_free_downloads_newsletter_optin', false ) ) {
-		if( class_exists( 'EDD_GetResponse' ) || class_exists( 'EDD_MailChimp' ) || class_exists( 'EDD_Aweber' ) || class_exists( 'EDD_MailPoet' ) || class_exists( 'EDD_Sendy' ) ) {
+		if( class_exists( 'EDD_GetResponse' ) || class_exists( 'EDD_MailChimp' ) || class_exists( 'EDD_Aweber' ) || class_exists( 'EDD_MailPoet' ) || class_exists( 'EDD_Sendy' ) || class_exists( 'EDD_ConvertKit' ) ) {
 			$modal .= '<p>';
 			$modal .= '<input type="checkbox" name="edd_free_download_optin" id="edd_free_download_optin" checked="checked" />';
 			$modal .= '<label for="edd_free_download_optin" class="edd-free-downloads-checkbox-label">' . edd_get_option( 'edd_free_downloads_newsletter_optin_label', __( 'Subscribe to our newsletter', 'edd-free-downloads' ) ) . '</label>';
@@ -247,7 +247,7 @@ function edd_free_downloads_display_inline() {
 	}
 
 	if( edd_get_option( 'edd_free_downloads_newsletter_optin', false ) ) {
-		if( class_exists( 'EDD_GetResponse' ) || class_exists( 'EDD_MailChimp' ) || class_exists( 'EDD_Aweber' ) || class_exists( 'EDD_MailPoet' ) || class_exists( 'EDD_Sendy' ) ) {
+		if( class_exists( 'EDD_GetResponse' ) || class_exists( 'EDD_MailChimp' ) || class_exists( 'EDD_Aweber' ) || class_exists( 'EDD_MailPoet' ) || class_exists( 'EDD_Sendy' ) || class_exists( 'EDD_ConvertKit' ) ) {
 			$modal .= '<p>';
 			$modal .= '<input type="checkbox" name="edd_free_download_optin" id="edd_free_download_optin" checked="checked" />';
 			$modal .= '<label for="edd_free_download_optin" class="edd-free-downloads-checkbox-label">' . edd_get_option( 'edd_free_downloads_newsletter_optin_label', __( 'Subscribe to our newsletter', 'edd-free-downloads' ) ) . '</label>';
@@ -538,7 +538,16 @@ function edd_free_downloads_remove_optin() {
 		}
 
 		// Opt-out for Sendy
-		if( class_exists( 'EDD_Sendy' ) ) {}
+		if( class_exists( 'EDD_Sendy' ) ) {
+			global $edd_sendy;
+			remove_action( 'edd_complete_download_purchase', array( $edd_sendy, 'completed_download_purchase_signup' ) );
+		}
+
+		// Opt-out for Convert Kit
+		if( class_exists( 'EDD_ConvertKit' ) ) {
+			global $edd_convert_kit;
+			remove_action( 'edd_complete_download_purchase', array( $edd_convert_kit, 'completed_download_purchase_signup' ) );
+		}
 	}
 }
 add_action( 'edd_update_payment_status', 'edd_free_downloads_remove_optin', -10 );
