@@ -38,18 +38,18 @@ function edd_free_downloads_get_form_fields() {
  *
  * @since       1.0.0
  * @param       int $download_id The ID to check
- * @return      bool $ret True if we should use the modal, false otherwise
+ * @return      bool $use_modal True if we should use the modal, false otherwise
  */
 function edd_free_downloads_use_modal( $download_id = false ) {
-	$ret = false;
+	$use_modal = false;
 
 	if( $download_id && ! edd_has_variable_prices( $download_id ) && ! edd_is_bundled_product( $download_id ) ) {
 		$price = floatval( edd_get_lowest_price_option( $download_id ) );
 
 		if( $price == 0 ) {
-			$ret = true;
+			$use_modal = true;
 		}
 	}
 
-	return $ret;
+	return $use_modal;
 }
