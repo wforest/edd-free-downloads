@@ -94,6 +94,12 @@ function edd_free_downloads_add_settings( $settings ) {
 			'name'  => __( 'Custom Redirect', 'edd-free-downloads' ),
 			'desc'  => __( 'Enter a URL to redirect to on completion, or leave blank for the receipt page.', 'edd-free-downloads' ),
 			'type'  => 'text'
+		),
+		array(
+			'id'    => 'edd_free_downloads_disable_emails',
+			'name'  => __( 'Disable Emails', 'edd-free-downloads' ),
+			'desc'  => __( 'Check to disable purchase emails for free products.', 'edd-free-downloads' ),
+			'type'  => 'checkbox'
 		)
 	) );
 

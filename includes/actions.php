@@ -430,6 +430,11 @@ function edd_free_download_process() {
 
 	$payment_id = edd_insert_payment( $purchase_data );
 
+	// Disable purchase emails
+	if( edd_get_option( 'edd_free_downloads_disable_emails', false ) ) {
+		remove_action( 'edd_complete_purchase', 'edd_trigger_purchase_receipt', 999 );
+	}
+
 	edd_update_payment_status( $payment_id, 'publish' );
 	edd_insert_payment_note( $payment_id, __( 'Purchased through EDD Free Downloads', 'edd-free-downloads' ) );
 	edd_empty_cart();
