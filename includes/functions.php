@@ -53,3 +53,35 @@ function edd_free_downloads_use_modal( $download_id = false ) {
 
 	return $use_modal;
 }
+
+
+/**
+ * Check for supported newsletter plugins
+ *
+ * @since       1.1.0
+ * @return      bool $plugin_exists True if a supported plugin is active, false otherwise
+ */
+function edd_free_downloads_has_newsletter_plugin() {
+	$plugin_exists = false;
+
+	/**
+	 * The $supported_plugins array is an array of
+	 * plugin CLASSES which use the EDD_Newsletter class
+	 */
+	$supported_plugins = apply_filters( 'edd_free_downloads_supported_plugins', array(
+		'EDD_GetResponse',
+		'EDD_MailChimp',
+		'EDD_Aweber',
+		'EDD_MailPoet',
+		'EDD_Sendy',
+		'EDD_ConvertKit'
+	) );
+
+	foreach( $supported_plugins as $plugin_class ) {
+		if( class_exists( $plugin_class ) ) {
+			$plugin_exists = true;
+		}
+	}
+
+	return $plugin_exists;
+}

@@ -134,13 +134,11 @@ function edd_free_downloads_display_redirect() {
 		$modal .= '</p>';
 	}
 
-	if( edd_get_option( 'edd_free_downloads_newsletter_optin', false ) ) {
-		if( class_exists( 'EDD_GetResponse' ) || class_exists( 'EDD_MailChimp' ) || class_exists( 'EDD_Aweber' ) || class_exists( 'EDD_MailPoet' ) || class_exists( 'EDD_Sendy' ) || class_exists( 'EDD_ConvertKit' ) ) {
-			$modal .= '<p>';
-			$modal .= '<input type="checkbox" name="edd_free_download_optin" id="edd_free_download_optin" checked="checked" />';
-			$modal .= '<label for="edd_free_download_optin" class="edd-free-downloads-checkbox-label">' . edd_get_option( 'edd_free_downloads_newsletter_optin_label', __( 'Subscribe to our newsletter', 'edd-free-downloads' ) ) . '</label>';
-			$modal .= '</p>';
-		}
+	if( edd_get_option( 'edd_free_downloads_newsletter_optin', false ) && edd_free_downloads_has_newsletter_plugin() ) {
+		$modal .= '<p>';
+		$modal .= '<input type="checkbox" name="edd_free_download_optin" id="edd_free_download_optin" checked="checked" />';
+		$modal .= '<label for="edd_free_download_optin" class="edd-free-downloads-checkbox-label">' . edd_get_option( 'edd_free_downloads_newsletter_optin_label', __( 'Subscribe to our newsletter', 'edd-free-downloads' ) ) . '</label>';
+		$modal .= '</p>';
 	}
 
 	// Honeypot
@@ -246,13 +244,11 @@ function edd_free_downloads_display_inline() {
 		$modal .= '</p>';
 	}
 
-	if( edd_get_option( 'edd_free_downloads_newsletter_optin', false ) ) {
-		if( class_exists( 'EDD_GetResponse' ) || class_exists( 'EDD_MailChimp' ) || class_exists( 'EDD_Aweber' ) || class_exists( 'EDD_MailPoet' ) || class_exists( 'EDD_Sendy' ) || class_exists( 'EDD_ConvertKit' ) ) {
-			$modal .= '<p>';
-			$modal .= '<input type="checkbox" name="edd_free_download_optin" id="edd_free_download_optin" checked="checked" />';
-			$modal .= '<label for="edd_free_download_optin" class="edd-free-downloads-checkbox-label">' . edd_get_option( 'edd_free_downloads_newsletter_optin_label', __( 'Subscribe to our newsletter', 'edd-free-downloads' ) ) . '</label>';
-			$modal .= '</p>';
-		}
+	if( edd_get_option( 'edd_free_downloads_newsletter_optin', false ) && edd_free_downloads_has_newsletter_plugin() ) {
+		$modal .= '<p>';
+		$modal .= '<input type="checkbox" name="edd_free_download_optin" id="edd_free_download_optin" checked="checked" />';
+		$modal .= '<label for="edd_free_download_optin" class="edd-free-downloads-checkbox-label">' . edd_get_option( 'edd_free_downloads_newsletter_optin_label', __( 'Subscribe to our newsletter', 'edd-free-downloads' ) ) . '</label>';
+		$modal .= '</p>';
 	}
 
 	// Honeypot
