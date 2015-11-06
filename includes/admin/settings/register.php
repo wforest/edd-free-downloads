@@ -42,6 +42,13 @@ function edd_free_downloads_add_settings( $settings ) {
 			'std'   => __( 'Download Now', 'edd-free-downloads' )
 		),
 		array(
+			'id'    => 'edd_free_downloads_modal_button_label',
+			'name'  => __( 'Modal Button Label', 'edd-free-downloads' ),
+			'desc'  => __( 'Specify the label for the download button in the modal.', 'edd-free-downloads' ),
+			'type'  => 'text',
+			'std'   => __( 'Download Now', 'edd-free-downloads' )
+		),
+		array(
 			'id'    => 'edd_free_downloads_close_button',
 			'name'  => __( 'Display Close Button', 'edd-free-downloads' ),
 			'desc'  => __( 'Should we display a close button on the email collection form?', 'edd-free-downloads' ),
