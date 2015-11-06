@@ -330,7 +330,7 @@ function edd_free_download_process() {
 		}
 	}
 
-	$email       = strip_tags( trim( $_POST['edd_free_download_email'] ) );
+	$email       = sanitize_email( trim( $_POST['edd_free_download_email'] ) );
 	$user        = get_user_by( 'email', $email );
 
 	// No banned emails please!
