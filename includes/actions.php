@@ -333,6 +333,10 @@ function edd_free_download_process() {
 	$email       = sanitize_email( trim( $_POST['edd_free_download_email'] ) );
 	$user        = get_user_by( 'email', $email );
 
+	if( ! is_email( $_POST['edd_free_download_email'] ) || ! filter_var( $email, FILTER_VALIDATE_EMAIL ) ) {
+		wp_die( __( 'An internal error has occurred, please try again or contact support.', 'edd-free-downloads' ), __( 'Oops!', 'edd-free-downloads' ) );
+	}
+
 	// No banned emails please!
 	if( edd_is_email_banned( $email ) ) {
 		wp_die( __( 'An internal error has occurred, please try again or contact support.', 'edd-free-downloads' ), __( 'Oops!', 'edd-free-downloads' ) );
