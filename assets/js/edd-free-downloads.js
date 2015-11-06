@@ -21,6 +21,7 @@ jQuery(document).ready(function ($) {
             attach: $('.edd-free-download'),
             content: $('#edd-free-downloads-modal'),
             width: 350,
+            delayClose: 3000,
             closeButton: edd_free_downloads_vars.close_button
         });
 
@@ -138,6 +139,7 @@ jQuery(document).ready(function ($) {
             $('.edd-free-download-submit span').html(edd_free_downloads_vars.download_loading);
             $('.edd-free-download-submit span').append('<i class="edd-icon-spinner edd-icon-spin"></i>');
             $('.edd-free-download-submit').attr('disabled', 'disabled');
+            newModal.close();
         } else {
             $('.edd-free-download-errors').css('display', 'block');
         }
