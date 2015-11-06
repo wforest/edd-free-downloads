@@ -91,7 +91,7 @@ function edd_free_downloads_display_redirect() {
 	// Get EDD vars
 	$color = edd_get_option( 'checkout_color', 'blue' );
 	$color = ( $color == 'inherit' ) ? '' : $color;
-	$label = edd_get_option( 'edd_free_downloads_button_label', __( 'Download Now', 'edd-free-downloads' ) );
+	$label = edd_get_option( 'edd_free_downloads_modal_button_label', __( 'Download Now', 'edd-free-downloads' ) );
 
 	// Build the modal
 	$modal  = '<div id="edd-free-downloads-modal" class="edd-free-downloads-mobile">';
@@ -203,7 +203,7 @@ function edd_free_downloads_display_inline() {
 	// Get EDD vars
 	$color = edd_get_option( 'checkout_color', 'blue' );
 	$color = ( $color == 'inherit' ) ? '' : $color;
-	$label = edd_get_option( 'edd_free_downloads_button_label', __( 'Download Now', 'edd-free-downloads' ) );
+	$label = edd_get_option( 'edd_free_downloads_modal_button_label', __( 'Download Now', 'edd-free-downloads' ) );
 
 	// Build the modal
 	$modal  = '<div id="edd-free-downloads-modal" class="edd-free-downloads-hidden">';
