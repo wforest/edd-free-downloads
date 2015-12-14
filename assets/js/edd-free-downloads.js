@@ -46,7 +46,7 @@ jQuery(document).ready(function ($) {
         }
     });
 
-    $('.edd-free-download-submit').click(function () {
+    $('.edd-free-download-submit').click(function (e) {
         var email, regex, has_error = 0;
 
         email = $('input[name="edd_free_download_email"]');
@@ -142,6 +142,7 @@ jQuery(document).ready(function ($) {
             newModal.close();
         } else {
             $('.edd-free-download-errors').css('display', 'block');
+            e.preventDefault();
         }
     });
 });
