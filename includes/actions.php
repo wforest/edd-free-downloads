@@ -77,12 +77,9 @@ function edd_free_downloads_display_redirect() {
 		return;
 	}
 
-	$disabled = 'disabled';
-
 	// Pull user data if available
 	if( is_user_logged_in() ) {
 		$user = new WP_User( get_current_user_id() );
-		$disabled = '';
 	}
 
 	$email = isset( $user ) ? $user->user_email : '';
@@ -163,7 +160,7 @@ function edd_free_downloads_display_redirect() {
 
 	$modal .= '<input type="hidden" name="edd_action" value="free_download_process" />';
 	$modal .= '<input type="hidden" name="edd_free_download_id" value="' . $wp_query->query_vars['download_id'] . '" />';
-	$modal .= '<button ' . $disabled . ' name="edd_free_download_submit" class="edd-free-download-submit edd-submit button ' . $color . '"><span>' . $label . '</span></button>';
+	$modal .= '<button name="edd_free_download_submit" class="edd-free-download-submit edd-submit button ' . $color . '"><span>' . $label . '</span></button>';
 	$modal .= '<button name="edd_free_download_cancel" class="edd-free-download-cancel edd-submit button ' . $color . '"><span>' . __( 'Cancel', 'edd-free-downloads' ) . '</span></button>';
 
 	$modal .= '</form>';
@@ -190,13 +187,9 @@ add_action( 'wp_head', 'edd_free_downloads_display_redirect' );
  * @return      void
  */
 function edd_free_downloads_display_inline() {
-
-	$disabled = 'disabled';
-
 	// Pull user data if available
 	if( is_user_logged_in() ) {
 		$user = new WP_User( get_current_user_id() );
-		$disabled = '';
 	}
 
 	$email = isset( $user ) ? $user->user_email : '';
@@ -277,7 +270,7 @@ function edd_free_downloads_display_inline() {
 
 	$modal .= '<input type="hidden" name="edd_action" value="free_download_process" />';
 	$modal .= '<input type="hidden" name="edd_free_download_id" />';
-	$modal .= '<button ' . $disabled . '  name="edd_free_download_submit" class="edd-free-download-submit edd-submit button ' . $color . '"><span>' . $label . '</span></button>';
+	$modal .= '<button name="edd_free_download_submit" class="edd-free-download-submit edd-submit button ' . $color . '"><span>' . $label . '</span></button>';
 
 	$modal .= '</form>';
 	$modal .= '</div>';
