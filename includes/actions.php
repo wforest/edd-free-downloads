@@ -467,7 +467,9 @@ function edd_free_download_process() {
 		if( edd_get_option( 'edd_free_downloads_auto_download_redirect', false ) ) {
 			$redirect_url = add_query_arg( 'auto-download', $payment_id, $redirect_url );
 		} else {
-			$download_url = edd_get_download_file_url( $payment_meta['key'], $payment_meta['user_info']['email'], 0, $payment_meta['cart_details'][0]['id'] );
+			$download_files = edd_get_download_files( $payment_meta['cart_details'][0]['id'] );
+			$download_index = array_keys( $download_files );
+			$download_url = edd_get_download_file_url( $payment_meta['key'], $payment_meta['user_info']['email'], $download_index[0], $payment_meta['cart_details'][0]['id'] );
 
 			wp_safe_redirect( $download_url );
 			edd_die();
