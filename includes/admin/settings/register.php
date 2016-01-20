@@ -39,51 +39,64 @@ function edd_free_downloads_add_settings( $settings ) {
 	if( EDD_VERSION >= '2.5' ) {
 		$display_settings = apply_filters( 'edd_free_downloads_display_settings', array(
 			array(
-				'id'    => 'edd_free_downloads_display_settings',
-				'name'  => '<strong>' . __( 'Display Settings', 'edd-free-downloads' ) . '</strong>',
-				'desc'  => '',
-				'type'  => 'header'
+				'id'   => 'edd_free_downloads_display_settings',
+				'name' => '<strong>' . __( 'Display Settings', 'edd-free-downloads' ) . '</strong>',
+				'desc' => '',
+				'type' => 'header'
 			),
 			array(
-				'id'    => 'edd_free_downloads_button_label',
-				'name'  => __( 'Button Label', 'edd-free-downloads' ),
-				'desc'  => __( 'Specify the label for the download button.', 'edd-free-downloads' ),
-				'type'  => 'text',
-				'std'   => __( 'Download Now', 'edd-free-downloads' )
+				'id'   => 'edd_free_downloads_button_label',
+				'name' => __( 'Button Label', 'edd-free-downloads' ),
+				'desc' => __( 'Specify the label for the download button.', 'edd-free-downloads' ),
+				'type' => 'text',
+				'std'  => __( 'Download Now', 'edd-free-downloads' )
 			),
 			array(
-				'id'    => 'edd_free_downloads_modal_button_label',
-				'name'  => __( 'Modal Button Label', 'edd-free-downloads' ),
-				'desc'  => __( 'Specify the label for the download button in the modal.', 'edd-free-downloads' ),
-				'type'  => 'text',
-				'std'   => __( 'Download Now', 'edd-free-downloads' )
+				'id'   => 'edd_free_downloads_modal_button_label',
+				'name' => __( 'Modal Button Label', 'edd-free-downloads' ),
+				'desc' => __( 'Specify the label for the download button in the modal.', 'edd-free-downloads' ),
+				'type' => 'text',
+				'std'  => __( 'Download Now', 'edd-free-downloads' )
 			),
 			array(
-				'id'    => 'edd_free_downloads_close_button',
-				'name'  => __( 'Display Close Button', 'edd-free-downloads' ),
-				'desc'  => __( 'Should we display a close button on the email collection form?', 'edd-free-downloads' ),
-				'type'  => 'checkbox'
+				'id'   => 'edd_free_downloads_close_button',
+				'name' => __( 'Display Close Button', 'edd-free-downloads' ),
+				'desc' => __( 'Should we display a close button on the email collection form?', 'edd-free-downloads' ),
+				'type' => 'checkbox'
 			),
 		) );
 
 		$fields_settings = apply_filters( 'edd_free_downloads_fields_settings', array(
 			array(
-				'id'    => 'edd_free_downloads_fields_settings',
-				'name'  => '<strong>' . __( 'Fields Settings', 'edd-free-downloads' ) . '</strong>',
-				'desc'  => '',
-				'type'  => 'header'
+				'id'   => 'edd_free_downloads_fields_settings',
+				'name' => '<strong>' . __( 'Fields Settings', 'edd-free-downloads' ) . '</strong>',
+				'desc' => '',
+				'type' => 'header'
 			),
 			array(
-				'id'    => 'edd_free_downloads_get_name',
-				'name'  => __( 'Collect Name', 'edd-free-downloads' ),
-				'desc'  => __( 'Should we collect the first and last name of the purchaser?', 'edd-free-downloads' ),
-				'type'  => 'checkbox'
+				'id'   => 'edd_free_downloads_get_name',
+				'name' => __( 'Collect Name', 'edd-free-downloads' ),
+				'desc' => __( 'Should we collect the first and last name of the purchaser?', 'edd-free-downloads' ),
+				'type' => 'checkbox'
 			),
 			array(
-				'id'    => 'edd_free_downloads_require_name',
-				'name'  => __( 'Require Name', 'edd-free-downloads' ),
-				'desc'  => __( 'Should we make the first and last name fields required?', 'edd-free-downloads' ),
-				'type'  => 'checkbox'
+				'id'   => 'edd_free_downloads_require_name',
+				'name' => __( 'Require Name', 'edd-free-downloads' ),
+				'desc' => __( 'Should we make the first and last name fields required?', 'edd-free-downloads' ),
+				'type' => 'checkbox'
+			),
+			array(
+				'id'   => 'edd_free_downloads_notes_title',
+				'name' => __( 'Notes Field Title', 'edd-free-downloads' ),
+				'desc' => __( 'Enter the title to display for the notes field, or leave blank for none.', 'edd-free-downloads' ),
+				'type' => 'text',
+				'std'  => __( 'Notes', 'edd-free-downloads' )
+			),
+			array(
+				'id'   => 'edd_free_downlaods_notes',
+				'name' => __( 'Notes', 'edd-free-downloads' ),
+				'desc' => __( 'Enter any notes to display in the Free Downloads modal.', 'edd-free-downloads' ),
+				'type' => 'textarea'
 			)
 		) );
 
@@ -209,6 +222,19 @@ function edd_free_downloads_add_settings_pre25( $settings ) {
 				'name'  => __( 'Require Name', 'edd-free-downloads' ),
 				'desc'  => __( 'Should we make the first and last name fields required?', 'edd-free-downloads' ),
 				'type'  => 'checkbox'
+			),
+			array(
+				'id'   => 'edd_free_downloads_notes_title',
+				'name' => __( 'Notes Field Title', 'edd-free-downloads' ),
+				'desc' => __( 'Enter the title to display for the notes field, or leave blank for none.', 'edd-free-downloads' ),
+				'type' => 'text',
+				'std'  => __( 'Notes', 'edd-free-downloads' )
+			),
+			array(
+				'id'   => 'edd_free_downlaods_notes',
+				'name' => __( 'Notes', 'edd-free-downloads' ),
+				'desc' => __( 'Enter any notes to display in the Free Downloads modal.', 'edd-free-downloads' ),
+				'type' => 'textarea'
 			)
 		) );
 
