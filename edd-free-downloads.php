@@ -94,6 +94,7 @@ if( ! class_exists( 'EDD_Free_Downloads' ) ) {
 
 			if( is_admin() ) {
 				require_once EDD_FREE_DOWNLOADS_DIR . 'includes/admin/settings/register.php';
+				require_once EDD_FREE_DOWNLOADS_DIR . 'includes/admin/downloads/meta-boxes.php';
 			}
 		}
 
