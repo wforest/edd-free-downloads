@@ -5,6 +5,45 @@ jQuery(document).ready(function ($) {
 
     var newModal, formURL;
 
+    if ($('input[name="edd_options[price_id][]"]').length > 0) {
+    	var value, classes, buttonPrefix, buttonSuffix, href;
+
+        classes = $('.edd_purchase_submit_wrapper').find('a.edd-add-to-cart').attr('class');
+        classes = classes.replace('edd-add-to-cart', '');
+
+        if (isMobile.any) {
+            href = edd_free_downloads_vars.mobile_url;
+        } else {
+            href = '#edd-free-download-modal';
+        }
+
+        if (edd_free_downloads_vars.has_ajax) {
+            buttonPrefix = '<button class="edd-free-downloads-variable edd-free-download ' + classes + '" href="' + href + '"><span>';
+            buttonSuffix = '</span></button>';
+        } else {
+            buttonPrefix = '<input type="submit" class="edd-free-downloads-variable edd-free-download ' + classes + '" name="edd_purchase_download" value="';
+            buttonSuffix = '" href="' + href + '" />';
+        }
+
+        $('.edd_purchase_submit_wrapper').after(buttonPrefix + edd_free_downloads_vars.download_label + buttonSuffix);
+
+        $('input[name="edd_options[price_id][]"]').change(function () {
+            value = $('input[name="edd_options[price_id][]"]:checked').attr('data-price');
+
+            if (value == '0.00') {
+                $('.edd_purchase_submit_wrapper').css('display', 'none');
+                $('.edd-free-downloads-variable').css('display', 'inline-block');
+            } else {
+                $('.edd_purchase_submit_wrapper').css('display', 'inline-block');
+                $('.edd-free-downloads-variable').css('display', 'none');
+            }
+        }).change();
+
+        $('.edd-free-downloads-variable').click(function (e) {
+        	e.preventDefault();
+        });
+    }
+
     if (isMobile.any) {
         $('.edd-free-download').click(function (e) {
             e.preventDefault();
@@ -30,6 +69,11 @@ jQuery(document).ready(function ($) {
 
             var download_id = $(this).closest('form').attr('id').replace('edd_purchase_', '');
             $('input[name="edd_free_download_id"]').val(download_id);
+
+            if ($('input[name="edd_options[price_id][]"]').length > 0) {
+            	var price_id = $('input[name="edd_options[price_id][]"]:checked').val();
+            	$('input[name="edd_free_download_price_id"]').val(price_id);
+            }
         });
 
         // Select email field on click

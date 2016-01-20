@@ -49,6 +49,12 @@ function edd_free_downloads_use_modal( $download_id = false ) {
 		if( $price == 0 ) {
 			$use_modal = true;
 		}
+	} elseif( edd_has_variable_prices( $download_id ) ) {
+		$price = floatval( edd_get_lowest_price_option( $download_id ) );
+
+		if( $price == 0 ) {
+			$use_modal = true;
+		}
 	}
 
 	return $use_modal;
