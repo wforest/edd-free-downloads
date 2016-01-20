@@ -141,6 +141,20 @@ function edd_free_downloads_display_redirect() {
 		$modal .= '</p>';
 	}
 
+	// Notes
+	if( edd_get_option( 'edd_free_downlaods_notes', '' ) !== '' ) {
+		$title = edd_get_option( 'edd_free_downloads_notes_title', '' );
+		$notes = edd_get_option( 'edd_free_downlaods_notes', '' );
+
+		$modal .= '<hr />';
+
+		if( $title !== '' ) {
+			$modal .= '<strong>' . esc_attr( $title ) . '</strong>';
+		}
+
+		$modal .= '<p>' . esc_attr( $notes ) . '</p>';
+	}
+
 	// Honeypot
 	$modal .= '<input type="hidden" name="edd_free_download_check" value="" />';
 
@@ -188,6 +202,8 @@ add_action( 'wp_head', 'edd_free_downloads_display_redirect' );
  * @return      void
  */
 function edd_free_downloads_display_inline() {
+	global $post;
+
 	// Pull user data if available
 	if( is_user_logged_in() ) {
 		$user = new WP_User( get_current_user_id() );
@@ -250,6 +266,20 @@ function edd_free_downloads_display_inline() {
 		$modal .= '<input type="checkbox" name="edd_free_download_optin" id="edd_free_download_optin" checked="checked" />';
 		$modal .= '<label for="edd_free_download_optin" class="edd-free-downloads-checkbox-label">' . edd_get_option( 'edd_free_downloads_newsletter_optin_label', __( 'Subscribe to our newsletter', 'edd-free-downloads' ) ) . '</label>';
 		$modal .= '</p>';
+	}
+
+	// Notes
+	if( edd_get_option( 'edd_free_downlaods_notes', '' ) !== '' ) {
+		$title = edd_get_option( 'edd_free_downloads_notes_title', '' );
+		$notes = edd_get_option( 'edd_free_downlaods_notes', '' );
+
+		$modal .= '<hr />';
+
+		if( $title !== '' ) {
+			$modal .= '<strong>' . esc_attr( $title ) . '</strong>';
+		}
+
+		$modal .= '<p>' . esc_attr( $notes ) . '</p>';
 	}
 
 	// Honeypot
