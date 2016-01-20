@@ -25,7 +25,7 @@ function edd_free_downloads_download_form( $form, $args ) {
 	$download_id = absint( $args['download_id'] );
 	$download_file = edd_get_download_files( $download_id );
 
-	if( edd_free_downloads_use_modal( $download_id ) ) {
+	if( edd_free_downloads_use_modal( $download_id ) && ! edd_has_variable_prices( $download_id ) ) {
 		$form_id        = ! empty( $args['form_id'] ) ? $args['form_id'] : 'edd_purchase_' . $args['download_id'];
 		$download_label = edd_get_option( 'edd_free_downloads_button_label', __( 'Download Now', 'edd-free-downloads' ) );
 		$download_class = implode( ' ', array( $args['style'], $args['color'], trim( $args['class'] ), 'edd-free-download' ) );
