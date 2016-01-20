@@ -43,17 +43,19 @@ function edd_free_downloads_get_form_fields() {
 function edd_free_downloads_use_modal( $download_id = false ) {
 	$use_modal = false;
 
-	if( $download_id && ! edd_has_variable_prices( $download_id ) && ! edd_is_bundled_product( $download_id ) ) {
-		$price = floatval( edd_get_lowest_price_option( $download_id ) );
+	if( get_post_meta( $download_id, '_edd_free_downloads_bypass', true ) !== 'on' ) {
+		if( $download_id && ! edd_has_variable_prices( $download_id ) && ! edd_is_bundled_product( $download_id ) ) {
+			$price = floatval( edd_get_lowest_price_option( $download_id ) );
 
-		if( $price == 0 ) {
-			$use_modal = true;
-		}
-	} elseif( edd_has_variable_prices( $download_id ) ) {
-		$price = floatval( edd_get_lowest_price_option( $download_id ) );
+			if( $price == 0 ) {
+				$use_modal = true;
+			}
+		} elseif( edd_has_variable_prices( $download_id ) ) {
+			$price = floatval( edd_get_lowest_price_option( $download_id ) );
 
-		if( $price == 0 ) {
-			$use_modal = true;
+			if( $price == 0 ) {
+				$use_modal = true;
+			}
 		}
 	}
 
