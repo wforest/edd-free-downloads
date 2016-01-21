@@ -42,8 +42,31 @@ function edd_free_downloads_get_form_fields() {
  */
 function edd_free_downloads_use_modal( $download_id = false ) {
 	$use_modal = false;
+	$sold_out  = false;
 
-	if( get_post_meta( $download_id, '_edd_free_downloads_bypass', true ) !== 'on' ) {
+	if( class_exists( 'EDD_Purchase_Limit' ) ) {
+		$price_id = false;
+
+		if( is_user_logged_in() ) {
+			$user = new WP_User( get_current_user_id() );
+		}
+
+		$email = isset( $user ) ? $user->user_email : false;
+
+		if( edd_has_variable_prices( $download_id ) ) {
+			$prices = edd_get_variable_prices( $download_id );
+
+			foreach( $prices as $price ) {
+				if( floatval( $price['amount'] ) == 0 ) {
+					$price_id = $price['index'];
+				}
+			}
+		}
+
+		$sold_out = edd_pl_is_item_sold_out( $download_id, $price_id, $email );
+	}
+
+	if( get_post_meta( $download_id, '_edd_free_downloads_bypass', true ) !== 'on' && ! $sold_out ) {
 		if( $download_id && ! edd_has_variable_prices( $download_id ) && ! edd_is_bundled_product( $download_id ) ) {
 			$price = floatval( edd_get_lowest_price_option( $download_id ) );
 
