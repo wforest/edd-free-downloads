@@ -27,7 +27,7 @@ jQuery(document).ready(function ($) {
 
         $('.edd_purchase_submit_wrapper').after(buttonPrefix + edd_free_downloads_vars.download_label + buttonSuffix);
 
-        $('body').on('change', 'input[name="edd_options[price_id][]"]', function (e) {
+        $('input[name="edd_options[price_id][]"]').change(function () {
             value = $('input[name="edd_options[price_id][]"]:checked').attr('data-price');
 
             if (value == '0.00') {
@@ -39,27 +39,23 @@ jQuery(document).ready(function ($) {
             }
         }).change();
 
-        $('body').on('click', '.edd-free-downloads-variable', function (e) {
+        $('.edd-free-downloads-variable').click(function (e) {
         	e.preventDefault();
         });
     }
 
     if (isMobile.any) {
-    	$('body').on('click', '.edd-free-download', function (e) {
+        $('.edd-free-download').click(function (e) {
             e.preventDefault();
 
             window.location.href = $(this).attr('href');
         });
 
-    	$('body').on('click', '.edd-free-download-cancel', function () {
+        $('.edd-free-download-cancel').click(function () {
             parent.history.back();
             return false;
         });
     } else {
-    	// Select email field on click
-    	$('input[name="edd_free_download_email"]').focus();
-        $('input[name="edd_free_download_email"]').select();
-
         newModal = new jBox('Modal', {
             attach: $('.edd-free-download'),
             content: $('#edd-free-downloads-modal'),
@@ -68,7 +64,7 @@ jQuery(document).ready(function ($) {
             closeButton: edd_free_downloads_vars.close_button
         });
 
-        $('body').on('click', '.edd-free-download', function (e) {
+        $('.edd-free-download').click(function (e) {
             e.preventDefault();
 
             var download_id = $(this).closest('form').attr('id').replace('edd_purchase_', '');
@@ -79,16 +75,22 @@ jQuery(document).ready(function ($) {
             	$('input[name="edd_free_download_price_id"]').val(price_id);
             }
         });
+
+        // Select email field on click
+        $('.edd-free-download').click(function (e) {
+            $('input[name="edd_free_download_email"]').focus();
+            $('input[name="edd_free_download_email"]').select();
+        });
     }
 
-    $('body').on('keypress', '.edd-free-download-field', function (e) {
+    $('.edd-free-download-field').keypress(function (e) {
         if (e.which == 13) {
             $('.edd-free-download-submit').click();
             return false;
         }
     });
 
-    $('body').on('click', '.edd-free-download-submit', function (e) {
+    $('.edd-free-download-submit').click(function (e) {
         var email, regex, has_error = 0;
 
         email = $('input[name="edd_free_download_email"]');
