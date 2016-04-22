@@ -17,7 +17,7 @@ jQuery(document).ready(function ($) {
             href = '#edd-free-download-modal';
         }
 
-        if (edd_free_downloads_vars.has_ajax) {
+        if (edd_free_downloads_vars.has_ajax === true) {
             buttonPrefix = '<button class="edd-free-downloads-variable edd-free-download ' + classes + '" href="' + href + '"><span>';
             buttonSuffix = '</span></button>';
         } else {
@@ -126,7 +126,7 @@ jQuery(document).ready(function ($) {
             }
         }
 
-        if (edd_free_downloads_vars.require_name) {
+        if (edd_free_downloads_vars.require_name === true) {
             var fname, lname;
 
             fname = $('input[name="edd_free_download_fname"]');
@@ -150,7 +150,7 @@ jQuery(document).ready(function ($) {
         }
 
 
-        if (edd_free_downloads_vars.user_registration) {
+        if (edd_free_downloads_vars.user_registration === true) {
             var username, password, password2;
 
             username = $('input[name="edd_free_download_username"]');
