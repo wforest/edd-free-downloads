@@ -142,9 +142,9 @@ function edd_free_downloads_display_redirect() {
 	}
 
 	// Notes
-	if( edd_get_option( 'edd_free_downlaods_notes', '' ) !== '' ) {
+	if( edd_get_option( 'edd_free_downloads_notes', '' ) !== '' ) {
 		$title = edd_get_option( 'edd_free_downloads_notes_title', '' );
-		$notes = edd_get_option( 'edd_free_downlaods_notes', '' );
+		$notes = edd_get_option( 'edd_free_downloads_notes', '' );
 
 		$modal .= '<hr />';
 
@@ -152,7 +152,7 @@ function edd_free_downloads_display_redirect() {
 			$modal .= '<strong>' . esc_attr( $title ) . '</strong>';
 		}
 
-		$modal .= '<p>' . esc_attr( $notes ) . '</p>';
+		$modal .= '<p>' . wpautop( stripslashes( $notes ) ) . '</p>';
 	}
 
 	// Honeypot
@@ -269,9 +269,9 @@ function edd_free_downloads_display_inline() {
 	}
 
 	// Notes
-	if( edd_get_option( 'edd_free_downlaods_notes', '' ) !== '' ) {
+	if( edd_get_option( 'edd_free_downloads_notes', '' ) !== '' ) {
 		$title = edd_get_option( 'edd_free_downloads_notes_title', '' );
-		$notes = edd_get_option( 'edd_free_downlaods_notes', '' );
+		$notes = edd_get_option( 'edd_free_downloads_notes', '' );
 
 		$modal .= '<hr />';
 
@@ -279,7 +279,7 @@ function edd_free_downloads_display_inline() {
 			$modal .= '<strong>' . esc_attr( $title ) . '</strong>';
 		}
 
-		$modal .= '<p>' . esc_attr( $notes ) . '</p>';
+		$modal .= '<p>' . wpautop( stripslashes( $notes ) ) . '</p>';
 	}
 
 	// Honeypot
