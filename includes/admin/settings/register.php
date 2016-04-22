@@ -93,10 +93,10 @@ function edd_free_downloads_add_settings( $settings ) {
 				'std'  => __( 'Notes', 'edd-free-downloads' )
 			),
 			array(
-				'id'   => 'edd_free_downlaods_notes',
+				'id'   => 'edd_free_downloads_notes',
 				'name' => __( 'Notes', 'edd-free-downloads' ),
 				'desc' => __( 'Enter any notes to display in the Free Downloads modal.', 'edd-free-downloads' ),
-				'type' => 'textarea'
+				'type' => 'rich_editor'
 			)
 		) );
 
@@ -231,7 +231,7 @@ function edd_free_downloads_add_settings_pre25( $settings ) {
 				'std'  => __( 'Notes', 'edd-free-downloads' )
 			),
 			array(
-				'id'   => 'edd_free_downlaods_notes',
+				'id'   => 'edd_free_downloads_notes',
 				'name' => __( 'Notes', 'edd-free-downloads' ),
 				'desc' => __( 'Enter any notes to display in the Free Downloads modal.', 'edd-free-downloads' ),
 				'type' => 'textarea'
