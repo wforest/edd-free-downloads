@@ -27,6 +27,18 @@ jQuery(document).ready(function ($) {
 
         $('.edd_purchase_submit_wrapper').after(buttonPrefix + edd_free_downloads_vars.download_label + buttonSuffix);
 
+        $('input[name="edd_options[price_id][]"]').each(function (i) {
+            value = $('input[name="edd_options[price_id][]"]:checked').attr('data-price');
+
+            if (value == '0.00') {
+                $('.edd_purchase_submit_wrapper').css('display', 'none');
+                $('.edd-free-downloads-variable').css('display', 'inline-block');
+            } else {
+                $('.edd_purchase_submit_wrapper').css('display', 'inline-block');
+                $('.edd-free-downloads-variable').css('display', 'none');
+            }
+        });
+
         $('body').on('change', 'input[name="edd_options[price_id][]"]', function (e) {
             value = $('input[name="edd_options[price_id][]"]:checked').attr('data-price');
 
@@ -37,7 +49,7 @@ jQuery(document).ready(function ($) {
                 $('.edd_purchase_submit_wrapper').css('display', 'inline-block');
                 $('.edd-free-downloads-variable').css('display', 'none');
             }
-        }).change();
+        });
 
         $('body').on('click', '.edd-free-downloads-variable', function (e) {
         	e.preventDefault();
@@ -45,19 +57,19 @@ jQuery(document).ready(function ($) {
     }
 
     if (isMobile.any) {
-    	$('body').on('click', '.edd-free-download', function (e) {
+        $('body').on('click', '.edd-free-download', function (e) {
             e.preventDefault();
 
             window.location.href = $(this).attr('href');
         });
 
-    	$('body').on('click', '.edd-free-download-cancel', function () {
+        $('body').on('click', '.edd-free-download-cancel', function () {
             parent.history.back();
             return false;
         });
     } else {
-    	// Select email field on click
-    	$('input[name="edd_free_download_email"]').focus();
+        // Select email field on click
+        $('input[name="edd_free_download_email"]').focus();
         $('input[name="edd_free_download_email"]').select();
 
         newModal = new jBox('Modal', {
