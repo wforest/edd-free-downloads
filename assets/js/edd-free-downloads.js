@@ -60,6 +60,10 @@ jQuery(document).ready(function ($) {
         $('body').on('click', '.edd-free-download', function (e) {
             e.preventDefault();
 
+            // Select email field on click
+            $('input[name="edd_free_download_email"]').focus();
+            $('input[name="edd_free_download_email"]').select();
+
             window.location.href = $(this).attr('href');
         });
 
@@ -68,10 +72,6 @@ jQuery(document).ready(function ($) {
             return false;
         });
     } else {
-        // Select email field on click
-        $('input[name="edd_free_download_email"]').focus();
-        $('input[name="edd_free_download_email"]').select();
-
         newModal = new jBox('Modal', {
             attach: $('.edd-free-download'),
             content: $('#edd-free-downloads-modal'),
@@ -82,6 +82,10 @@ jQuery(document).ready(function ($) {
 
         $('body').on('click', '.edd-free-download', function (e) {
             e.preventDefault();
+
+            // Select email field on click
+            $('input[name="edd_free_download_email"]').focus();
+            $('input[name="edd_free_download_email"]').select();
 
             var download_id = $(this).closest('form').attr('id').replace('edd_purchase_', '');
             $('input[name="edd_free_download_id"]').val(download_id);
