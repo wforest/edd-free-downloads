@@ -152,7 +152,7 @@ function edd_free_downloads_display_redirect() {
 			$modal .= '<strong>' . esc_attr( $title ) . '</strong>';
 		}
 
-		$modal .= '<p>' . wpautop( stripslashes( $notes ) ) . '</p>';
+		$modal .= '<div>' . wpautop( stripslashes( $notes ) ) . '</div>';
 	}
 
 	// Honeypot
