@@ -126,7 +126,7 @@ jQuery(document).ready(function ($) {
             }
         }
 
-        if (edd_free_downloads_vars.require_name === true) {
+        if (edd_free_downloads_vars.require_name === 'true') {
             var fname, lname;
 
             fname = $('input[name="edd_free_download_fname"]');
@@ -150,7 +150,7 @@ jQuery(document).ready(function ($) {
         }
 
 
-        if (edd_free_downloads_vars.user_registration === true) {
+        if (edd_free_downloads_vars.user_registration === 'true') {
             var username, password, password2;
 
             username = $('input[name="edd_free_download_username"]');
