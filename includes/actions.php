@@ -421,7 +421,7 @@ function edd_free_download_process() {
 	);
 
 	$cart_details   = array();
-	$price_id       = isset( $_POST['edd_free_download_price_id'] ) ? intval( $_POST['edd_free_download_price_id'] ) : false;
+	$price_id       = ! empty( $_POST['edd_free_download_price_id'] ) ? intval( $_POST['edd_free_download_price_id'] ) : false;
 	$download_files = edd_get_download_files( $download_id, $price_id );
 
 	if ( ! edd_is_free_download( $download_id, $price_id ) ) {
