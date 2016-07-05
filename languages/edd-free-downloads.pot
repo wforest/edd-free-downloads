@@ -1,111 +1,350 @@
-# Copyright (C) 2015 Easy Digital Downloads - Free Downloads
-# This file is distributed under the same license as the Easy Digital Downloads - Free Downloads package.
+#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Easy Digital Downloads - Free Downloads 1.0.5\n"
-"Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/edd-free-"
-"downloads\n"
-"POT-Creation-Date: 2015-05-13 10:19:56+00:00\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"Project-Id-Version: Easy Digital Downloads - Free Downloads\n"
+"POT-Creation-Date: 2016-07-05 15:23+0200\n"
+"PO-Revision-Date: 2016-07-05 11:07+0200\n"
+"Last-Translator: FX Bénard <fx@fxbenard.com>\n"
+"Language-Team: FX Bénard <fx@fxbenard.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2015-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"X-Generator: Poedit 1.8.8\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-WPHeader: edd-free-downloads.php\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
+"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.js\n"
 
-#: edd-free-downloads.php:143
-msgid "Free Downloads Settings"
-msgstr ""
-
-#: edd-free-downloads.php:149
-msgid "Button Label"
-msgstr ""
-
-#: edd-free-downloads.php:150
-msgid "Specify the label for the download button."
-msgstr ""
-
-#: edd-free-downloads.php:152 edd-free-downloads.php:193
-#: edd-free-downloads.php:334 edd-free-downloads.php:407
+#: includes/actions.php:94 includes/actions.php:221
+#: includes/admin/settings/register.php:51
+#: includes/admin/settings/register.php:58
+#: includes/admin/settings/register.php:189
+#: includes/admin/settings/register.php:196 includes/scripts.php:36
+#: includes/templates/template-overrides.php:30
 msgid "Download Now"
 msgstr ""
 
-#: edd-free-downloads.php:156
-msgid "Collect Name"
+#: includes/actions.php:102 includes/actions.php:103 includes/actions.php:229
+#: includes/actions.php:230 includes/functions.php:27
+msgid "Email Address"
 msgstr ""
 
-#: edd-free-downloads.php:157
-msgid "Should we collect the first and last name of the purchaser?"
+#: includes/actions.php:108 includes/actions.php:109 includes/actions.php:235
+#: includes/actions.php:236
+msgid "First Name"
 msgstr ""
 
-#: edd-free-downloads.php:162
+#: includes/actions.php:113 includes/actions.php:114 includes/actions.php:240
+#: includes/actions.php:241
+msgid "Last Name"
+msgstr ""
+
+#: includes/actions.php:122 includes/actions.php:123 includes/actions.php:249
+#: includes/actions.php:250
+msgid "Username"
+msgstr ""
+
+#: includes/actions.php:127 includes/actions.php:254
+msgid "Password"
+msgstr ""
+
+#: includes/actions.php:132 includes/actions.php:259
+msgid "Confirm Password"
+msgstr ""
+
+#: includes/actions.php:140 includes/actions.php:267
+#: includes/admin/settings/register.php:348
+msgid "Subscribe to our newsletter"
+msgstr ""
+
+#: includes/actions.php:165 includes/actions.php:166 includes/actions.php:167
+#: includes/actions.php:168 includes/actions.php:169 includes/actions.php:170
+#: includes/actions.php:171 includes/actions.php:172 includes/actions.php:292
+#: includes/actions.php:293 includes/actions.php:294 includes/actions.php:295
+#: includes/actions.php:296 includes/actions.php:297 includes/actions.php:298
+#: includes/actions.php:299
+msgid "Error:"
+msgstr ""
+
+#: includes/actions.php:165 includes/actions.php:292
+msgid "Please enter a valid email address"
+msgstr ""
+
+#: includes/actions.php:166 includes/actions.php:293
+msgid "Invalid email"
+msgstr ""
+
+#: includes/actions.php:167 includes/actions.php:294
+msgid "Please enter your first name"
+msgstr ""
+
+#: includes/actions.php:168 includes/actions.php:295
+msgid "Please enter your last name"
+msgstr ""
+
+#: includes/actions.php:169 includes/actions.php:296
+msgid "Please enter a username"
+msgstr ""
+
+#: includes/actions.php:170 includes/actions.php:297
+msgid "Please enter a password"
+msgstr ""
+
+#: includes/actions.php:171 includes/actions.php:298
+msgid "Please confirm your password"
+msgstr ""
+
+#: includes/actions.php:172 includes/actions.php:299
+msgid "Password and password confirmation do not match"
+msgstr ""
+
+#: includes/actions.php:179
+msgid "Cancel"
+msgstr ""
+
+#: includes/actions.php:324
+msgid "Bad spammer, no download!"
+msgstr ""
+
+#: includes/actions.php:324 includes/actions.php:328 includes/actions.php:332
+#: includes/actions.php:338 includes/actions.php:342 includes/actions.php:349
+#: includes/actions.php:353 includes/actions.php:355 includes/actions.php:361
+#: includes/actions.php:369 includes/actions.php:374 includes/actions.php:379
+#: includes/actions.php:386 includes/actions.php:390 includes/actions.php:395
+#: includes/actions.php:400 includes/actions.php:428
+msgid "Oops!"
+msgstr ""
+
+#: includes/actions.php:328
+msgid "Cheatin&#8217; huh?"
+msgstr ""
+
+#: includes/actions.php:332 includes/actions.php:369 includes/actions.php:374
+#: includes/actions.php:379 includes/actions.php:386 includes/actions.php:390
+#: includes/actions.php:395 includes/actions.php:400 includes/actions.php:428
+msgid "An internal error has occurred, please try again or contact support."
+msgstr ""
+
+#: includes/actions.php:338
+msgid "The username and password fields are required, please try again."
+msgstr ""
+
+#: includes/actions.php:342
+msgid ""
+"Password and password confirmation fields don't match, please try again,"
+msgstr ""
+
+#: includes/actions.php:349
+msgid "The specified username already exists, please log in or try again."
+msgstr ""
+
+#: includes/actions.php:353
+msgid "Invalid username. Only lowercase letters (a-z) and numbers are allowed."
+msgstr ""
+
+#: includes/actions.php:355
+msgid "Invalid username."
+msgstr ""
+
+#: includes/actions.php:361
+msgid "The specified email has already been used, please log in or try again."
+msgstr ""
+
+#: includes/actions.php:471
+msgid "Purchased through EDD Free Downloads"
+msgstr ""
+
+#: includes/admin/downloads/meta-boxes.php:30
+msgid "Bypass Free Downloads Modal:"
+msgstr ""
+
+#: includes/admin/downloads/meta-boxes.php:36
+msgid "Bypass the Free Downloads modal for this download"
+msgstr ""
+
+#: includes/admin/settings/register.php:23
+#: includes/admin/settings/register.php:174
+msgid "Free Downloads"
+msgstr ""
+
+#: includes/admin/settings/register.php:42
+#: includes/admin/settings/register.php:181
+msgid "Display Settings"
+msgstr ""
+
+#: includes/admin/settings/register.php:48
+#: includes/admin/settings/register.php:186
+msgid "Button Label"
+msgstr ""
+
+#: includes/admin/settings/register.php:49
+#: includes/admin/settings/register.php:187
+msgid "Specify the label for the download button."
+msgstr ""
+
+#: includes/admin/settings/register.php:55
+#: includes/admin/settings/register.php:193
+msgid "Modal Button Label"
+msgstr ""
+
+#: includes/admin/settings/register.php:56
+#: includes/admin/settings/register.php:194
+msgid "Specify the label for the download button in the modal."
+msgstr ""
+
+#: includes/admin/settings/register.php:62
+#: includes/admin/settings/register.php:200
 msgid "Display Close Button"
 msgstr ""
 
-#: edd-free-downloads.php:163
+#: includes/admin/settings/register.php:63
+#: includes/admin/settings/register.php:201
 msgid "Should we display a close button on the email collection form?"
 msgstr ""
 
-#: edd-free-downloads.php:168
+#: includes/admin/settings/register.php:71
+#: includes/admin/settings/register.php:210
+msgid "Fields Settings"
+msgstr ""
+
+#: includes/admin/settings/register.php:77
+#: includes/admin/settings/register.php:215
+msgid "Collect Name"
+msgstr ""
+
+#: includes/admin/settings/register.php:78
+#: includes/admin/settings/register.php:216
+msgid "Should we collect the first and last name of the purchaser?"
+msgstr ""
+
+#: includes/admin/settings/register.php:83
+#: includes/admin/settings/register.php:221
+msgid "Require Name"
+msgstr ""
+
+#: includes/admin/settings/register.php:84
+#: includes/admin/settings/register.php:222
+msgid "Should we make the first and last name fields required?"
+msgstr ""
+
+#: includes/admin/settings/register.php:89
+#: includes/admin/settings/register.php:227
+msgid "Notes Field Title"
+msgstr ""
+
+#: includes/admin/settings/register.php:90
+#: includes/admin/settings/register.php:228
+msgid ""
+"Enter the title to display for the notes field, or leave blank for none."
+msgstr ""
+
+#: includes/admin/settings/register.php:92
+#: includes/admin/settings/register.php:96
+#: includes/admin/settings/register.php:230
+#: includes/admin/settings/register.php:234
+msgid "Notes"
+msgstr ""
+
+#: includes/admin/settings/register.php:97
+#: includes/admin/settings/register.php:235
+msgid "Enter any notes to display in the Free Downloads modal."
+msgstr ""
+
+#: includes/admin/settings/register.php:105
+#: includes/admin/settings/register.php:244
+msgid "Misc Settings"
+msgstr ""
+
+#: includes/admin/settings/register.php:111
+#: includes/admin/settings/register.php:249
+msgid "Auto Download"
+msgstr ""
+
+#: includes/admin/settings/register.php:112
+#: includes/admin/settings/register.php:250
+msgid ""
+"Automatically download files rather than redirecting to the redirect URL set "
+"below. Only applies if download has a single downloadable file."
+msgstr ""
+
+#: includes/admin/settings/register.php:117
+#: includes/admin/settings/register.php:255
+msgid "Redirect On Download"
+msgstr ""
+
+#: includes/admin/settings/register.php:118
+#: includes/admin/settings/register.php:256
+msgid ""
+"With Auto Download enabled, users will not leave the download page. Check "
+"this to enforce redirects after download."
+msgstr ""
+
+#: includes/admin/settings/register.php:123
+#: includes/admin/settings/register.php:261
 msgid "Custom Redirect"
 msgstr ""
 
-#: edd-free-downloads.php:169
+#: includes/admin/settings/register.php:124
+#: includes/admin/settings/register.php:262
 msgid ""
 "Enter a URL to redirect to on completion, or leave blank for the receipt "
 "page."
 msgstr ""
 
-#: edd-free-downloads.php:342 edd-free-downloads.php:343
-#: edd-free-downloads.php:415 edd-free-downloads.php:416
-msgid "Email Address"
+#: includes/admin/settings/register.php:129
+#: includes/admin/settings/register.php:267
+msgid "Disable Emails"
 msgstr ""
 
-#: edd-free-downloads.php:348 edd-free-downloads.php:349
-#: edd-free-downloads.php:421 edd-free-downloads.php:422
-msgid "First Name"
+#: includes/admin/settings/register.php:130
+#: includes/admin/settings/register.php:268
+msgid "Check to disable purchase emails for free products."
 msgstr ""
 
-#: edd-free-downloads.php:353 edd-free-downloads.php:354
-#: edd-free-downloads.php:426 edd-free-downloads.php:427
-msgid "Last Name"
+#: includes/admin/settings/register.php:142
+#: includes/admin/settings/register.php:281
+msgid "Integration Settings"
 msgstr ""
 
-#: edd-free-downloads.php:362 edd-free-downloads.php:363
-#: edd-free-downloads.php:435 edd-free-downloads.php:436
-msgid "Error:"
+#: includes/admin/settings/register.php:313
+msgid "User Registration"
 msgstr ""
 
-#: edd-free-downloads.php:362 edd-free-downloads.php:435
-msgid "Please enter a valid email address"
+#: includes/admin/settings/register.php:314
+msgid "Add a registration form to the download modal."
 msgstr ""
 
-#: edd-free-downloads.php:363 edd-free-downloads.php:436
-msgid "Invalid email"
+#: includes/admin/settings/register.php:339
+msgid "Display Opt-In"
 msgstr ""
 
-#: edd-free-downloads.php:369
-msgid "Cancel"
+#: includes/admin/settings/register.php:340
+msgid "Display a newsletter opt-in checkbox in the download window."
 msgstr ""
 
-#: includes/class.s214-edd-activation.php:77
+#: includes/admin/settings/register.php:345
+msgid "Opt-In Field Label"
+msgstr ""
+
+#: includes/admin/settings/register.php:346
+msgid "Specify the text to display for the opt-in field label."
+msgstr ""
+
+#: includes/libraries/class.s214-edd-activation.php:79
 msgid " requires Easy Digital Downloads! Please activate it to continue!"
 msgstr ""
 
-#: includes/class.s214-edd-activation.php:79
+#: includes/libraries/class.s214-edd-activation.php:81
 msgid " requires Easy Digital Downloads! Please install it to continue!"
 msgstr ""
 
-#: includes/functions.php:23
-msgid "Bad spammer, no download!"
-msgstr ""
-
-#: includes/functions.php:23
-msgid "Oops!"
-msgstr ""
-
-#: includes/functions.php:89
-msgid "Purchased through EDD Free Downloads"
+#: includes/scripts.php:35
+msgid "Please Wait... "
 msgstr ""
 
 #. Plugin Name of the plugin/theme
