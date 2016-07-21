@@ -33,7 +33,7 @@ function edd_free_downloads_render_bypass_options( $post_id = 0 ) {
 			'name'    => '_edd_free_downloads_bypass',
 			'current' => $bypass
 		) ); ?>
-		<?php _e( 'Bypass the Free Downloads modal for this download', 'easy-digital-downloads' ); ?>
+		<?php _e( 'Bypass the Free Downloads modal for this download', 'edd-free-downloads' ); ?>
 	</label>
 <?php
 }

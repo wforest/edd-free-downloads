@@ -77,7 +77,11 @@ jQuery(document).ready(function ($) {
             content: $('#edd-free-downloads-modal'),
             width: 350,
             delayClose: 3000,
-            closeButton: edd_free_downloads_vars.close_button
+            closeButton: edd_free_downloads_vars.close_button,
+            onClose: function() {
+                $('.edd-free-download-submit').removeAttr('disabled');
+                $('.edd-free-download-submit span').html(edd_free_downloads_vars.download_label);
+            }
         });
 
         $('body').on('click', '.edd-free-download', function (e) {

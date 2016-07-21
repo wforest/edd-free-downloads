@@ -487,7 +487,7 @@ function edd_free_download_process() {
 	$payment_meta = edd_get_payment_meta( $payment_id );
 
 	$redirect_url = edd_get_option( 'edd_free_downloads_redirect', false );
-	$redirect_url = $redirect_url ? esc_url( $redirect_url ) : edd_get_success_page_url();
+	$redirect_url = $redirect_url ? esc_url( $redirect_url ) : edd_get_success_page_uri();
 
 	// Support Conditional Success Redirects
 	if( function_exists( 'edd_csr_is_redirect_active' ) ) {
