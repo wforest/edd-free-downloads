@@ -80,7 +80,7 @@ jQuery(document).ready(function ($) {
             closeButton: edd_free_downloads_vars.close_button,
             onClose: function() {
                 $('.edd-free-download-submit').removeAttr('disabled');
-                $('.edd-free-download-submit span').html(edd_free_downloads_vars.download_label);
+                $('.edd-free-download-submit span').html(edd_free_downloads_vars.modal_download_label);
             }
         });
 
