@@ -465,6 +465,10 @@ function edd_free_download_process() {
 	// Disable purchase emails
 	if( edd_get_option( 'edd_free_downloads_disable_emails', false ) ) {
 		remove_action( 'edd_complete_purchase', 'edd_trigger_purchase_receipt', 999 );
+
+		if( function_exists( 'Receiptful' ) ) {
+			remove_action( 'edd_complete_purchase', array( Receiptful()->email, 'send_transactional_email' ) );
+		}
 	}
 
 	edd_update_payment_status( $payment_id, 'publish' );
