@@ -1,4 +1,4 @@
-/*global jQuery, document, edd_free_downloads_vars*/
+/*global jQuery, document, edd_free_downloads_vars, jBox, isMobile*/
 /*jslint newcap: true*/
 jQuery(document).ready(function ($) {
     'use strict';
@@ -30,7 +30,7 @@ jQuery(document).ready(function ($) {
         $('input[name="edd_options[price_id][]"]').each(function (i) {
             value = $('input[name="edd_options[price_id][]"]:checked').attr('data-price');
 
-            if (value == '0.00') {
+            if (value === '0.00') {
                 $('.edd_purchase_submit_wrapper').css('display', 'none');
                 $('.edd-free-downloads-variable').css('display', 'inline-block');
             } else {
@@ -42,7 +42,7 @@ jQuery(document).ready(function ($) {
         $('body').on('change', 'input[name="edd_options[price_id][]"]', function (e) {
             value = $('input[name="edd_options[price_id][]"]:checked').attr('data-price');
 
-            if (value == '0.00') {
+            if (value === '0.00') {
                 $('.edd_purchase_submit_wrapper').css('display', 'none');
                 $('.edd-free-downloads-variable').css('display', 'inline-block');
             } else {
@@ -102,7 +102,7 @@ jQuery(document).ready(function ($) {
     }
 
     $('body').on('keypress', '.edd-free-download-field', function (e) {
-        if (e.which == 13) {
+        if (e.which === 13) {
             $('.edd-free-download-submit').click();
             return false;
         }
