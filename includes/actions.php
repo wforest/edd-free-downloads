@@ -70,11 +70,25 @@ add_filter( 'query_vars', 'edd_free_downloads_query_vars', -1 );
  * @return      void
  */
 function edd_free_downloads_display_redirect() {
+	global $wp_query;
+
+	// Check for edd-free-download variable
+	if( ! isset( $wp_query->query_vars['edd-free-download'] ) ) {
+		return;
+	}
+
+	// Make sure we have a download InvalidArgumentException
+	if( ! isset( $wp_query->query_vars['download_id'] ) ) {
+		return;
+	}
+
+	echo'<div id="edd-free-downloads-modal" class="edd-free-downloads-mobile">';
+
 	ob_start();
-
 	edd_get_template_part( 'download', 'redirect' );
+	echo ob_get_clean();
 
-	return ob_get_clean();
+	echo '</div>';
 }
 add_action( 'wp_head', 'edd_free_downloads_display_redirect' );
 
@@ -86,11 +100,13 @@ add_action( 'wp_head', 'edd_free_downloads_display_redirect' );
  * @return      void
  */
 function edd_free_downloads_display_inline() {
+	echo '<div id="edd-free-downloads-modal" class="edd-free-downloads-hidden">';
+
 	ob_start();
-
 	edd_get_template_part( 'download', 'modal' );
+	echo ob_get_clean();
 
-	return ob_get_clean();
+	echo '</div>';
 }
 add_action( 'wp_footer', 'edd_free_downloads_display_inline' );
 
@@ -379,7 +395,9 @@ add_action( 'edd_update_payment_status', 'edd_free_downloads_remove_optin', -10 
 /**
  * Adds our templates dir to the EDD template stack
  *
- * @since 2.7
+ * @since       1.2.5
+ * @param       array $paths The existing template stack
+ * @return      array $paths The updated template stack
  */
 function edd_free_downloads_add_template_stack( $paths ) {
 	$paths[55] = EDD_FREE_DOWNLOADS_DIR . 'templates/';
