@@ -116,3 +116,25 @@ function edd_free_downloads_has_newsletter_plugin() {
 
 	return $plugin_exists;
 }
+
+
+/**
+ * Get Free Downloads form errors
+ *
+ * @since       1.2.5
+ * @return      array $errors The existing errors
+ */
+function edd_free_downloads_form_errors() {
+	$errors = apply_filters( 'edd_free_downloads_form_errors', array(
+		'email-required'     => __( 'Please enter a valid email address', 'edd-free-downloads' ),
+		'email-invalid'      => __( 'Invalid email', 'edd-free-downloads' ),
+		'fname-required'     => __( 'Please enter your first name', 'edd-free-downloads' ),
+		'lname-required'     => __( 'Please enter your last name', 'edd-free-downloads' ),
+		'username-required'  => __( 'Please enter a username', 'edd-free-downloads' ),
+		'password-required'  => __( 'Please enter a password', 'edd-free-downloads' ),
+		'password2-required' => __( 'Please confirm your password', 'edd-free-downloads' ),
+		'password-unmatch'   => __( 'Password and password confirmation do not match', 'edd-free-downloads' )
+	) );
+
+	return $errors;
+}

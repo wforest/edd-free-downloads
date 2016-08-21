@@ -3,7 +3,7 @@
  * Plugin Name:     Easy Digital Downloads - Free Downloads
  * Plugin URI:      https://easydigitaldownloads.com/extensions/free-downloads/
  * Description:     Adds better handling for directly downloading free products to EDD
- * Version:         1.2.4
+ * Version:         1.2.5
  * Author:          Daniel J Griffiths
  * Author URI:      http://section214.com
  * Text Domain:     edd-free-downloads
@@ -69,7 +69,7 @@ if( ! class_exists( 'EDD_Free_Downloads' ) ) {
 		 */
 		private function setup_constants() {
 			// Plugin version
-			define( 'EDD_FREE_DOWNLOADS_VER', '1.2.4' );
+			define( 'EDD_FREE_DOWNLOADS_VER', '1.2.5' );
 
 			// Plugin path
 			define( 'EDD_FREE_DOWNLOADS_DIR', plugin_dir_path( __FILE__ ) );
@@ -90,7 +90,7 @@ if( ! class_exists( 'EDD_Free_Downloads' ) ) {
 			require_once EDD_FREE_DOWNLOADS_DIR . 'includes/scripts.php';
 			require_once EDD_FREE_DOWNLOADS_DIR . 'includes/functions.php';
 			require_once EDD_FREE_DOWNLOADS_DIR . 'includes/actions.php';
-			require_once EDD_FREE_DOWNLOADS_DIR . 'includes/templates/template-overrides.php';
+			require_once EDD_FREE_DOWNLOADS_DIR . 'includes/template-overrides.php';
 
 			if( is_admin() ) {
 				require_once EDD_FREE_DOWNLOADS_DIR . 'includes/admin/settings/register.php';
