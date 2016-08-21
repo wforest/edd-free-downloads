@@ -18,6 +18,8 @@ $color = ( $color == 'inherit' ) ? '' : $color;
 $label = edd_get_option( 'edd_free_downloads_modal_button_label', __( 'Download Now', 'edd-free-downloads' ) );
 ?>
 <form id="edd_free_download_form" method="post">
+	<?php do_action( 'edd_free_downloads_before_redirect_form', $wp_query ); ?>
+
 	<p>
 		<label for="edd_free_download_email" class="edd-free-downloads-label"><?php _e( 'Email Address', 'edd-free-downloads' ); ?> <span class="edd-free-downloads-required">*</span></label>
 		<input type="text" name="edd_free_download_email" id="edd_free_download_email" class="edd-free-download-field" placeholder="<?php _e( 'Email Address', 'edd-free-downloads' ); ?>" value="<?php echo $email; ?>" />
@@ -38,6 +40,8 @@ $label = edd_get_option( 'edd_free_downloads_modal_button_label', __( 'Download 
 	<?php if( edd_get_option( 'edd_free_downloads_user_registration', false ) && ! is_user_logged_in() && ! class_exists( 'EDD_Auto_Register' ) ) : ?>
 	<hr />
 
+	<?php do_action( 'edd_free_downloads_before_redirect_form_registration', $wp_query ); ?>
+
 	<p>
 		<label for="edd_free_download_username" class="edd-free-downloads-label"><?php _e( 'Username', 'edd-free-downloads' ); ?> <span class="edd-free-downloads-required">*</span></label>
 		<input type="text" name="edd_free_download_username" id="edd_free_download_username" class="edd-free-download-field" placeholder="<?php _e( 'Username', 'edd-free-downloads' ); ?>" value="" />
@@ -52,6 +56,9 @@ $label = edd_get_option( 'edd_free_downloads_modal_button_label', __( 'Download 
 		<label for="edd_free_download_pass2" class="edd-free-downloads-label"><?php _e( 'Confirm Password', 'edd-free-downloads' ); ?> <span class="edd-free-downloads-required">*</span></label>
 		<input type="password" name="edd_free_download_pass2" id="edd_free_download_pass2" class="edd-free-download-field" />
 	</p>
+
+	<?php do_action( 'edd_free_downloads_after_redirect_form_registration', $wp_query ); ?>
+
 	<?php endif; ?>
 
 	<?php if( edd_get_option( 'edd_free_downloads_newsletter_optin', false ) && edd_free_downloads_has_newsletter_plugin() ) : ?>
@@ -76,35 +83,20 @@ $label = edd_get_option( 'edd_free_downloads_modal_button_label', __( 'Download 
 		?>
 	<?php endif; ?>
 
+	<?php do_action( 'edd_free_downloads_after_redirect_form', $wp_query ); ?>
+
 	<input type="hidden" name="edd_free_download_check" value="" />
 
 	<?php echo wp_nonce_field( 'edd_free_download_nonce', 'edd_free_download_nonce', true, false ); ?>
 
 	<div class="edd-free-download-errors">
-		<p id="edd-free-download-error-email-required">
-			<strong><?php _e( 'Error:', 'edd-free-downloads' ); ?></strong> <?php _e( 'Please enter a valid email address', 'edd-free-downloads' ); ?>
-		</p>
-		<p id="edd-free-download-error-email-invalid">
-			<strong><?php _e( 'Error:', 'edd-free-downloads' ); ?></strong> <?php _e( 'Invalid email', 'edd-free-downloads' ); ?>
-		</p>
-		<p id="edd-free-download-error-fname-required">
-			<strong><?php _e( 'Error:', 'edd-free-downloads' ); ?></strong> <?php _e( 'Please enter your first name', 'edd-free-downloads' ); ?>
-		</p>
-		<p id="edd-free-download-error-lname-required">
-			<strong><?php _e( 'Error:', 'edd-free-downloads' ); ?></strong> <?php _e( 'Please enter your last name', 'edd-free-downloads' ); ?>
-		</p>
-		<p id="edd-free-download-error-username-required">
-			<strong><?php _e( 'Error:', 'edd-free-downloads' ); ?></strong> <?php _e( 'Please enter a username', 'edd-free-downloads' ); ?>
-		</p>
-		<p id="edd-free-download-error-password-required">
-			<strong><?php _e( 'Error:', 'edd-free-downloads' ); ?></strong> <?php _e( 'Please enter a password', 'edd-free-downloads' ); ?>
-		</p>
-		<p id="edd-free-download-error-password2-required">
-			<strong><?php _e( 'Error:', 'edd-free-downloads' ); ?></strong> <?php _e( 'Please confirm your password', 'edd-free-downloads' ); ?>
-		</p>
-		<p id="edd-free-download-error-password-unmatch">
-			<strong><?php _e( 'Error:', 'edd-free-downloads' ); ?></strong> <?php _e( 'Password and password confirmation do not match', 'edd-free-downloads' ); ?>
-		</p>
+		<?php
+		foreach( edd_free_downloads_form_errors() as $error => $message ) {
+			echo '<p id="edd-free-download-error-' . $error . '">';
+			echo '<strong>' . __( 'Error:', 'edd-free-downloads' ) . '</strong> ' . $message;
+			echo '</p>';
+		}
+		?>
 	</div>
 
 	<input type="hidden" name="edd_action" value="free_download_process" />
