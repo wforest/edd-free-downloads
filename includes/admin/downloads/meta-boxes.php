@@ -35,7 +35,9 @@ function edd_free_downloads_render_bypass_options( $post_id = 0 ) {
 		) ); ?>
 		<?php _e( 'Bypass the Free Downloads modal for this download', 'edd-free-downloads' ); ?>
 	</label>
-<?php
+	<?php
+
+	do_action( 'edd_free_downloads_meta_box_settings_fields', $post_id );
 }
 add_action( 'edd_meta_box_settings_fields', 'edd_free_downloads_render_bypass_options', 30 );
 
