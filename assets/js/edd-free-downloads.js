@@ -17,7 +17,7 @@ jQuery(document).ready(function ($) {
             href = '#edd-free-download-modal';
         }
 
-        if (edd_free_downloads_vars.has_ajax === true) {
+        if (edd_free_downloads_vars.has_ajax === '1') {
             buttonPrefix = '<button class="edd-free-downloads-variable edd-free-download ' + classes + '" href="' + href + '"><span>';
             buttonSuffix = '</span></button>';
         } else {
