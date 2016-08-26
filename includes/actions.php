@@ -315,7 +315,7 @@ function edd_free_download_process() {
 		}
 	}
 
-	wp_redirect( apply_filterss( 'edd_free_downloads_redirect', $redirect_url, $payment_id, $purchase_data ) );
+	wp_redirect( apply_filters( 'edd_free_downloads_redirect', $redirect_url, $payment_id, $purchase_data ) );
 	edd_die();
 }
 add_action( 'edd_free_download_process', 'edd_free_download_process' );
