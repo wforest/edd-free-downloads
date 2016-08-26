@@ -18,8 +18,8 @@ jQuery(document).ready(function ($) {
         }
 
         if (edd_free_downloads_vars.has_ajax === '1') {
-            buttonPrefix = '<button class="edd-free-downloads-variable edd-free-download ' + classes + '" href="' + href + '"><span>';
-            buttonSuffix = '</span></button>';
+            buttonPrefix = '<a class="edd-free-downloads-variable edd-free-download ' + classes + '" href="' + href + '"><span>';
+            buttonSuffix = '</span></a>';
         } else {
             buttonPrefix = '<input type="submit" class="edd-free-downloads-variable edd-free-download ' + classes + '" name="edd_purchase_download" value="';
             buttonSuffix = '" href="' + href + '" />';
