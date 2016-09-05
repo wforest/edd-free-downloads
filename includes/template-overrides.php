@@ -28,7 +28,7 @@ function edd_free_downloads_download_form( $form, $args ) {
 	if( edd_free_downloads_use_modal( $download_id ) && ! edd_has_variable_prices( $download_id ) ) {
 		$form_id        = ! empty( $args['form_id'] ) ? $args['form_id'] : 'edd_purchase_' . $args['download_id'];
 		$download_label = edd_get_option( 'edd_free_downloads_button_label', __( 'Download Now', 'edd-free-downloads' ) );
-		$download_class = implode( ' ', array( $args['style'], $args['color'], trim( $args['class'] ), 'edd-free-download' ) );
+		$download_class = implode( ' ', array( $args['style'], $args['color'], trim( $args['class'] ), 'edd-free-download edd-free-download-single' ) );
 
 		$form  = '<form id="' . $form_id . '" class="edd_download_purchase_form">';
 		$form .= '<div class="edd_purchase_submit_wrapper">';
@@ -41,15 +41,17 @@ function edd_free_downloads_download_form( $form, $args ) {
 
 		if( edd_is_ajax_enabled() ) {
 			$form .= sprintf(
-				'<a class="edd-add-to-cart %1$s" href="' . $href . '">%2$s</a>',
+				'<a class="edd-add-to-cart %1$s" href="' . $href . '" data-download-id="%3$s">%2$s</a>',
 				$download_class,
-				esc_attr( $download_label )
+				esc_attr( $download_label ),
+				$download_id
 			);
 		} else {
 			$form .= sprintf(
-				'<input type="submit" class="edd-no-js %1$s" name="edd_purchase_download" value="%2$s" href="' . $href . '" />',
+				'<input type="submit" class="edd-no-js %1$s" name="edd_purchase_download" value="%2$s" href="' . $href . '" data-download-id="%3$s" />',
 				$download_class,
-				esc_attr( $download_label )
+				esc_attr( $download_label ),
+				$download_id
 			);
 		}
 

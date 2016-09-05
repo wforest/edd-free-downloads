@@ -101,6 +101,6 @@ $label = edd_get_option( 'edd_free_downloads_modal_button_label', __( 'Download 
 
 	<input type="hidden" name="edd_action" value="free_download_process" />
 	<input type="hidden" name="edd_free_download_id" />
-	<input type="hidden" name="edd_free_download_price_id" />
+	<input type="hidden" name="edd_free_download_price_id[]" />
 	<button name="edd_free_download_submit" class="edd-free-download-submit edd-submit button <?php echo $color; ?>"><span><?php echo $label; ?></span></button>
 </form>

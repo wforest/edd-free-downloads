@@ -18,16 +18,18 @@ jQuery(document).ready(function ($) {
         }
 
         if (edd_free_downloads_vars.has_ajax === '1') {
-            buttonPrefix = '<a class="edd-free-downloads-variable edd-free-download ' + classes + '" href="' + href + '"><span>';
+            buttonPrefix = '<a class="edd-free-downloads-variable edd-free-download ' + classes + '" href="' + href + '" data-download-id=""><span>';
             buttonSuffix = '</span></a>';
         } else {
             buttonPrefix = '<input type="submit" class="edd-free-downloads-variable edd-free-download ' + classes + '" name="edd_purchase_download" value="';
-            buttonSuffix = '" href="' + href + '" />';
+            buttonSuffix = '" href="' + href + '" data-download-id="" />';
         }
 
         $('.edd_purchase_submit_wrapper').each(function (i) {
             if ($('.edd_purchase_submit_wrapper').eq(i).find('.edd-add-to-cart').data('variable-price') === 'yes') {
                 $(this).after(buttonPrefix + edd_free_downloads_vars.download_label + buttonSuffix);
+                var download_id = $(this).closest('form').attr('id').replace('edd_purchase_', '');
+                $(this).parent().find('.edd-free-downloads-variable').attr('data-download-id', download_id);
 
                 if ($(this).prev().find('input[name="edd_options[price_id][]"]:checked').attr('data-price') === '0.00') {
                     $(this).css('display', 'none');
@@ -97,12 +99,19 @@ jQuery(document).ready(function ($) {
             $('input[name="edd_free_download_email"]').focus();
             $('input[name="edd_free_download_email"]').select();
 
-            var download_id = $(this).closest('form').attr('id').replace('edd_purchase_', '');
+            var download_id = $(this).data('download-id');
             $('input[name="edd_free_download_id"]').val(download_id);
 
-            if ($('input[name="edd_options[price_id][]"]').length > 0) {
-            	var price_id = $('input[name="edd_options[price_id][]"]:checked').val();
-            	$('input[name="edd_free_download_price_id"]').val(price_id);
+            if ($(this).parent().find('input[name="edd_options[price_id][]"]').length > 0) {
+                $(this).parent().find('input[name="edd_options[price_id][]"]').each(function () {
+                    if ($(this).prop('checked')) {
+                        if ($('input[name="edd_free_download_price_id[]"]').val() !== '') {
+                            $('input[name="edd_free_download_price_id[]"]').append('<input type="hidden" name="edd_free_download_price_id[]" value="' + $(this).val().toString() + '"/>"');
+                        } else {
+                            $('input[name="edd_free_download_price_id[]"]').val($(this).val().toString());
+                        }
+                    }
+                });
             }
         });
     }
