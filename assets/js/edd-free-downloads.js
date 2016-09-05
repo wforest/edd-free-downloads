@@ -102,9 +102,16 @@ jQuery(document).ready(function ($) {
             var download_id = $(this).data('download-id');
             $('input[name="edd_free_download_id"]').val(download_id);
 
-            if ($('input[name="edd_options[price_id][]"]').length > 0) {
-            	var price_id = $('input[name="edd_options[price_id][]"]:checked').val();
-            	$('input[name="edd_free_download_price_id"]').val(price_id);
+            if ($(this).parent().find('input[name="edd_options[price_id][]"]').length > 0) {
+                $(this).parent().find('input[name="edd_options[price_id][]"]').each(function () {
+                    if ($(this).prop('checked')) {
+                        if ($('input[name="edd_free_download_price_id[]"]').val() !== '') {
+                            $('input[name="edd_free_download_price_id[]"]').append('<input type="hidden" name="edd_free_download_price_id[]" value="' + $(this).val().toString() + '"/>"');
+                        } else {
+                            $('input[name="edd_free_download_price_id[]"]').val($(this).val().toString());
+                        }
+                    }
+                });
             }
         });
     }
