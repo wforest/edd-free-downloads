@@ -41,15 +41,17 @@ function edd_free_downloads_download_form( $form, $args ) {
 
 		if( edd_is_ajax_enabled() ) {
 			$form .= sprintf(
-				'<a class="edd-add-to-cart %1$s" href="' . $href . '">%2$s</a>',
+				'<a class="edd-add-to-cart %1$s" href="' . $href . '" data-download-id="%3$s">%2$s</a>',
 				$download_class,
-				esc_attr( $download_label )
+				esc_attr( $download_label ),
+				$download_id
 			);
 		} else {
 			$form .= sprintf(
-				'<input type="submit" class="edd-no-js %1$s" name="edd_purchase_download" value="%2$s" href="' . $href . '" />',
+				'<input type="submit" class="edd-no-js %1$s" name="edd_purchase_download" value="%2$s" href="' . $href . '" data-download-id="%3$s" />',
 				$download_class,
-				esc_attr( $download_label )
+				esc_attr( $download_label ),
+				$download_id
 			);
 		}
 
