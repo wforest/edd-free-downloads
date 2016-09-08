@@ -314,11 +314,36 @@ function edd_free_download_process() {
 
 	$payment_meta = edd_get_payment_meta( $payment_id );
 
-	$redirect_url = edd_get_option( 'edd_free_downloads_redirect', false );
-	$redirect_url = $redirect_url ? esc_url( $redirect_url ) : edd_get_success_page_uri();
+	$on_complete  = edd_get_option( 'edd_free_downloads_on_complete', 'default' );
+	$success_page = edd_get_success_page_uri();
+	$custom_url   = edd_get_option( 'edd_free_downloads_redirect', false );
+	$custom_url   = $custom_url ? esc_url( $custom_url ) : $success_page;
+
+	switch( $on_complete ) {
+		case 'default' :
+			$redirect_url = $success_page;
+			break;
+		case 'redirect' :
+			$redirect_url = $custom_url;
+			break;
+		case 'auto-download' :
+			$redirect_url = add_query_arg( array(
+				'edd_action' => 'free_downloads_process_download',
+				'payment-id' => $payment_id
+			) );
+			break;
+		case 'download-redirect' :
+			$redirect_url = add_query_arg( array(
+				'edd_action' => 'free_downloads_process_download',
+				'payment-id' => $payment_id
+			), $custom_url );
+			break;
+	}
+
+	$redirect_url = $redirect_url ? $redirect_url : $success_page;
 
 	// Support Conditional Success Redirects
-	if( function_exists( 'edd_csr_is_redirect_active' ) ) {
+	if( function_exists( 'edd_csr_is_redirect_active' ) && $redirect_url == $success_page ) {
 		if( edd_csr_is_redirect_active( edd_csr_get_redirect_id( $payment_meta['cart_details'][0]['id'] ) ) ) {
 			$redirect_id = edd_csr_get_redirect_id( $payment_meta['cart_details'][0]['id'] );
 
@@ -327,18 +352,7 @@ function edd_free_download_process() {
 		}
 	}
 
-	if( edd_get_option( 'edd_free_downloads_auto_download', false ) && count( $download_files ) == 1 ) {
-		if( edd_get_option( 'edd_free_downloads_auto_download_redirect', false ) ) {
-			$redirect_url = add_query_arg( 'auto-download', $payment_id, $redirect_url );
-		} else {
-			$download_url = edd_get_download_file_url( $payment_meta['key'], $payment_meta['user_info']['email'], $download_index[0], $payment_meta['cart_details'][0]['id'] );
-
-			wp_safe_redirect( $download_url );
-			edd_die();
-		}
-	}
-
-	wp_redirect( apply_filters( 'edd_free_downloads_redirect', $redirect_url, $payment_id, $purchase_data ) );
+	wp_redirect( apply_filters( 'edd_free_downloads_redirect', $redirect_url, $payment_id ) );
 	edd_die();
 }
 add_action( 'edd_free_download_process', 'edd_free_download_process' );
@@ -351,16 +365,142 @@ add_action( 'edd_free_download_process', 'edd_free_download_process' );
  * @return      void
  */
 function edd_free_downloads_process_auto_download() {
-	if( isset( $_GET['auto-download'] ) ) {
-		$payment_meta = edd_get_payment_meta( $_GET['auto-download'] );
-		$download_files = edd_get_download_files( $payment_meta['cart_details'][0]['id'] );
-		$download_index = array_keys( $download_files );
-		$download_url = edd_get_download_file_url( $payment_meta['key'], $payment_meta['user_info']['email'], $download_index[0], $payment_meta['cart_details'][0]['id'] );
-
-		echo '<script type="text/javascript">jQuery(document).ready(function($){$(location).attr("href", "' . $download_url . '")});</script>';
+	if( ! isset( $_GET['payment-id'] ) ) {
+		return;
 	}
+
+	if( ! function_exists( 'edd_get_file_ctype' ) ) {
+		require_once EDD_PLUGIN_DIR . 'includes/process-download.php';
+	}
+
+	$payment_meta   = edd_get_payment_meta( $_GET['payment-id'] );
+	$download_files = edd_get_download_files( $payment_meta['cart_details'][0]['id'] );
+	$download_url   = $download_files[0]['file'];
+	$file_name      = basename( $download_url );
+	$file_extension = edd_get_file_extension( $download_url );
+	$ctype          = edd_get_file_ctype( $file_extension );
+	$method         = edd_get_file_download_method();
+
+	if ( ! edd_is_func_disabled( 'set_time_limit' ) && ! ini_get( 'safe_mode' ) ) {
+		@set_time_limit(0);
+	}
+
+	if ( function_exists( 'get_magic_quotes_runtime' ) && get_magic_quotes_runtime() && version_compare( phpversion(), '5.4', '<' ) ) {
+		set_magic_quotes_runtime(0);
+	}
+
+	@session_write_close();
+	if( function_exists( 'apache_setenv' ) ) {
+		@apache_setenv('no-gzip', 1);
+	}
+	@ini_set( 'zlib.output_compression', 'Off' );
+
+	nocache_headers();
+	header("Robots: none");
+	header("Content-Type: " . $ctype . "");
+	header("Content-Description: File Transfer");
+	header("Content-Disposition: attachment; filename=\"" . $file_name . "\"");
+	header("Content-Transfer-Encoding: binary");
+
+	if( 'x_sendfile' == $method && ( ! function_exists( 'apache_get_modules' ) || ! in_array( 'mod_xsendfile', apache_get_modules() ) ) ) {
+		// If X-Sendfile is selected but is not supported, fallback to Direct
+		$method = 'direct';
+	}
+
+	$file_details = parse_url( $download_url );
+	$schemes      = array( 'http', 'https' ); // Direct URL schemes
+
+	if ( ( ! isset( $file_details['scheme'] ) || ! in_array( $file_details['scheme'], $schemes ) ) && isset( $file_details['path'] ) && file_exists( $download_url ) ) {
+
+		/**
+		 * Download method is seto to Redirect in settings but an absolute path was provided
+		 * We need to switch to a direct download in order for the file to download properly
+		 */
+		$method = 'direct';
+
+	}
+
+	switch( $method ) :
+
+		case 'redirect' :
+
+			// Redirect straight to the file
+			edd_deliver_download( $download_url, true );
+			break;
+
+		case 'direct' :
+		default:
+
+			$direct    = false;
+			$file_path = $download_url;
+
+			if ( ( ! isset( $file_details['scheme'] ) || ! in_array( $file_details['scheme'], $schemes ) ) && isset( $file_details['path'] ) && file_exists( $download_url ) ) {
+
+				/** This is an absolute path */
+				$direct    = true;
+				$file_path = $download_url;
+
+			} else if( defined( 'UPLOADS' ) && strpos( $download_url, UPLOADS ) !== false ) {
+
+				/**
+				 * This is a local file given by URL so we need to figure out the path
+				 * UPLOADS is always relative to ABSPATH
+				 * site_url() is the URL to where WordPress is installed
+				 */
+				$file_path  = str_replace( site_url(), '', $download_url );
+				$file_path  = realpath( ABSPATH . $file_path );
+				$direct     = true;
+
+			} else if( strpos( $download_url, content_url() ) !== false ) {
+
+				/** This is a local file given by URL so we need to figure out the path */
+				$file_path  = str_replace( content_url(), WP_CONTENT_DIR, $download_url );
+				$file_path  = realpath( $file_path );
+				$direct     = true;
+
+			} else if( strpos( $download_url, set_url_scheme( content_url(), 'https' ) ) !== false ) {
+
+				/** This is a local file given by an HTTPS URL so we need to figure out the path */
+				$file_path  = str_replace( set_url_scheme( content_url(), 'https' ), WP_CONTENT_DIR, $download_url );
+				$file_path  = realpath( $file_path );
+				$direct     = true;
+
+			}
+
+			// Set the file size header
+			header( "Content-Length: " . @filesize( $file_path ) );
+
+			// Now deliver the file based on the kind of software the server is running / has enabled
+			if ( stristr( getenv( 'SERVER_SOFTWARE' ), 'lighttpd' ) ) {
+
+				header( "X-LIGHTTPD-send-file: $file_path" );
+
+			} elseif ( $direct && ( stristr( getenv( 'SERVER_SOFTWARE' ), 'nginx' ) || stristr( getenv( 'SERVER_SOFTWARE' ), 'cherokee' ) ) ) {
+
+				// We need a path relative to the domain
+				$file_path = str_ireplace( realpath( $_SERVER['DOCUMENT_ROOT'] ), '', $file_path );
+				header( "X-Accel-Redirect: /$file_path" );
+
+			}
+
+			if( $direct ) {
+
+				edd_deliver_download( $file_path );
+
+			} else {
+
+				// The file supplied does not have a discoverable absolute path
+				edd_deliver_download( $download_url, true );
+
+			}
+
+			break;
+
+	endswitch;
+
+	edd_die();
 }
-add_action( 'wp_head', 'edd_free_downloads_process_auto_download' );
+add_action( 'edd_free_downloads_process_download', 'edd_free_downloads_process_auto_download' );
 
 
 /**
