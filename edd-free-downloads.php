@@ -172,3 +172,39 @@ function edd_free_downloads() {
 	}
 }
 add_action( 'plugins_loaded', 'edd_free_downloads' );
+
+
+/**
+ * Process upgrades
+ *
+ * @since       1.3.0
+ * @global      array $edd_options The EDD options array
+ * @return      void
+ */
+function edd_free_downloads_upgrade() {
+	global $edd_options;
+
+	if( ! get_option( 'edd_free_downloads_upgrade_130' ) ) {
+		// Upgrade notes field settings
+		if( isset( $edd_options['edd_free_downloads_notes'] ) && ( ! empty( $edd_options['edd_free_downloads_notes'] ) || $edd_options['edd_free_downloads_notes'] != '' ) ) {
+			$edd_options['edd_free_downloads_show_notes'] = '1';
+		}
+
+		// Upgrade on-complete settings
+		if( ! isset( $edd_options['edd_free_downloads_auto_download'] ) && ! isset( $edd_options['edd_free_downloads_auto_download_redirect'] ) && ( ! isset( $edd_options['edd_free_downloads_redirect'] ) || $edd_options['edd_free_downloads_redirect'] == '' ) ) {
+			$edd_options['edd_free_downloads_on_complete'] = 'default';
+		} elseif( isset( $edd_options['edd_free_downloads_auto_download'] ) && ! isset( $edd_options['edd_free_downloads_auto_download_redirect'] ) && ( ! isset( $edd_options['edd_free_downloads_redirect'] ) || $edd_options['edd_free_downloads_redirect'] == '' ) ) {
+			$edd_options['edd_free_downloads_on_complete'] = 'auto-download';
+		} elseif( isset( $edd_options['edd_free_downloads_auto_download'] ) && isset( $edd_options['edd_free_downloads_auto_download_redirect'] ) && ( isset( $edd_options['edd_free_downloads_redirect'] ) && $edd_options['edd_free_downloads_redirect'] != '' ) ) {
+			$edd_options['edd_free_downloads_on_complete'] = 'download-redirect';
+		} elseif( ! isset( $edd_options['edd_free_downloads_auto_download'] ) && ! isset( $edd_options['edd_free_downloads_auto_download_redirect'] ) && ( isset( $edd_options['edd_free_downloads_redirect'] ) && $edd_options['edd_free_downloads_redirect'] != '' ) ) {
+			$edd_options['edd_free_downloads_on_complete'] = 'redirect';
+		}
+		unset( $edd_options['edd_free_downloads_auto_download'] );
+		unset( $edd_options['edd_free_downloads_auto_download_redirect'] );
+
+		update_option( 'edd_settings', $edd_options );
+		//update_option( 'edd_free_downloads_upgrade_130', '1' );
+	}
+}
+register_activation_hook( __FILE__, 'edd_free_downloads_upgrade' );
