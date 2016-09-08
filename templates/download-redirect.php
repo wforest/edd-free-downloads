@@ -68,7 +68,7 @@ $label = edd_get_option( 'edd_free_downloads_modal_button_label', __( 'Download 
 	</p>
 	<?php endif; ?>
 
-	<?php if( edd_get_option( 'edd_free_downloads_notes', '' ) !== '' ) : ?>
+	<?php if( edd_get_option( 'edd_free_downloads_show_notes', false ) ) : ?>
 		<?php
 		$title = edd_get_option( 'edd_free_downloads_notes_title', '' );
 		$notes = edd_get_option( 'edd_free_downloads_notes', '' );
@@ -105,6 +105,7 @@ $label = edd_get_option( 'edd_free_downloads_modal_button_label', __( 'Download 
 	<button name="edd_free_download_submit" class="edd-free-download-submit edd-submit button <?php echo $color; ?>"><span><?php echo $label; ?></span></button>
 	<button name="edd_free_download_cancel" class="edd-free-download-cancel edd-submit button <?php echo $color; ?>"><span><?php _e( 'Cancel', 'edd-free-downloads' ); ?></span></button>
 
+	<?php do_action( 'edd_free_downloads_after_download_button', $post ); ?>
 </form>
 
 <script type="text/javascript">
