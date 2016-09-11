@@ -1,4 +1,4 @@
-/*global jQuery, document, edd_free_downloads_vars*/
+/*global jQuery, document*/
 /*jslint newcap: true*/
 jQuery(document).ready(function ($) {
     'use strict';
