@@ -37,7 +37,6 @@ function edd_free_downloads_scripts() {
 		'download_label'       => $download_label,
 		'modal_download_label' => edd_get_option( 'edd_free_downloads_modal_button_label', __( 'Download Now', 'edd-free-downloads' ) ),
 		'has_ajax'             => edd_is_ajax_enabled(),
-		'ajaxurl'              => edd_get_ajax_url(),
 		'mobile_url'           => esc_url( add_query_arg( array( 'edd-free-download' => 'true', 'download_id' => get_the_ID() ) ) ),
 		'form_class'           => apply_filters( 'edd_free_downloads_form_class', 'edd_purchase_submit_wrapper' )
 	) );
