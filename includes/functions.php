@@ -138,3 +138,205 @@ function edd_free_downloads_form_errors() {
 
 	return $errors;
 }
+
+
+/**
+ * Get an array of files for a given download
+ *
+ * @since       2.0.0
+ * @param       int $download_id The download to fetch files for
+ * @param       int $price_id An optional price ID for this download
+ * @return      array $files The array of files for this download
+ */
+function edd_free_downloads_get_files( $download_id = 0, $price_id = null ) {
+	$download_files = edd_get_download_files( $download_id, $price_id );
+	$files          = array();
+
+	if( ! empty( $download_files ) && is_array( $download_files ) ) {
+		foreach( $download_files as $filekey => $file ) {
+			$filename         = basename( $file['file'] );
+			$files[$filename] = $file['file'];
+		}
+	}
+
+	return $files;
+}
+
+
+/**
+ * Compress the files for a given download
+ *
+ * @since       2.0.0
+ * @param       array $files The files to compress
+ * @return      string $file The URL of the compressed file
+ */
+function edd_free_downloads_compress_files( $files = array(), $download_id = 0 ) {
+	$file = false;
+
+	if( class_exists( 'ZipArchive' ) ) {
+		$upload_dir = wp_upload_dir();
+		$upload_dir = $upload_dir['basedir'] . '/edd-free-downloads-cache';
+		$zip_name   = apply_filters( 'edd_free_downloads_zip_name', strtolower( str_replace( ' ', '-', get_bloginfo( 'name' ) ) ) . '-bundle-' . $download_id . '.zip' );
+		$zip_file   = $upload_dir . '/' . $zip_name;
+
+		if( ! file_exists( $zip_file ) ) {
+			$zip = new ZipArchive();
+
+			if( $zip->open( $zip_file, ZIPARCHIVE::CREATE ) !== TRUE ) {
+				edd_die( __( 'An unknown error occurred, please try again!', 'edd-free-downloads' ), __( 'Oops!', 'edd-free-downloads' ) );
+				exit;
+			}
+
+			foreach( $files as $file_name => $file_path ) {
+				$file_path = str_replace( WP_CONTENT_URL, WP_CONTENT_DIR, $file_path );
+
+				$zip->addFile( $file_path, $file_name );
+			}
+
+			$zip->close();
+		}
+
+		$file = $zip_file;
+	}
+
+	return $file;
+}
+
+
+/**
+ * Download a given file
+ *
+ * @since       2.0.0
+ * @param       string $download_url The URL of the file to download
+ * @return      void
+ */
+function edd_free_downloads_download_file( $download_url ) {
+	// If no file found, bail
+	if( ! $download_url ) {
+		edd_die( __( 'An unknown error occurred, please try again!', 'edd-free-downloads' ), __( 'Oops!', 'edd-free-downloads' ) );
+	}
+
+	$file_name      = basename( $download_url );
+	$file_extension = edd_get_file_extension( $download_url );
+	$ctype          = edd_get_file_ctype( $file_extension );
+	$method         = edd_get_file_download_method();
+
+	if ( ! edd_is_func_disabled( 'set_time_limit' ) && ! ini_get( 'safe_mode' ) ) {
+		@set_time_limit(0);
+	}
+
+	if ( function_exists( 'get_magic_quotes_runtime' ) && get_magic_quotes_runtime() && version_compare( phpversion(), '5.4', '<' ) ) {
+		set_magic_quotes_runtime(0);
+	}
+
+	@session_write_close();
+	if( function_exists( 'apache_setenv' ) ) {
+		@apache_setenv('no-gzip', 1);
+	}
+	@ini_set( 'zlib.output_compression', 'Off' );
+
+	nocache_headers();
+	header("Robots: none");
+	header("Content-Type: " . $ctype . "");
+	header("Content-Description: File Transfer");
+	header("Content-Disposition: attachment; filename=\"" . $file_name . "\"");
+	header("Content-Transfer-Encoding: binary");
+
+	if( 'x_sendfile' == $method && ( ! function_exists( 'apache_get_modules' ) || ! in_array( 'mod_xsendfile', apache_get_modules() ) ) ) {
+		// If X-Sendfile is selected but is not supported, fallback to Direct
+		$method = 'direct';
+	}
+
+	$file_details = parse_url( $download_url );
+	$schemes      = array( 'http', 'https' ); // Direct URL schemes
+
+	if ( ( ! isset( $file_details['scheme'] ) || ! in_array( $file_details['scheme'], $schemes ) ) && isset( $file_details['path'] ) && file_exists( $download_url ) ) {
+
+		/**
+		 * Download method is seto to Redirect in settings but an absolute path was provided
+		 * We need to switch to a direct download in order for the file to download properly
+		 */
+		$method = 'direct';
+
+	}
+
+	switch( $method ) :
+
+		case 'redirect' :
+
+			// Redirect straight to the file
+			edd_deliver_download( $download_url, true );
+			break;
+
+		case 'direct' :
+		default:
+
+			$direct    = false;
+			$file_path = $download_url;
+
+			if ( ( ! isset( $file_details['scheme'] ) || ! in_array( $file_details['scheme'], $schemes ) ) && isset( $file_details['path'] ) && file_exists( $download_url ) ) {
+
+				/** This is an absolute path */
+				$direct    = true;
+				$file_path = $download_url;
+
+			} else if( defined( 'UPLOADS' ) && strpos( $download_url, UPLOADS ) !== false ) {
+
+				/**
+				 * This is a local file given by URL so we need to figure out the path
+				 * UPLOADS is always relative to ABSPATH
+				 * site_url() is the URL to where WordPress is installed
+				 */
+				$file_path  = str_replace( site_url(), '', $download_url );
+				$file_path  = realpath( ABSPATH . $file_path );
+				$direct     = true;
+
+			} else if( strpos( $download_url, content_url() ) !== false ) {
+
+				/** This is a local file given by URL so we need to figure out the path */
+				$file_path  = str_replace( content_url(), WP_CONTENT_DIR, $download_url );
+				$file_path  = realpath( $file_path );
+				$direct     = true;
+
+			} else if( strpos( $download_url, set_url_scheme( content_url(), 'https' ) ) !== false ) {
+
+				/** This is a local file given by an HTTPS URL so we need to figure out the path */
+				$file_path  = str_replace( set_url_scheme( content_url(), 'https' ), WP_CONTENT_DIR, $download_url );
+				$file_path  = realpath( $file_path );
+				$direct     = true;
+
+			}
+
+			// Set the file size header
+			header( "Content-Length: " . @filesize( $file_path ) );
+
+			// Now deliver the file based on the kind of software the server is running / has enabled
+			if ( stristr( getenv( 'SERVER_SOFTWARE' ), 'lighttpd' ) ) {
+
+				header( "X-LIGHTTPD-send-file: $file_path" );
+
+			} elseif ( $direct && ( stristr( getenv( 'SERVER_SOFTWARE' ), 'nginx' ) || stristr( getenv( 'SERVER_SOFTWARE' ), 'cherokee' ) ) ) {
+
+				// We need a path relative to the domain
+				$file_path = str_ireplace( realpath( $_SERVER['DOCUMENT_ROOT'] ), '', $file_path );
+				header( "X-Accel-Redirect: /$file_path" );
+
+			}
+
+			if( $direct ) {
+
+				edd_deliver_download( $file_path );
+
+			} else {
+
+				// The file supplied does not have a discoverable absolute path
+				edd_deliver_download( $download_url, true );
+
+			}
+
+			break;
+
+	endswitch;
+
+	edd_die();
+}

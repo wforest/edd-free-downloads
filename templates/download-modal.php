@@ -1,5 +1,5 @@
 <?php
-global $post;
+//global $post;
 
 // Pull user data if available
 if( is_user_logged_in() ) {
@@ -101,8 +101,15 @@ $label = edd_get_option( 'edd_free_downloads_modal_button_label', __( 'Download 
 
 	<input type="hidden" name="edd_action" value="free_download_process" />
 	<input type="hidden" name="edd_free_download_id" />
-	<input type="hidden" name="edd_free_download_price_id[]" />
 	<button name="edd_free_download_submit" class="edd-free-download-submit edd-submit button <?php echo $color; ?>"><span><?php echo $label; ?></span></button>
+
+	<?php if( edd_get_option( 'edd_free_downloads_direct_download' ) ) : ?>
+		<?php
+		$link_text = edd_get_option( 'edd_free_downloads_direct_download_label', __( 'No thanks, proceed to download', 'edd-free-downloads' ) );
+
+		echo '<div class="edd-free-downloads-direct-download"><a href="#" class="edd-free-downloads-direct-download-link">' . $link_text . '</a></div>';
+		?>
+	<?php endif; ?>
 
 	<?php do_action( 'edd_free_downloads_after_download_button', $post ); ?>
 </form>

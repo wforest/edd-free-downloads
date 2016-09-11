@@ -37,6 +37,7 @@ function edd_free_downloads_scripts() {
 		'download_label'       => $download_label,
 		'modal_download_label' => edd_get_option( 'edd_free_downloads_modal_button_label', __( 'Download Now', 'edd-free-downloads' ) ),
 		'has_ajax'             => edd_is_ajax_enabled(),
+		'ajaxurl'              => edd_get_ajax_url(),
 		'mobile_url'           => esc_url( add_query_arg( array( 'edd-free-download' => 'true', 'download_id' => get_the_ID() ) ) ),
 		'form_class'           => apply_filters( 'edd_free_downloads_form_class', 'edd_purchase_submit_wrapper' )
 	) );
@@ -51,6 +52,7 @@ add_action( 'wp_enqueue_scripts', 'edd_free_downloads_scripts' );
  * @return      void
  */
 function edd_free_downloads_admin_scripts() {
+	wp_enqueue_style( 'edd-free-downloads', EDD_FREE_DOWNLOADS_URL . 'assets/css/admin.css', array(), EDD_FREE_DOWNLOADS_VER );
 	wp_enqueue_script( 'edd-free-downloads', EDD_FREE_DOWNLOADS_URL . 'assets/js/admin.js', array( 'jquery' ), EDD_FREE_DOWNLOADS_VER );
 }
 add_action( 'admin_enqueue_scripts', 'edd_free_downloads_admin_scripts' );

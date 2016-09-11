@@ -147,11 +147,30 @@ function edd_free_downloads_add_settings( $settings ) {
 			'tooltip_desc'  => __( 'If no URL is set, users will be automatically redirected to the Purchase Confirmation page.', 'edd-free-downloads' )
 		),
 		array(
-			'id'    => 'edd_free_downloads_disable_emails',
-			'name'  => __( 'Disable Emails', 'edd-free-downloads' ),
-			'desc'  => __( 'Check to disable purchase emails for free products.', 'edd-free-downloads' ),
-			'type'  => 'checkbox',
+			'id'   => 'edd_free_downloads_disable_emails',
+			'name' => __( 'Disable Emails', 'edd-free-downloads' ),
+			'desc' => __( 'Check to disable purchase emails for free products.', 'edd-free-downloads' ),
+			'type' => 'checkbox',
 		),
+		array(
+			'id'   => 'edd_free_downloads_direct_download',
+			'name' => __( 'Direct Download', 'edd-free-downloads' ),
+			'desc' => __( 'Check to allow users to download files without entering their info.', 'edd-free-downloads' ),
+			'type' => 'checkbox'
+		),
+		array(
+			'id'   => 'edd_free_downloads_direct_download_label',
+			'name' => __( 'Direct Download Label', 'edd-free-downloads' ),
+			'desc' => __( 'Enter the text do display for the direct download link', 'edd-free-downloads' ),
+			'type' => 'text',
+			'std'  => __( 'No thanks, proceed to download', 'edd-free-downloads' )
+		),
+		array(
+			'id'   => 'free_downloads_zip_status',
+			'name' => __( 'Compression Status', 'edd-free-downloads' ),
+			'desc' => '',
+			'type' => 'hook'
+		)
 	) );
 
 	// Allow extension of the settings.

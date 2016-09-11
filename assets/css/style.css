@@ -63,3 +63,7 @@
 .edd-free-download-single {
     display: inline-block !important;
 }
+
+.edd-free-downloads-direct-download {
+    text-align: center;
+}
