@@ -193,10 +193,8 @@ function edd_free_downloads_upgrade() {
 		// Upgrade on-complete settings
 		if( ! isset( $edd_options['edd_free_downloads_auto_download'] ) && ! isset( $edd_options['edd_free_downloads_auto_download_redirect'] ) && ( ! isset( $edd_options['edd_free_downloads_redirect'] ) || $edd_options['edd_free_downloads_redirect'] == '' ) ) {
 			$edd_options['edd_free_downloads_on_complete'] = 'default';
-		} elseif( isset( $edd_options['edd_free_downloads_auto_download'] ) && ! isset( $edd_options['edd_free_downloads_auto_download_redirect'] ) && ( ! isset( $edd_options['edd_free_downloads_redirect'] ) || $edd_options['edd_free_downloads_redirect'] == '' ) ) {
+		} elseif( isset( $edd_options['edd_free_downloads_auto_download'] ) && ! isset( $edd_options['edd_free_downloads_auto_download_redirect'] ) ) {
 			$edd_options['edd_free_downloads_on_complete'] = 'auto-download';
-		} elseif( isset( $edd_options['edd_free_downloads_auto_download'] ) && isset( $edd_options['edd_free_downloads_auto_download_redirect'] ) && ( isset( $edd_options['edd_free_downloads_redirect'] ) && $edd_options['edd_free_downloads_redirect'] != '' ) ) {
-			$edd_options['edd_free_downloads_on_complete'] = 'download-redirect';
 		} elseif( ! isset( $edd_options['edd_free_downloads_auto_download'] ) && ! isset( $edd_options['edd_free_downloads_auto_download_redirect'] ) && ( isset( $edd_options['edd_free_downloads_redirect'] ) && $edd_options['edd_free_downloads_redirect'] != '' ) ) {
 			$edd_options['edd_free_downloads_on_complete'] = 'redirect';
 		}

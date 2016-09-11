@@ -112,7 +112,7 @@ function edd_free_downloads_add_settings( $settings ) {
 		),
 	) );
 
-	$misc_settings = apply_filters( 'edd_free_downloads_processing_settings', array(
+	$processing_settings = apply_filters( 'edd_free_downloads_processing_settings', array(
 		array(
 			'id'            => 'edd_free_downloads_processing_settings',
 			'name'          => '<h3>' . __( 'Processing Settings', 'edd-free-downloads' ) . '</h3>',
@@ -130,14 +130,12 @@ function edd_free_downloads_add_settings( $settings ) {
 			'tooltip_desc'  => __( 'Free Downloads can do a number of things when a download is processed:', 'edd-free-downloads' ) .
 								'<p><strong>' . __( 'Display Purchase Confirmation:', 'edd-free-downloads' ) . '</strong> ' . __( 'This is the default behavior of EDD. Users will be redirected to the same Purchase Confirmation page they would see when completing a purchase.', 'edd-free-downloads' ) . '</p>' .
 								'<p><strong>' . __( 'Auto Download:', 'edd-free-downloads' ) . '</strong> ' . __( 'The system will close the download modal, and automatically download the relevant file(s).', 'edd-free-downloads' ) . '</p>' .
-								'<p><strong>' . __( 'Custom Redirect:', 'edd-free-downloads' ) . '</strong> ' . __( 'Rather than redirecting to the Purchase Confirmation page, this allows you to define a custom redirection URL.', 'edd-free-downloads' ) . '</p>' .
-								'<p><strong>' . __( 'Auto Download & Redirect:', 'edd-free-downloads' ) . '</strong> ' . __( 'This combines the functionality of Auto Download and Custom Redirect, redirecting the customer once download has been completed.', 'edd-free-downloads' ),
+								'<p><strong>' . __( 'Custom Redirect:', 'edd-free-downloads' ) . '</strong> ' . __( 'Rather than redirecting to the Purchase Confirmation page, this allows you to define a custom redirection URL.', 'edd-free-downloads' ) . '</p>',
 			'std'     => 'default',
 			'options' => array(
-				'default'           => __( 'Display Purchase Confirmation', 'edd-free-downloads' ),
-				'auto-download'     => __( 'Auto Download', 'edd-free-downloads' ),
-				'redirect'          => __( 'Custom Redirect', 'edd-free-downloads' ),
-				'download-redirect' => __( 'Auto Download & Redirect', 'edd-free-downloads' )
+				'default'       => __( 'Display Purchase Confirmation', 'edd-free-downloads' ),
+				'auto-download' => __( 'Auto Download', 'edd-free-downloads' ),
+				'redirect'      => __( 'Custom Redirect', 'edd-free-downloads' )
 			)
 		),
 		array(
@@ -174,7 +172,7 @@ function edd_free_downloads_add_settings( $settings ) {
 		$integration_settings = array_merge( $integration_header, $integration_settings );
 	}
 
-	$plugin_settings = array_merge( $display_settings, $fields_settings, $misc_settings, $integration_settings );
+	$plugin_settings = array_merge( $display_settings, $fields_settings, $processing_settings, $integration_settings );
 	$plugin_settings = array( 'free_downloads' => $plugin_settings );
 
 	return array_merge( $settings, $plugin_settings );
