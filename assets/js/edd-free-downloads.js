@@ -244,6 +244,10 @@ jQuery(document).ready(function ($) {
         var price_ids = '';
         var download_id = $(this).parent().parent().find('input[name="edd_free_download_id"]').val();
 
+        if( ! download_id ) {
+            download_id = $(this).parent().parent().find('.edd-free-download').data('download-id');
+        }
+
         $(this).parent().parent().find('input[name="edd_free_download_price_id[]"]').each(function () {
             price_ids = price_ids + $(this).val() + ',';
         });
