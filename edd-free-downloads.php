@@ -3,7 +3,7 @@
  * Plugin Name:     Easy Digital Downloads - Free Downloads
  * Plugin URI:      https://easydigitaldownloads.com/extensions/free-downloads/
  * Description:     Adds better handling for directly downloading free products to EDD
- * Version:         1.2.8
+ * Version:         2.0.0
  * Author:          Daniel J Griffiths
  * Author URI:      http://section214.com
  * Text Domain:     edd-free-downloads
@@ -69,7 +69,7 @@ if( ! class_exists( 'EDD_Free_Downloads' ) ) {
 		 */
 		private function setup_constants() {
 			// Plugin version
-			define( 'EDD_FREE_DOWNLOADS_VER', '1.2.8' );
+			define( 'EDD_FREE_DOWNLOADS_VER', '2.0.0' );
 
 			// Plugin path
 			define( 'EDD_FREE_DOWNLOADS_DIR', plugin_dir_path( __FILE__ ) );
@@ -90,8 +90,9 @@ if( ! class_exists( 'EDD_Free_Downloads' ) ) {
 			require_once EDD_FREE_DOWNLOADS_DIR . 'includes/scripts.php';
 			require_once EDD_FREE_DOWNLOADS_DIR . 'includes/functions.php';
 			require_once EDD_FREE_DOWNLOADS_DIR . 'includes/actions.php';
+			require_once EDD_FREE_DOWNLOADS_DIR . 'includes/download-actions.php';
+			require_once EDD_FREE_DOWNLOADS_DIR . 'includes/template-actions.php';
 			require_once EDD_FREE_DOWNLOADS_DIR . 'includes/shortcodes.php';
-			require_once EDD_FREE_DOWNLOADS_DIR . 'includes/template-overrides.php';
 
 			if( is_admin() ) {
 				require_once EDD_FREE_DOWNLOADS_DIR . 'includes/admin/settings/register.php';
@@ -172,3 +173,37 @@ function edd_free_downloads() {
 	}
 }
 add_action( 'plugins_loaded', 'edd_free_downloads' );
+
+
+/**
+ * Process upgrades
+ *
+ * @since       1.3.0
+ * @global      array $edd_options The EDD options array
+ * @return      void
+ */
+function edd_free_downloads_upgrade() {
+	global $edd_options;
+
+	if( ! get_option( 'edd_free_downloads_upgrade_130' ) ) {
+		// Upgrade notes field settings
+		if( isset( $edd_options['edd_free_downloads_notes'] ) && ( ! empty( $edd_options['edd_free_downloads_notes'] ) || $edd_options['edd_free_downloads_notes'] != '' ) ) {
+			$edd_options['edd_free_downloads_show_notes'] = '1';
+		}
+
+		// Upgrade on-complete settings
+		if( ! isset( $edd_options['edd_free_downloads_auto_download'] ) && ! isset( $edd_options['edd_free_downloads_auto_download_redirect'] ) && ( ! isset( $edd_options['edd_free_downloads_redirect'] ) || $edd_options['edd_free_downloads_redirect'] == '' ) ) {
+			$edd_options['edd_free_downloads_on_complete'] = 'default';
+		} elseif( isset( $edd_options['edd_free_downloads_auto_download'] ) && ! isset( $edd_options['edd_free_downloads_auto_download_redirect'] ) ) {
+			$edd_options['edd_free_downloads_on_complete'] = 'auto-download';
+		} elseif( ! isset( $edd_options['edd_free_downloads_auto_download'] ) && ! isset( $edd_options['edd_free_downloads_auto_download_redirect'] ) && ( isset( $edd_options['edd_free_downloads_redirect'] ) && $edd_options['edd_free_downloads_redirect'] != '' ) ) {
+			$edd_options['edd_free_downloads_on_complete'] = 'redirect';
+		}
+		unset( $edd_options['edd_free_downloads_auto_download'] );
+		unset( $edd_options['edd_free_downloads_auto_download_redirect'] );
+
+		update_option( 'edd_settings', $edd_options );
+		//update_option( 'edd_free_downloads_upgrade_130', '1' );
+	}
+}
+register_activation_hook( __FILE__, 'edd_free_downloads_upgrade' );

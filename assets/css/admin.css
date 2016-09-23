@@ -1,0 +1,9 @@
+.edd-free-downloads-zip-status-available {
+	color: #46b450;
+	font-weight: bold;
+}
+
+.edd-free-downloads-zip-status-unavailable {
+	color: #dc3232;
+	font-weight: bold;
+}

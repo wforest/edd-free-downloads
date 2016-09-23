@@ -89,6 +89,10 @@ jQuery(document).ready(function ($) {
             onClose: function() {
                 $('.edd-free-download-submit').removeAttr('disabled');
                 $('.edd-free-download-submit span').html(edd_free_downloads_vars.modal_download_label);
+
+                if ($('.edd-free-downloads-direct-download-link').length > 0) {
+                    $('.edd-free-downloads-direct-download-link').css('display', 'block');
+                }
             }
         });
 
@@ -103,13 +107,11 @@ jQuery(document).ready(function ($) {
             $('input[name="edd_free_download_id"]').val(download_id);
 
             if ($(this).parent().find('input[name="edd_options[price_id][]"]').length > 0) {
+                $('input[name="edd_free_download_price_id[]"]').remove();
+
                 $(this).parent().find('input[name="edd_options[price_id][]"]').each(function () {
                     if ($(this).prop('checked')) {
-                        if ($('input[name="edd_free_download_price_id[]"]').val() !== '') {
-                            $('input[name="edd_free_download_price_id[]"]').append('<input type="hidden" name="edd_free_download_price_id[]" value="' + $(this).val().toString() + '"/>"');
-                        } else {
-                            $('input[name="edd_free_download_price_id[]"]').val($(this).val().toString());
-                        }
+                        $('.edd-free-download-submit').before('<input type="hidden" name="edd_free_download_price_id[]" value="' + $(this).val().toString() + '"/>');
                     }
                 });
             }
@@ -128,6 +130,13 @@ jQuery(document).ready(function ($) {
 
         // Disable the submit button
         $('.edd-free-download-submit').attr('disabled', 'disabled');
+
+        // Remove the direct download link
+        if ($('.edd-free-downloads-direct-download-link').length > 0) {
+            $('.edd-free-downloads-direct-download-link').fadeOut('fast', function () {
+                $(this).css('display', 'none');
+            });
+        }
 
         email = $('input[name="edd_free_download_email"]');
         regex = /^((([A-Za-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([A-Za-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([A-Za-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([A-Za-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([A-Za-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([A-Za-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([A-Za-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([A-Za-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([A-Za-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([A-Za-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?$/;
@@ -225,5 +234,24 @@ jQuery(document).ready(function ($) {
             $('.edd-free-download-submit').removeAttr('disabled');
             e.preventDefault();
         }
+    });
+
+    $('body').on('click', '.edd-free-downloads-direct-download-link', function (e) {
+        e.preventDefault();
+
+        newModal.close();
+
+        var price_ids = '';
+        var download_id = $(this).parent().parent().find('input[name="edd_free_download_id"]').val();
+
+        if( ! download_id ) {
+            download_id = $(this).parent().parent().find('.edd-free-download').data('download-id');
+        }
+
+        $(this).parent().parent().find('input[name="edd_free_download_price_id[]"]').each(function () {
+            price_ids = price_ids + $(this).val() + ',';
+        });
+
+        window.location = window.location + '?edd_action=free_downloads_process_download&download_id=' + download_id + '&price_ids=' + price_ids;
     });
 });
