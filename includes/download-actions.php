@@ -91,11 +91,6 @@ function edd_free_download_process() {
 		wp_die( __( 'An internal error has occurred, please try again or contact support.', 'edd-free-downloads' ), __( 'Oops!', 'edd-free-downloads' ) );
 	}
 
-	// We don't currently support bundled products
-	if( edd_is_bundled_product( $download_id ) ) {
-		wp_die( __( 'An internal error has occurred, please try again or contact support.', 'edd-free-downloads' ), __( 'Oops!', 'edd-free-downloads' ) );
-	}
-
 	// Bail if this isn't a published download (or the current user can't edit it)
 	if( ! current_user_can( 'edit_post', $download->ID ) && $download->post_status != 'publish' ) {
 		wp_die( __( 'An internal error has occurred, please try again or contact support.', 'edd-free-downloads' ), __( 'Oops!', 'edd-free-downloads' ) );
@@ -151,7 +146,7 @@ function edd_free_download_process() {
 			);
 		}
 	} else {
-		if ( ! edd_is_free_download( $download_id, $price_id ) ) {
+		if ( ! edd_is_free_download( $download_id ) ) {
 			wp_die( __( 'An internal error has occurred, please try again or contact support.', 'edd-free-downloads' ), __( 'Oops!', 'edd-free-downloads' ) );
 		}
 
