@@ -68,10 +68,10 @@ function edd_free_downloads_use_modal( $download_id = false ) {
 
 	if( get_post_meta( $download_id, '_edd_free_downloads_bypass', true ) !== 'on' && ! $sold_out ) {
 		if( $download_id && ! edd_has_variable_prices( $download_id ) ) {
-			if( edd_is_bundled_product( $download_id ) && get_post_meta( $download_id, '_edd_free_downloads_bundle', true ) ) {
-				$price = floatval( edd_get_lowest_price_option( $download_id ) );
-
-				if( $price == 0 ) {
+			if( edd_is_free_download( $download_id ) ) {
+				if( edd_is_bundled_product( $download_id ) && get_post_meta( $download_id, '_edd_free_downloads_bundle', true ) ) {
+					$use_modal = true;
+				} elseif( ! edd_is_bundled_product( $download_id ) ) {
 					$use_modal = true;
 				}
 			}
