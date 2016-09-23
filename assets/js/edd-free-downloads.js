@@ -27,8 +27,14 @@ jQuery(document).ready(function ($) {
 
         $('.edd_purchase_submit_wrapper').each(function (i) {
             if ($('.edd_purchase_submit_wrapper').eq(i).find('.edd-add-to-cart').data('variable-price') === 'yes') {
-                $(this).after(buttonPrefix + edd_free_downloads_vars.download_label + buttonSuffix);
                 var download_id = $(this).closest('form').attr('id').replace('edd_purchase_', '');
+
+                if (edd_free_downloads_vars.bypass_logged_in === 'true') {
+                    $(this).after('<a href="#" class="edd-free-downloads-direct-download-link ' + classes + '" data-download-id="' + download_id + '">' + edd_free_downloads_vars.download_label + '</a>');
+                } else {
+                    $(this).after(buttonPrefix + edd_free_downloads_vars.download_label + buttonSuffix);
+                }
+
                 $(this).parent().find('.edd-free-downloads-variable').attr('data-download-id', download_id);
 
                 if ($(this).prev().find('input[name="edd_options[price_id][]"]:checked').attr('data-price') === '0.00') {
@@ -90,8 +96,8 @@ jQuery(document).ready(function ($) {
                 $('.edd-free-download-submit').removeAttr('disabled');
                 $('.edd-free-download-submit span').html(edd_free_downloads_vars.modal_download_label);
 
-                if ($('.edd-free-downloads-direct-download-link').length > 0) {
-                    $('.edd-free-downloads-direct-download-link').css('display', 'block');
+                if ($('div#edd-free-downloads-modal .edd-free-downloads-direct-download-link').length > 0) {
+                    $('div#edd-free-downloads-modal .edd-free-downloads-direct-download-link').css('display', 'block');
                 }
             }
         });
@@ -246,6 +252,10 @@ jQuery(document).ready(function ($) {
 
         if( ! download_id ) {
             download_id = $(this).parent().parent().find('.edd-free-download').data('download-id');
+        }
+
+        if( ! download_id ) {
+            download_id = $(this).data('download-id');
         }
 
         $(this).parent().parent().find('input[name="edd_free_download_price_id[]"]').each(function () {

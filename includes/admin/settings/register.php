@@ -66,6 +66,12 @@ function edd_free_downloads_add_settings( $settings ) {
 			'tooltip_title' => __( 'Displaying A Close Button', 'edd-free-downloads' ),
 			'tooltip_desc'  => __( 'By default, Free Downloads does not display a close button on the modal. In this state, users must click on the background to close the modal.', 'edd-free-downloads' )
 		),
+		array(
+			'id'   => 'edd_free_downloads_bypass_logged_in',
+			'name' => __( 'Bypass If Logged In', 'edd-free-downloads' ),
+			'desc' => __( 'Check to bypass the modal if a user is logged in.', 'edd-free-downloads' ),
+			'type' => 'checkbox'
+		)
 	) );
 
 	$fields_settings = apply_filters( 'edd_free_downloads_fields_settings', array(
