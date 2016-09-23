@@ -8,7 +8,7 @@
 
 
 // Exit if accessed directly
-if( ! defined( 'ABSPATH' ) ) {
+if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
@@ -67,7 +67,7 @@ function edd_free_downloads_render_download_meta_box() {
 		</label>
 	</div>
 	<?php
-	if( $direct_download || $on_complete ) {
+	if ( $direct_download || $on_complete ) {
 		?>
 		<p><strong><?php _e( 'Download Archive:', 'edd-free-downloads' ); ?></strong></p>
 		<label for="_edd_free_downloads_file">
@@ -101,22 +101,22 @@ function edd_free_downloads_meta_box_save( $post_id ) {
 	global $post;
 
 	// Don't process if nonce can't be validated
-	if( ! isset( $_POST['edd_free_downloads_meta_box_nonce'] ) || ! wp_verify_nonce( $_POST['edd_free_downloads_meta_box_nonce'], basename( __FILE__ ) ) ) {
+	if ( ! isset( $_POST['edd_free_downloads_meta_box_nonce'] ) || ! wp_verify_nonce( $_POST['edd_free_downloads_meta_box_nonce'], basename( __FILE__ ) ) ) {
 		return $post_id;
 	}
 
 	// Don't process if this is an autosave
-	if( ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) || ( defined( 'DOING_AJAX' ) && DOING_AJAX ) || isset( $_REQUEST['bulk_edit'] ) ) {
+	if ( ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) || ( defined( 'DOING_AJAX' ) && DOING_AJAX ) || isset( $_REQUEST['bulk_edit'] ) ) {
 		return $post_id;
 	}
 
 	// Don't process if this is a revision
-	if( isset( $post->post_type ) && $post->post_type == 'revision' ) {
+	if ( isset( $post->post_type ) && $post->post_type == 'revision' ) {
 		return $post_id;
 	}
 
 	// Don't process if the current user shouldn't be editing this product
-	if( ! current_user_can( 'edit_product', $post_id ) ){
+	if ( ! current_user_can( 'edit_product', $post_id ) ){
 		return $post_id;
 	}
 
@@ -127,9 +127,9 @@ function edd_free_downloads_meta_box_save( $post_id ) {
 		'_edd_free_downloads_file'
 	) );
 
-	foreach( $fields as $field ) {
-		if( isset( $_POST[ $field ] ) ) {
-			if( is_string( $_POST[ $field ] ) ) {
+	foreach ( $fields as $field ) {
+		if ( isset( $_POST[ $field ] ) ) {
+			if ( is_string( $_POST[ $field ] ) ) {
 				$new = esc_attr( $_POST[ $field ] );
 			} else {
 				$new = $_POST[ $field ];

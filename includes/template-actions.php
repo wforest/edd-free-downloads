@@ -8,7 +8,7 @@
 
 
 // Exit if accessed directly
-if( ! defined( 'ABSPATH' ) ) {
+if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
@@ -41,12 +41,12 @@ function edd_free_downloads_display_redirect() {
 	global $wp_query;
 
 	// Check for edd-free-download variable
-	if( ! isset( $wp_query->query_vars['edd-free-download'] ) ) {
+	if ( ! isset( $wp_query->query_vars['edd-free-download'] ) ) {
 		return;
 	}
 
 	// Make sure we have a download InvalidArgumentException
-	if( ! isset( $wp_query->query_vars['download_id'] ) ) {
+	if ( ! isset( $wp_query->query_vars['download_id'] ) ) {
 		return;
 	}
 
