@@ -158,7 +158,7 @@ add_action( 'edd_free_downloads_zip_status', 'edd_free_downloads_zip_status' );
  */
 function edd_free_downloads_directory_exists() {
 	$upload_dir = wp_upload_dir();
-	$upload_dir = $upload_dir['basedir'] . '/edd-free-downloads-cache';
+	$upload_dir = $upload_dir['basedir'] . '/edd-free-downloads-cache/';
 
 	// Ensure that the cache directory exists
 	if( ! is_dir( $upload_dir ) ) {

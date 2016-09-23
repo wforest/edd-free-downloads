@@ -203,7 +203,26 @@ function edd_free_downloads_compress_files( $files = array(), $download_id = 0 )
 			}
 
 			foreach( $files as $file_name => $file_path ) {
-				$file_path = str_replace( WP_CONTENT_URL, WP_CONTENT_DIR, $file_path );
+				// Is the file hosted locally?
+				$hosted = null;
+
+				if( strpos( $file_path, site_url() ) !== false ) {
+					$hosted = 'local';
+				} elseif( strpos( $file_path, ABSPATH ) !== false ) {
+					$hosted = 'local';
+				} elseif( filter_var( $file_path, FILTER_VALIDATE_URL ) === FALSE && strpos( $file_path, 'edd-dbfs' ) !== false ) {
+					$hosted = 'dropbox';
+				} elseif( filter_var( $file_path, FILTER_VALIDATE_URL ) === FALSE && $file_path[0] !== '/' ) {
+					$hosted = 'amazon';
+				} elseif( strpos( $file_path, 'AWSAccessKeyId' ) !== false ) {
+					$hosted = 'amazon';
+				}
+
+				if( $hosted == 'local' ) {
+					$file_path = str_replace( WP_CONTENT_URL, WP_CONTENT_DIR, $file_path );
+				} else {
+					$file_path = edd_free_download_fetch_remote_file( $file_path, $hosted );
+				}
 
 				$zip->addFile( $file_path, $file_name );
 			}
@@ -354,4 +373,55 @@ function edd_free_downloads_download_file( $download_url ) {
 	endswitch;
 
 	edd_die();
+}
+
+
+/**
+ * Fetch files that are remotely hosted and return new path
+ *
+ * @since       2.0.0
+ * @param       string $file_path The remote path of the file
+ * @param       string $hosted Where the file is hosted
+ * @return      string $file_path The new local path of the file
+ */
+function edd_free_download_fetch_remote_file( $file_path, $hosted ) {
+	$wp_upload_dir = wp_upload_dir();
+	$filePath      = $wp_upload_dir['basedir'] . '/edd-free-downloads-cache/';
+
+	if( $hosted == 'amazon' ) {
+		// Handle S3
+		if( false !== ( strpos( $file_path, 'AWSAccessKeyId' ) ) ) {
+			if( $url = parse_url( $file_path ) ) {
+				$file_path = ltrim( $url['path'], '/' );
+			}
+		}
+
+		$file_path = $GLOBALS['edd_s3']->get_s3_url( $file_path, 25 );
+
+		$fileName = substr( $file_path, 0, strpos( $file_path, '?' ) );
+		$fileName = explode( '/', $fileName );
+		$fileName = end( $fileName );
+	} elseif( $hosted == 'dropbox' ) {
+		// We can't work with EDD's Dropbox extension yet...
+		if( class_exists( 'EDDDropboxFileStore' ) ) {
+			return false;
+		}
+	} else {
+		// Fallback
+		$fileName = basename( $file_path );
+	}
+
+	if( ! file_exists( $filePath . $fileName ) ) {
+		// Remote files must be downloaded to the local machine!
+		$args = array(
+			'timeout' => 0
+		);
+
+		$response = wp_remote_get( $file_path, $args );
+		$new_file = wp_remote_retrieve_body( $response );
+
+		file_put_contents( $filePath . $fileName, $new_file );
+	}
+
+	return $filePath . $fileName;
 }
