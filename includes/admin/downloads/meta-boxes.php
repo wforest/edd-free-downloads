@@ -42,6 +42,8 @@ function edd_free_downloads_render_download_meta_box() {
 	$on_complete     = edd_get_option( 'edd_free_downloads_on_complete', false );
 	$on_complete     = ( $on_complete == 'auto-download' ) ? 1 : 0;
 	$download_file   = get_post_meta( $post_id, '_edd_free_downloads_file', true );
+	$bundle_enable   = get_post_meta( $post_id, '_edd_free_downloads_bundle', false ) ? 1 : 0;
+
 	?>
 	<p><strong><?php _e( 'Bypass Modal:', 'edd-free-downloads' ); ?></strong></p>
 	<label for="_edd_free_downloads_bypass">
@@ -52,6 +54,18 @@ function edd_free_downloads_render_download_meta_box() {
 		<?php _e( 'Disable Free Downloads modal', 'edd-free-downloads' ); ?>
 		<span alt="f223" class="edd-help-tip dashicons dashicons-editor-help" title="<strong><?php _e( 'Bypass Modal', 'edd-free-downloads' ); ?></strong>: <?php printf( __( 'When checked, this will get treated as a normal %s and will require the user to go through the checkout process.', 'edd-free-downloads' ), edd_get_label_singular( true ) ); ?>"></span>
 	</label>
+
+	<div class="edd-free-downloads-bundle-wrap">
+		<p><strong><?php _e( 'Use On Bundle', 'edd-free-downloads' ); ?></strong></p>
+		<label for="_edd_free_downloads_bundle">
+			<?php echo EDD()->html->checkbox( array(
+				'name'    => '_edd_free_downloads_bundle',
+				'current' => $bundle_enable
+			) ); ?>
+			<?php _e( 'Enforce use on bundle', 'edd-free-downloads' ); ?>
+			<span alt="f223" class="edd-help-tip dashicons dashicons-editor-help" title="<strong><?php _e( 'Use On Bundle', 'edd-free-downloads' ); ?></strong>: <?php printf( __( 'Free Downloads can\'t reliably determine the value of products in a bundle, so by default it ignores bundles. Check this to enforce use on this bundle and treat all bundled %s as free.', 'edd-free-downloads' ), edd_get_label_plural( true ) ); ?>"></span>
+		</label>
+	</div>
 	<?php
 	if( $direct_download || $on_complete ) {
 		?>
@@ -109,6 +123,7 @@ function edd_free_downloads_meta_box_save( $post_id ) {
 	// The default fields that get saved
 	$fields = apply_filters( 'edd_free_downloads_meta_box_fields_save', array(
 		'_edd_free_downloads_bypass',
+		'_edd_free_downloads_bundle',
 		'_edd_free_downloads_file'
 	) );
 

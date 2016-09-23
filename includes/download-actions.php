@@ -292,13 +292,13 @@ function edd_free_downloads_process_auto_download() {
 			}
 		}
 	} else {
-		$download_id = $_GET['download_id'];
-		$price_ids   = $_GET['price_ids'];
+		$download_id = absint( $_GET['download_id'] );
+		$price_ids   = absint( $_GET['price_ids'] );
 		$archive_url = get_post_meta( $download_id, '_edd_free_downloads_file', true );
 
 		if( $archive_url && $archive_url != '' ) {
 			$download_files = array_merge( $download_files, array( basename( $archive_url ) => $archive_url ) );
-		} else {
+		} elseif( ! edd_is_bundled_product( $download_id ) ) {
 			if( $price_ids ) {
 				$price_ids = explode( ',', trim( $price_ids ) );
 
@@ -308,6 +308,8 @@ function edd_free_downloads_process_auto_download() {
 			} else {
 				$download_files = array_merge( $download_files, edd_free_downloads_get_files( $download_id ) );
 			}
+		} else {
+			$download_files = array_merge( $download_files, edd_free_downloads_get_files( $download_id ) );
 		}
 	}
 

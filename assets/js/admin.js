@@ -3,7 +3,7 @@
 jQuery(document).ready(function ($) {
     'use strict';
 
-    var EDD_Free_Downloads_Settings;
+    var EDD_Free_Downloads_Settings, EDD_Free_Downloads_Meta_Box;
 
     /**
      * Settings
@@ -95,4 +95,26 @@ jQuery(document).ready(function ($) {
         }
     };
     EDD_Free_Downloads_Settings.init();
+
+    /**
+     * Download Meta Box
+     */
+    EDD_Free_Downloads_Meta_Box = {
+        init : function () {
+            this.general();
+        },
+
+        general : function () {
+            $('select[name="_edd_product_type"]').change(function () {
+                if ($(this).val() === 'bundle') {
+                    $('.edd-free-downloads-bundle-wrap').fadeIn('fast').css('display', 'block');
+                } else {
+                    $('.edd-free-downloads-bundle-wrap').fadeOut('fast', function() {
+                        $(this).css('display', 'none');
+                    });
+                }
+            }).change();
+        }
+    };
+    EDD_Free_Downloads_Meta_Box.init();
 });

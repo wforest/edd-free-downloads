@@ -67,11 +67,13 @@ function edd_free_downloads_use_modal( $download_id = false ) {
 	}
 
 	if( get_post_meta( $download_id, '_edd_free_downloads_bypass', true ) !== 'on' && ! $sold_out ) {
-		if( $download_id && ! edd_has_variable_prices( $download_id ) && ! edd_is_bundled_product( $download_id ) ) {
-			$price = floatval( edd_get_lowest_price_option( $download_id ) );
+		if( $download_id && ! edd_has_variable_prices( $download_id ) ) {
+			if( edd_is_bundled_product( $download_id ) && get_post_meta( $download_id, '_edd_free_downloads_bundle', true ) ) {
+				$price = floatval( edd_get_lowest_price_option( $download_id ) );
 
-			if( $price == 0 ) {
-				$use_modal = true;
+				if( $price == 0 ) {
+					$use_modal = true;
+				}
 			}
 		} elseif( edd_has_variable_prices( $download_id ) ) {
 			$price = floatval( edd_get_lowest_price_option( $download_id ) );
@@ -156,6 +158,19 @@ function edd_free_downloads_get_files( $download_id = 0, $price_id = null ) {
 		foreach( $download_files as $filekey => $file ) {
 			$filename         = basename( $file['file'] );
 			$files[$filename] = $file['file'];
+		}
+	} elseif( edd_is_bundled_product( $download_id ) ) {
+		$downloads = edd_get_bundled_products( $download_id );
+
+		foreach( $downloads as $download ) {
+			$download_files = edd_get_download_files( $download );
+
+			if( ! empty( $download_files ) && is_array( $download_files ) ) {
+				foreach( $download_files as $filekey => $file ) {
+					$filename         = basename( $file['file'] );
+					$files[$filename] = $file['file'];
+				}
+			}
 		}
 	}
 
