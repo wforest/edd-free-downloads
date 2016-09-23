@@ -7,7 +7,7 @@
  */
 
 // Exit if accessed directly.
-if( ! defined( 'ABSPATH' ) ) {
+if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
@@ -220,10 +220,10 @@ function edd_free_downloads_auto_register_settings( $settings ) {
 	if ( ! class_exists( 'EDD_Auto_Register' ) ) {
 		$auto_register_settings = array(
 			array(
-				'id'    => 'edd_free_downloads_user_registration',
-				'name'  => __( 'User Registration', 'edd-free-downloads' ),
-				'desc'  => __( 'Check to display a registration form in the download modal for logged-out users.', 'edd-free-downloads' ),
-				'type'  => 'checkbox',
+				'id'   => 'edd_free_downloads_user_registration',
+				'name' => __( 'User Registration', 'edd-free-downloads' ),
+				'desc' => __( 'Check to display a registration form in the download modal for logged-out users.', 'edd-free-downloads' ),
+				'type' => 'checkbox',
 			),
 		);
 
@@ -246,17 +246,17 @@ function edd_free_downloads_newsletter_settings( $settings ) {
 	if ( edd_free_downloads_has_newsletter_plugin() ) {
 		$newsletter_settings = array(
 			array(
-				'id'    => 'edd_free_downloads_newsletter_optin',
-				'name'  => __( 'Display Opt-In', 'edd-free-downloads' ),
-				'desc'  => __( 'Check to display a newsletter opt-in checkbox in the download modal.', 'edd-free-downloads' ),
-				'type'  => 'checkbox',
+				'id'   => 'edd_free_downloads_newsletter_optin',
+				'name' => __( 'Display Opt-In', 'edd-free-downloads' ),
+				'desc' => __( 'Check to display a newsletter opt-in checkbox in the download modal.', 'edd-free-downloads' ),
+				'type' => 'checkbox',
 			),
 			array(
-				'id'    => 'edd_free_downloads_newsletter_optin_label',
-				'name'  => __( 'Opt-In Field Label', 'edd-free-downloads' ),
-				'desc'  => __( 'Specify the text to display for the opt-in field label.', 'edd-free-downloads' ),
-				'type'  => 'text',
-				'std'   => __( 'Subscribe to our newsletter', 'edd-free-downloads' ),
+				'id'   => 'edd_free_downloads_newsletter_optin_label',
+				'name' => __( 'Opt-In Field Label', 'edd-free-downloads' ),
+				'desc' => __( 'Specify the text to display for the opt-in field label.', 'edd-free-downloads' ),
+				'type' => 'text',
+				'std'  => __( 'Subscribe to our newsletter', 'edd-free-downloads' ),
 			),
 		);
 
