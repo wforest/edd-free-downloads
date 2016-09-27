@@ -87,6 +87,7 @@ if ( ! class_exists( 'EDD_Free_Downloads' ) ) {
 			require_once EDD_FREE_DOWNLOADS_DIR . 'includes/scripts.php';
 			require_once EDD_FREE_DOWNLOADS_DIR . 'includes/functions.php';
 			require_once EDD_FREE_DOWNLOADS_DIR . 'includes/actions.php';
+			require_once EDD_FREE_DOWNLOADS_DIR . 'includes/filters.php';
 			require_once EDD_FREE_DOWNLOADS_DIR . 'includes/download-actions.php';
 			require_once EDD_FREE_DOWNLOADS_DIR . 'includes/template-actions.php';
 			require_once EDD_FREE_DOWNLOADS_DIR . 'includes/shortcodes.php';
