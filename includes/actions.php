@@ -14,21 +14,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 
 /**
- * Adds our templates dir to the EDD template stack
- *
- * @since       1.2.5
- * @param       array $paths The existing template stack
- * @return      array $paths The updated template stack
- */
-function edd_free_downloads_add_template_stack( $paths ) {
-	$paths[55] = EDD_FREE_DOWNLOADS_DIR . 'templates/';
-
-	return $paths;
-}
-add_filter( 'edd_template_paths', 'edd_free_downloads_add_template_stack' );
-
-
-/**
  * Registers a new rewrite endpoint
  *
  * @since       1.1.0
@@ -39,43 +24,6 @@ function edd_free_downloads_add_endpoint( $rewrite_rules ) {
 	add_rewrite_endpoint( 'edd-free-download', EP_ALL );
 }
 add_action( 'init', 'edd_free_downloads_add_endpoint' );
-
-
-/**
- * Add a new query var
- *
- * @since       1.1.0
- * @param       array $vars The current query vars
- * @return      array $vars The new query vars
- */
-function edd_free_downloads_query_vars( $vars ) {
-	$vars[] = 'download_id';
-
-	return $vars;
-}
-add_filter( 'query_vars', 'edd_free_downloads_query_vars', -1 );
-
-
-/**
- * Maybe override straight to checkout
- *
- * @since       1.1.0
- * @param       bool $ret Whether or not to go straight to checkout
- * @global      object $post The WordPress post object
- * @return      bool $ret Whether or not to go straight to checkout
- */
-function edd_free_downloads_override_redirect( $ret ) {
-	global $post;
-
-	$id = get_the_ID();
-
-	if ( is_single( $id ) && get_post_type( $id ) == 'download' && edd_is_free_download( $id ) ) {
-		$ret = false;
-	}
-
-	return $ret;
-}
-add_filter( 'edd_straight_to_checkout', 'edd_free_downloads_override_redirect' );
 
 
 /**
