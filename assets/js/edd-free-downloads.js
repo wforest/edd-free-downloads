@@ -39,9 +39,9 @@ jQuery(document.body).ready(function ($) {
 
                 if ($(this).prev().find('input[name="edd_options[price_id][]"]:checked').attr('data-price') === '0.00') {
                     $(this).css('display', 'none');
-                    $(this).parent().find('.edd-free-downloads-variable').css('display', 'inline-block');
+                    $(this).parent().find('.edd-free-downloads-variable').css('display', 'block');
                 } else {
-                    $(this).css('display', 'inline-block');
+                    $(this).css('display', 'block');
                     $(this).parent().find('.edd-free-downloads-variable').css('display', 'none');
                 }
             }
@@ -58,9 +58,9 @@ jQuery(document.body).ready(function ($) {
 
             if (total === 0) {
                 $(this).closest('.edd_download_purchase_form').find('.edd_purchase_submit_wrapper').css('display', 'none');
-                $(this).closest('.edd_download_purchase_form').find('.edd-free-downloads-variable').css('display', 'inline-block');
+                $(this).closest('.edd_download_purchase_form').find('.edd-free-downloads-variable').css('display', 'block');
             } else {
-                $(this).closest('.edd_download_purchase_form').find('.edd_purchase_submit_wrapper').css('display', 'inline-block');
+                $(this).closest('.edd_download_purchase_form').find('.edd_purchase_submit_wrapper').css('display', 'block');
                 $(this).closest('.edd_download_purchase_form').find('.edd-free-downloads-variable').css('display', 'none');
             }
         });
