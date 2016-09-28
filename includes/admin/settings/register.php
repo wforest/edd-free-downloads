@@ -101,7 +101,7 @@ function edd_free_downloads_add_settings( $settings ) {
 			'desc'          => __( 'Check to enable the notes field in the download modal.', 'edd-free-downloads' ),
 			'type'          => 'checkbox',
 			'tooltip_title' => __( 'The Notes Field', 'edd-free-downloads' ),
-			'tooltip_desc'  => __( 'Enabling this option allows you to display global or per-download notes in the modal.', 'edd-free-downloads' )
+			'tooltip_desc'  => __( 'Enabling this option allows you to display notes in the modal.', 'edd-free-downloads' )
 		),
 		array(
 			'id'   => 'edd_free_downloads_notes_title',
