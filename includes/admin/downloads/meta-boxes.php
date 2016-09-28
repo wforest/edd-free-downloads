@@ -75,7 +75,7 @@ function edd_free_downloads_render_download_meta_box() {
 				'name'        => '_edd_free_downloads_file',
 				'class'       => 'widefat',
 				'placeholder' => 'http://',
-				'current'     => $download_file
+				'value'       => $download_file
 			) ); ?>
 			<?php _e( 'Enter archive URL, or leave blank to attempt auto-detection', 'edd-free-downloads' ); ?>
 			<span alt="f223" class="edd-help-tip dashicons dashicons-editor-help" title="<strong><?php _e( 'Download Archive', 'edd-free-downloads' ); ?></strong>: <?php printf( __( 'If this %s includes multiple files, specify an archive file here to use for the Direct Download and Auto Download options.', 'edd-free-downloads' ), edd_get_label_singular( true ) ); ?>"></span>
