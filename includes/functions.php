@@ -221,7 +221,7 @@ function edd_free_downloads_compress_files( $files = array(), $download_id = 0 )
 				if ( $hosted == 'local' ) {
 					$file_path = str_replace( WP_CONTENT_URL, WP_CONTENT_DIR, $file_path );
 				} else {
-					$file_path = edd_free_download_fetch_remote_file( $file_path, $hosted );
+					$file_path = edd_free_downloads_fetch_remote_file( $file_path, $hosted );
 				}
 
 				$zip->addFile( $file_path, $file_name );
@@ -364,7 +364,7 @@ function edd_free_downloads_download_file( $download_url ) {
  * @param       string $hosted Where the file is hosted
  * @return      string $file_path The new local path of the file
  */
-function edd_free_download_fetch_remote_file( $file_path, $hosted ) {
+function edd_free_downloads_fetch_remote_file( $file_path, $hosted ) {
 	$wp_upload_dir = wp_upload_dir();
 	$filePath      = $wp_upload_dir['basedir'] . '/edd-free-downloads-cache/';
 
