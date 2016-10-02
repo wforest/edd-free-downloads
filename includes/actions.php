@@ -166,3 +166,40 @@ function edd_free_downloads_directory_exists() {
 	}
 }
 add_action( 'admin_init', 'edd_free_downloads_directory_exists' );
+
+
+function edd_free_downloads_delete_cached_files() {
+	if ( ! isset( $_GET['post'] ) ) {
+		wp_die( __( 'No download specified!', 'edd-free-downloads' ), __( 'Oops!', 'edd-free-downloads' ) );
+	}
+
+	if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( $_GET['_wpnonce'], 'edd_free_downloads_cache_nonce' ) ) {
+		wp_die( __( 'Nonce verification failed!', 'edd-free-downloads' ), __( 'Oops!', 'edd-free-downloads' ) );
+	}
+
+	$upload_dir  = wp_upload_dir();
+	$upload_dir  = trailingslashit( $upload_dir['basedir'] . '/edd-free-downloads-cache' );
+	$download_id = absint( $_GET['post'] );
+
+	// Delete cached remote files
+	$files = edd_free_downloads_get_files( $download_id );
+
+	foreach ( $files as $file_name => $file_path ) {
+		if( file_exists( $upload_dir . $file_name ) ) {
+			unlink( $upload_dir . $file_name );
+		}
+	}
+
+	// Delete cached zip file
+	$zip_name = apply_filters( 'edd_free_downloads_zip_name', strtolower( str_replace( ' ', '-', get_bloginfo( 'name' ) ) ) . '-bundle-' . $download_id . '.zip' );
+	$zip_file = $upload_dir . '/' . $zip_name;
+
+	if( file_exists( $zip_file ) ) {
+		unlink( $zip_file );
+	}
+
+	$redirect_url = add_query_arg( array( 'edd-action' => null, '_wpnonce' => null, 'edd-message' => 'fd-files-deleted' ) );
+	wp_safe_redirect( $redirect_url );
+	die();
+}
+add_action( 'edd_free_downloads_delete_cached_files', 'edd_free_downloads_delete_cached_files' );

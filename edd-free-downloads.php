@@ -93,6 +93,7 @@ if ( ! class_exists( 'EDD_Free_Downloads' ) ) {
 			require_once EDD_FREE_DOWNLOADS_DIR . 'includes/shortcodes.php';
 
 			if ( is_admin() ) {
+				require_once EDD_FREE_DOWNLOADS_DIR . 'includes/admin/class.admin-notices.php';
 				require_once EDD_FREE_DOWNLOADS_DIR . 'includes/admin/settings/register.php';
 				require_once EDD_FREE_DOWNLOADS_DIR . 'includes/admin/downloads/meta-boxes.php';
 			}
