@@ -85,6 +85,12 @@ function edd_free_downloads_render_download_meta_box() {
 
 	do_action( 'edd_free_downloads_meta_box_settings_fields', $post_id );
 
+	if ( ! edd_get_option( 'edd_free_downloads_disable_cache', false ) ) {
+		echo '<div class="edd-free-downloads-cache-actions">';
+		echo '<a href="' . wp_nonce_url( add_query_arg( 'edd-action', 'free_downloads_delete_cached_files' ), 'edd_free_downloads_cache_nonce', '_wpnonce' ) . '" class="button">' . __( 'Clear Cached Files', 'edd-free-downloads' ) . '</a>';
+		echo '</div>';
+	}
+
 	wp_nonce_field( basename( __FILE__ ), 'edd_free_downloads_meta_box_nonce' );
 }
 
