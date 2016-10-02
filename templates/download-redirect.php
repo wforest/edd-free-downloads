@@ -69,17 +69,21 @@ $label = edd_get_option( 'edd_free_downloads_modal_button_label', __( 'Download 
 	<?php endif; ?>
 
 	<?php if ( edd_get_option( 'edd_free_downloads_show_notes', false ) ) : ?>
+		<div class="edd-free-downloads-note-wrapper">
+			<div class="edd-free-downloads-note-title"><strong></strong></div>
+			<p class="edd-free-downloads-note-content"></p>
+		</div>
 		<?php
-		$title = edd_get_option( 'edd_free_downloads_notes_title', '' );
-		$notes = edd_get_option( 'edd_free_downloads_notes', '' );
+//		$title = edd_get_option( 'edd_free_downloads_notes_title', '' );
+//		$notes = edd_get_option( 'edd_free_downloads_notes', '' );
 
-		echo '<hr />';
+//		echo '<hr />';
 
-		if ( $title !== '' ) {
-			echo '<strong>' . esc_attr( $title ) . '</strong>';
-		}
+//		if ( $title !== '' ) {
+//			echo '<strong>' . esc_attr( $title ) . '</strong>';
+//		}
 
-		echo '<div>' . wpautop( stripslashes( $notes ) ) . '</div>';
+//		echo '<div>' . wpautop( stripslashes( $notes ) ) . '</div>';
 		?>
 	<?php endif; ?>
 

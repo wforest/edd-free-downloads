@@ -252,3 +252,54 @@ function edd_free_downloads_delete_cached_files() {
 	die();
 }
 add_action( 'edd_free_downloads_delete_cached_files', 'edd_free_downloads_delete_cached_files' );
+
+
+/**
+ * Get the notes for a given download
+ *
+ * @since       2.1.0
+ * @return      void
+ */
+function edd_free_downloads_get_notes() {
+	if ( ! $_POST['download_id'] ) {
+		die( '-1' );
+	}
+
+	$download_id = intval( $_POST['download_id'] );
+	$download    = get_post( $download_id );
+
+	if ( 'download' != $download->post_type ) {
+		die( '-2' );
+	}
+
+	$note    = '';
+	$title   = '';
+	$content = '';
+
+	if ( ! edd_get_option( 'edd_free_downloads_disable_global_notes', false ) ) {
+		$title   = edd_get_option( 'edd_free_downloads_notes_title', '' );
+		$content = edd_get_option( 'edd_free_downloads_notes', '' );
+	}
+
+	if ( $download_title = get_post_meta( $download_id, '_edd_free_downloads_notes_title', true ) ) {
+		$title = $download_title;
+	}
+
+	if ( $download_note = get_post_meta( $download_id, '_edd_free_downloads_notes', true ) ) {
+		$content = $download_note;
+	}
+
+	if ( $title !== '' || $content !== '' ) {
+		$note = array(
+			'title'   => $title,
+			'content' => wpautop( stripslashes( $content ) )
+		);
+
+		$note = json_encode( $note );
+	}
+
+	echo $note;
+	edd_die();
+}
+add_action( 'wp_ajax_edd_free_downloads_get_notes', 'edd_free_downloads_get_notes' );
+add_action( 'wp_ajax_nopriv_edd_free_downloads_get_notes', 'edd_free_downloads_get_notes' );
