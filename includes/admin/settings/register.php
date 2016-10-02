@@ -179,6 +179,25 @@ function edd_free_downloads_add_settings( $settings ) {
 		)
 	) );
 
+	$cache_settings = apply_filters( 'edd_free_downloads_cache_settings', array(
+		array(
+			'id'            => 'edd_free_downloads_cache_settings',
+			'name'          => '<h3>' . __( 'Cache Settings', 'edd-free-downloads' ) . '</h3>',
+			'desc'          => '',
+			'type'          => 'header',
+			'tooltip_title' => __( 'Cache Settings', 'edd-free-downloads' ),
+			'tooltip_desc'  => __( 'The fields below define how Free Downloads handles file caching. Free Downloads caches files which are stored remotely while compressing them if direct download or auto download are enabled.', 'edd-free-downloads' )
+		),
+		array(
+			'id'            => 'edd_free_downloads_disable_cache',
+			'name'          => __( 'Disable Cache', 'edd-free-downloads' ),
+			'desc'          => __( 'Check to disable caching remote files entirely.', 'edd-free-downloads'),
+			'type'          => 'checkbox',
+			'tooltip_title' => __( 'Disable Cache', 'edd-free-downloads' ),
+			'tooltip_desc'  => __( 'Free Downloads caches remote files to prevent long download times while compressing multi-file downloads. If you prefer not to use this feature, check this option.', 'edd-free-downloads' )
+		)
+	) );
+
 	// Allow extension of the settings.
 	$integration_settings = apply_filters( 'edd_free_downloads_integration_settings', array() );
 
@@ -197,7 +216,7 @@ function edd_free_downloads_add_settings( $settings ) {
 		$integration_settings = array_merge( $integration_header, $integration_settings );
 	}
 
-	$plugin_settings = array_merge( $display_settings, $fields_settings, $processing_settings, $integration_settings );
+	$plugin_settings = array_merge( $display_settings, $fields_settings, $processing_settings, $cache_settings, $integration_settings );
 	$plugin_settings = array( 'free_downloads' => $plugin_settings );
 
 	return array_merge( $settings, $plugin_settings );
