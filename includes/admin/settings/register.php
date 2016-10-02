@@ -224,7 +224,20 @@ function edd_free_downloads_auto_register_settings( $settings ) {
 				'name' => __( 'User Registration', 'edd-free-downloads' ),
 				'desc' => __( 'Check to display a registration form in the download modal for logged-out users.', 'edd-free-downloads' ),
 				'type' => 'checkbox',
-			),
+			)
+		);
+
+		$settings = array_merge( $settings, $auto_register_settings );
+	} else {
+		$auto_register_settings = array(
+			array(
+				'id'            => 'edd_free_downloads_bypass_auto_register',
+				'name'          => __( 'Bypass Auto Registration', 'edd-free-downloads' ),
+				'desc'          => __( 'Check to bypass auto-registration for free downloads.', 'edd-free-downloads' ),
+				'type'          => 'checkbox',
+				'tooltip_title' => __( 'Bypass Auto Registration', 'edd-free-downloads' ),
+				'tooltip_desc'  => __( 'By default, the Auto Registration plugin registers a new user account when a free download is processed. Check this to prevent user accounts from being automatically created.', 'edd-free-downloads' )
+			)
 		);
 
 		$settings = array_merge( $settings, $auto_register_settings );
