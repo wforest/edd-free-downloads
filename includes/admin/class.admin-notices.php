@@ -52,6 +52,9 @@ class EDD_Free_Downloads_Admin_Notices {
 			case 'fd-files-deleted' :
 				$message = __( 'Cached files cleared successfully', 'edd-free-downloads' );
 				break;
+			case 'fd-cache-purged' :
+				$message = __( 'Free Downloads cache purged successfully', 'edd-free-downloads' );
+				break;
 		}
 
 		if ( ! empty( $message ) ) {

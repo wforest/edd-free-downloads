@@ -195,6 +195,12 @@ function edd_free_downloads_add_settings( $settings ) {
 			'type'          => 'checkbox',
 			'tooltip_title' => __( 'Disable Cache', 'edd-free-downloads' ),
 			'tooltip_desc'  => __( 'Free Downloads caches remote files to prevent long download times while compressing multi-file downloads. If you prefer not to use this feature, check this option.', 'edd-free-downloads' )
+		),
+		array(
+			'id'   => 'free_downloads_display_purge_cache',
+			'name' => __( 'Purge Cache', 'edd-free-downloads' ),
+			'desc' => '',
+			'type' => 'hook'
 		)
 	) );
 

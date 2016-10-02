@@ -92,6 +92,16 @@ jQuery(document).ready(function ($) {
                     }
                 }
             }).change();
+
+            $('input[name="edd_settings[edd_free_downloads_disable_cache]"]').change(function () {
+                if ($(this).prop('checked')) {
+                    $('a.edd-free-downloads-purge-cache').closest('tr').fadeOut('fast', function () {
+                        $(this).css('display', 'none');
+                    });
+                } else {
+                    $('a.edd-free-downloads-purge-cache').closest('tr').fadeIn('fast').css('display', 'table-row');
+                }
+            }).change();
         }
     };
     EDD_Free_Downloads_Settings.init();
