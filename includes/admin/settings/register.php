@@ -104,6 +104,12 @@ function edd_free_downloads_add_settings( $settings ) {
 			'tooltip_desc'  => __( 'Enabling this option allows you to display notes in the modal.', 'edd-free-downloads' )
 		),
 		array(
+			'id'   => 'edd_free_downloads_disable_global_notes',
+			'name' => __( 'Disable Global Notes', 'edd-free-downloads' ),
+			'desc' => __( 'Check to disable global notes and only use notes defined per-product.', 'edd-free-downloads' ),
+			'type' => 'checkbox'
+		),
+		array(
 			'id'   => 'edd_free_downloads_notes_title',
 			'name' => __( 'Notes Field Title', 'edd-free-downloads' ),
 			'desc' => __( 'Enter the title to display for the notes field, or leave blank for none.', 'edd-free-downloads' ),

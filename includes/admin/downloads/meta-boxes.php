@@ -43,7 +43,8 @@ function edd_free_downloads_render_download_meta_box() {
 	$on_complete     = ( $on_complete == 'auto-download' ) ? 1 : 0;
 	$download_file   = get_post_meta( $post_id, '_edd_free_downloads_file', true );
 	$bundle_enable   = get_post_meta( $post_id, '_edd_free_downloads_bundle', false ) ? 1 : 0;
-
+	$notes_title     = get_post_meta( $post_id, '_edd_free_downloads_notes_title', true );
+	$notes           = get_post_meta( $post_id, '_edd_free_downloads_notes', true );
 	?>
 	<p><strong><?php _e( 'Bypass Modal:', 'edd-free-downloads' ); ?></strong></p>
 	<label for="_edd_free_downloads_bypass">
@@ -79,6 +80,30 @@ function edd_free_downloads_render_download_meta_box() {
 			) ); ?>
 			<?php _e( 'Enter archive URL, or leave blank to attempt auto-detection', 'edd-free-downloads' ); ?>
 			<span alt="f223" class="edd-help-tip dashicons dashicons-editor-help" title="<strong><?php _e( 'Download Archive', 'edd-free-downloads' ); ?></strong>: <?php printf( __( 'If this %s includes multiple files, specify an archive file here to use for the Direct Download and Auto Download options.', 'edd-free-downloads' ), edd_get_label_singular( true ) ); ?>"></span>
+		</label>
+		<?php
+	}
+
+	if ( edd_get_option( 'edd_free_downloads_show_notes', false ) ) {
+		?>
+		<p><strong><?php _e( 'Notes Title', 'edd-free-downloads' ); ?></strong></p>
+		<label for="_edd_free_downloads_notes_title">
+			<?php echo EDD()->html->text( array(
+				'name'  => '_edd_free_downloads_notes_title',
+				'class' => 'widefat',
+				'value' => $notes_title
+			) ); ?>
+			<?php _e( 'Enter the title for the notes field, or leave blank to use the global option', 'edd-free-downloads' ); ?>
+		</label>
+
+		<p><strong><?php _e( 'Notes', 'edd-free-downloads' ); ?></strong></p>
+		<label for="_edd_free_downloads_notes">
+			<?php echo EDD()->html->textarea( array(
+				'name'  => '_edd_free_downloads_notes',
+				'class' => 'widefat',
+				'value' => $notes
+			) ); ?>
+			<?php _e( 'Enter any notes, or leave blank to use the global option', 'edd-free-downloads' ); ?>
 		</label>
 		<?php
 	}
@@ -130,7 +155,9 @@ function edd_free_downloads_meta_box_save( $post_id ) {
 	$fields = apply_filters( 'edd_free_downloads_meta_box_fields_save', array(
 		'_edd_free_downloads_bypass',
 		'_edd_free_downloads_bundle',
-		'_edd_free_downloads_file'
+		'_edd_free_downloads_file',
+		'_edd_free_downloads_notes_title',
+		'_edd_free_downloads_notes'
 	) );
 
 	foreach ( $fields as $field ) {
