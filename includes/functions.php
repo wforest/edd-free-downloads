@@ -209,19 +209,7 @@ function edd_free_downloads_compress_files( $files = array(), $download_id = 0 )
 
 			foreach ( $files as $file_name => $file_path ) {
 				// Is the file hosted locally?
-				$hosted = null;
-
-				if ( strpos( $file_path, site_url() ) !== false ) {
-					$hosted = 'local';
-				} elseif ( strpos( $file_path, ABSPATH ) !== false ) {
-					$hosted = 'local';
-				} elseif ( filter_var( $file_path, FILTER_VALIDATE_URL ) === FALSE && strpos( $file_path, 'edd-dbfs' ) !== false ) {
-					$hosted = 'dropbox';
-				} elseif ( filter_var( $file_path, FILTER_VALIDATE_URL ) === FALSE && $file_path[0] !== '/' ) {
-					$hosted = 'amazon';
-				} elseif ( strpos( $file_path, 'AWSAccessKeyId' ) !== false ) {
-					$hosted = 'amazon';
-				}
+				$hosted = edd_free_downloads_get_host( $file_path );
 
 				if ( $hosted == 'local' ) {
 					$file_path = str_replace( WP_CONTENT_URL, WP_CONTENT_DIR, $file_path );
@@ -414,4 +402,30 @@ function edd_free_downloads_fetch_remote_file( $file_path, $hosted ) {
 	}
 
 	return $filePath . $fileName;
+}
+
+
+/**
+ * Check if a file is locally or remotely hosted
+ *
+ * @since       2.1.0
+ * @param       string $file_path The path to check
+ * @return      string $hosted The hosting location
+ */
+	function edd_free_downloads_get_host( $file_path ) {
+	$hosted = '';
+
+	if ( strpos( $file_path, site_url() ) !== false ) {
+		$hosted = 'local';
+	} elseif ( strpos( $file_path, ABSPATH ) !== false ) {
+		$hosted = 'local';
+	} elseif ( filter_var( $file_path, FILTER_VALIDATE_URL ) === FALSE && strpos( $file_path, 'edd-dbfs' ) !== false ) {
+		$hosted = 'dropbox';
+	} elseif ( filter_var( $file_path, FILTER_VALIDATE_URL ) === FALSE && $file_path[0] !== '/' ) {
+		$hosted = 'amazon';
+	} elseif ( strpos( $file_path, 'AWSAccessKeyId' ) !== false ) {
+		$hosted = 'amazon';
+	}
+
+	return $hosted;
 }
