@@ -113,6 +113,7 @@ jQuery(document.body).ready(function ($) {
 
             var button = $(this);
             var download_id = $(this).data('download-id');
+            var button_html = $(this).html();
 
             button.append(' <i class="edd-icon-spinner edd-icon-spin"></i>');
 
@@ -142,7 +143,7 @@ jQuery(document.body).ready(function ($) {
                         newModal.open();
                     }
 
-                    button.html(edd_free_downloads_vars.download_label);
+                    button.html(button_html);
                 }
             }).fail(function (data) {
                 if ( window.console && window.console.log ) {
