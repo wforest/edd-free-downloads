@@ -26,9 +26,25 @@ jQuery(document).ready(function ($) {
 
             $('input[name="edd_settings[edd_free_downloads_show_notes]"]').change(function () {
                 if ($(this).prop('checked')) {
-                    $('input[name="edd_settings[edd_free_downloads_notes_title]"]').closest('tr').fadeIn('fast').css('display', 'table-row');
-                    $('textarea[name="edd_settings[edd_free_downloads_notes]"]').closest('tr').fadeIn('fast').css('display', 'table-row');
+                    $('input[name="edd_settings[edd_free_downloads_disable_global_notes]"]').closest('tr').fadeIn('fast').css('display', 'table-row');
+
+                    $('input[name="edd_settings[edd_free_downloads_disable_global_notes]"]').change(function () {
+                        if ($(this).prop('checked')) {
+                            $('input[name="edd_settings[edd_free_downloads_notes_title]"]').closest('tr').fadeOut('fast', function () {
+                                $(this).css('display', 'none');
+                            });
+                            $('textarea[name="edd_settings[edd_free_downloads_notes]"]').closest('tr').fadeOut('fast', function () {
+                                $(this).css('display', 'none');
+                            });
+                        } else {
+                            $('input[name="edd_settings[edd_free_downloads_notes_title]"]').closest('tr').fadeIn('fast').css('display', 'table-row');
+                            $('textarea[name="edd_settings[edd_free_downloads_notes]"]').closest('tr').fadeIn('fast').css('display', 'table-row');
+                        }
+                    }).change();
                 } else {
+                    $('input[name="edd_settings[edd_free_downloads_disable_global_notes]"]').closest('tr').fadeOut('fast', function () {
+                        $(this).css('display', 'none');
+                    });
                     $('input[name="edd_settings[edd_free_downloads_notes_title]"]').closest('tr').fadeOut('fast', function () {
                         $(this).css('display', 'none');
                     });
@@ -90,6 +106,16 @@ jQuery(document).ready(function ($) {
                             $(this).css('display', 'none');
                         });
                     }
+                }
+            }).change();
+
+            $('input[name="edd_settings[edd_free_downloads_disable_cache]"]').change(function () {
+                if ($(this).prop('checked')) {
+                    $('a.edd-free-downloads-purge-cache').closest('tr').fadeOut('fast', function () {
+                        $(this).css('display', 'none');
+                    });
+                } else {
+                    $('a.edd-free-downloads-purge-cache').closest('tr').fadeIn('fast').css('display', 'table-row');
                 }
             }).change();
         }
