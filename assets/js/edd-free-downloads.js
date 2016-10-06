@@ -157,10 +157,10 @@ jQuery(document.body).ready(function ($) {
 
             $('input[name="edd_free_download_id"]').val(download_id);
 
-            if ($(this).parent().find('input[name="edd_options[price_id][]"]').length > 0) {
+            if (button.parent().parent().find('input[name="edd_options[price_id][]"]').length > 0) {
                 $('input[name="edd_free_download_price_id[]"]').remove();
 
-                $(this).parent().find('input[name="edd_options[price_id][]"]').each(function () {
+                button.parent().parent().find('input[name="edd_options[price_id][]"]').each(function () {
                     if ($(this).prop('checked')) {
                         $('.edd-free-download-submit').before('<input type="hidden" name="edd_free_download_price_id[]" value="' + $(this).val().toString() + '"/>');
                     }
