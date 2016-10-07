@@ -156,7 +156,7 @@ function edd_free_downloads_get_files( $download_id = 0, $price_id = null ) {
 
 	if ( ! empty( $download_files ) && is_array( $download_files ) ) {
 		foreach ( $download_files as $filekey => $file ) {
-			$filename         = basename( $file['file'] );
+			$filename           = basename( $file['file'] );
 			$files[ $filename ] = $file['file'];
 		}
 	} elseif ( edd_is_bundled_product( $download_id ) ) {
@@ -167,7 +167,7 @@ function edd_free_downloads_get_files( $download_id = 0, $price_id = null ) {
 
 			if ( ! empty( $download_files ) && is_array( $download_files ) ) {
 				foreach ( $download_files as $filekey => $file ) {
-					$filename         = basename( $file['file'] );
+					$filename           = basename( $file['file'] );
 					$files[ $filename ] = $file['file'];
 				}
 			}
@@ -194,6 +194,11 @@ function edd_free_downloads_compress_files( $files = array(), $download_id = 0 )
 		$zip_name   = apply_filters( 'edd_free_downloads_zip_name', strtolower( str_replace( ' ', '-', get_bloginfo( 'name' ) ) ) . '-bundle-' . $download_id . '.zip' );
 		$zip_file   = $upload_dir . '/' . $zip_name;
 
+		// If caching is disabled, make sure file is deleted
+		if ( file_exists( $zip_file ) && edd_get_option( 'edd_free_downloads_disable_cache', false ) ) {
+			unlink( $zip_file );
+		}
+
 		if ( ! file_exists( $zip_file ) ) {
 			$zip = new ZipArchive();
 
@@ -204,19 +209,7 @@ function edd_free_downloads_compress_files( $files = array(), $download_id = 0 )
 
 			foreach ( $files as $file_name => $file_path ) {
 				// Is the file hosted locally?
-				$hosted = null;
-
-				if ( strpos( $file_path, site_url() ) !== false ) {
-					$hosted = 'local';
-				} elseif ( strpos( $file_path, ABSPATH ) !== false ) {
-					$hosted = 'local';
-				} elseif ( filter_var( $file_path, FILTER_VALIDATE_URL ) === FALSE && strpos( $file_path, 'edd-dbfs' ) !== false ) {
-					$hosted = 'dropbox';
-				} elseif ( filter_var( $file_path, FILTER_VALIDATE_URL ) === FALSE && $file_path[0] !== '/' ) {
-					$hosted = 'amazon';
-				} elseif ( strpos( $file_path, 'AWSAccessKeyId' ) !== false ) {
-					$hosted = 'amazon';
-				}
+				$hosted = edd_free_downloads_get_host( $file_path );
 
 				if ( $hosted == 'local' ) {
 					$file_path = str_replace( WP_CONTENT_URL, WP_CONTENT_DIR, $file_path );
@@ -391,6 +384,11 @@ function edd_free_downloads_fetch_remote_file( $file_path, $hosted ) {
 		$fileName = basename( $file_path );
 	}
 
+	// If caching is disabled, make sure file is deleted
+	if ( file_exists( $filePath . $fileName ) && edd_get_option( 'edd_free_downloads_disable_cache', false ) ) {
+		unlink( $filePath . $fileName );
+	}
+
 	if ( ! file_exists( $filePath . $fileName ) ) {
 		// Remote files must be downloaded to the local machine!
 		$args = array(
@@ -404,4 +402,30 @@ function edd_free_downloads_fetch_remote_file( $file_path, $hosted ) {
 	}
 
 	return $filePath . $fileName;
+}
+
+
+/**
+ * Check if a file is locally or remotely hosted
+ *
+ * @since       2.1.0
+ * @param       string $file_path The path to check
+ * @return      string $hosted The hosting location
+ */
+	function edd_free_downloads_get_host( $file_path ) {
+	$hosted = '';
+
+	if ( strpos( $file_path, site_url() ) !== false ) {
+		$hosted = 'local';
+	} elseif ( strpos( $file_path, ABSPATH ) !== false ) {
+		$hosted = 'local';
+	} elseif ( filter_var( $file_path, FILTER_VALIDATE_URL ) === FALSE && strpos( $file_path, 'edd-dbfs' ) !== false ) {
+		$hosted = 'dropbox';
+	} elseif ( filter_var( $file_path, FILTER_VALIDATE_URL ) === FALSE && $file_path[0] !== '/' ) {
+		$hosted = 'amazon';
+	} elseif ( strpos( $file_path, 'AWSAccessKeyId' ) !== false ) {
+		$hosted = 'amazon';
+	}
+
+	return $hosted;
 }

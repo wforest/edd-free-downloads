@@ -78,12 +78,27 @@ function edd_free_downloads_purchase_download_form( $purchase_form, $args ) {
 	$download_file = edd_get_download_files( $download_id );
 
 	if ( edd_free_downloads_use_modal( $download_id ) && ! edd_has_variable_prices( $download_id ) ) {
-		$purchase_form  = '';
-		$form_id        = 'edd_purchase_' . $download_id;
-		$download_label = esc_attr( edd_get_option( 'edd_free_downloads_button_label', __( 'Download Now', 'edd-free-downloads' ) ) );
+		$purchase_form     = '';
+		$form_id           = 'edd_purchase_' . $download_id;
+		$download_label    = esc_attr( edd_get_option( 'edd_free_downloads_button_label', __( 'Download Now', 'edd-free-downloads' ) ) );
+		$add_to_cart_label = edd_get_option( 'add_to_cart_text', __( 'Add to Cart', 'edd' ) );
+		$checkout_label    = edd_get_option( 'checkout_label', __( 'Purchase', 'edd' ) );
+		$buy_now_label     = edd_get_option( 'buy_now_text', __( 'Buy Now', 'edd' ) );
+		$button_style      = ( array_key_exists( 'style', $args ) && isset( $args['style'] ) ) ? $args['style'] : edd_get_option( 'button_style', 'button' );
+		$button_color      = ( array_key_exists( 'color', $args ) && isset( $args['color'] ) ) ? $args['color'] : edd_get_option( 'checkout_color', 'blue' );
+
+		// Maybe override text for shortcodes
+		if( array_key_exists( 'text', $args ) && isset( $args['text'] ) ) {
+			// Strip the price from the text argument
+			$args['text'] = substr( $args['text'], strpos( $args['text'], '&nbsp;&ndash;&nbsp;' )+19, strlen( $args['text'] ) );
+
+			if( ! in_array( $args['text'], array( $add_to_cart_label, $checkout_label, $buy_now_label ) ) ) {
+				$download_label = $args['text'];
+			}
+		}
 
 		if ( ! is_user_logged_in() || edd_get_option( 'edd_free_downloads_bypass_logged_in', false ) === false ) {
-			$download_class = implode( ' ', array( edd_get_option( 'button_style', 'button' ), edd_get_option( 'checkout_color', 'blue' ), 'edd-submit edd-free-download edd-free-download-single' ) );
+			$download_class = implode( ' ', array( $button_style, $button_color, 'edd-submit edd-free-download edd-free-download-single' ) );
 
 			$purchase_form .= '<form id="' . $form_id . '" class="edd_download_purchase_form">';
 			$purchase_form .= '<div class="edd_free_downloads_form_class">';

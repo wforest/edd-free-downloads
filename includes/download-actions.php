@@ -33,33 +33,41 @@ function edd_free_download_process() {
 		wp_die( __( 'An internal error has occurred, please try again or contact support.', 'edd-free-downloads' ), __( 'Oops!', 'edd-free-downloads' ), array( 'back_link' => true ) );
 	}
 
-	if ( edd_get_option( 'edd_free_downloads_user_registration', false ) && ! is_user_logged_in() && ! class_exists( 'EDD_Auto_Register' ) ) {
+	if ( ! is_user_logged_in() ) {
+		// Bypass auto-registration
+		if ( edd_get_option( 'edd_free_downloads_bypass_auto_register', false ) && class_exists( 'EDD_Auto_Register' ) ) {
+			remove_action( 'edd_auto_register_insert_user', array( EDD_Auto_Register::get_instance(), 'email_notifications' ), 10, 3 );
+			remove_action( 'edd_insert_payment', array( EDD_Auto_Register::get_instance(), 'maybe_insert_user' ), 10, 2 );
+		}
+
 		// If we are registering a user, make sure the required fields are filled out
-		if ( ! isset( $_POST['edd_free_download_username'] ) || ! isset( $_POST['edd_free_download_pass'] ) || ! isset( $_POST['edd_free_download_pass2'] ) ) {
-			wp_die( __( 'The username and password fields are required, please try again.', 'edd-free-downloads' ), __( 'Oops!', 'edd-free-downloads' ), array( 'back_link' => true ) );
-		}
-
-		if ( $_POST['edd_free_download_pass'] != $_POST['edd_free_download_pass2'] ) {
-			wp_die( __( 'Password and password confirmation fields don\'t match, please try again,', 'edd-free-downloads' ), __( 'Oops!', 'edd-free-downloads' ), array( 'back_link' => true ) );
-		}
-
-		// Make sure the username doesn't already exist
-		$username = trim( $_POST['edd_free_download_username'] );
-
-		if ( username_exists( $username ) ) {
-			wp_die( __( 'The specified username already exists, please log in or try again.', 'edd-free-downloads' ), __( 'Oops!', 'edd-free-downloads' ), array( 'back_link' => true ) );
-		} elseif ( ! edd_validate_username( $username ) ) {
-			// Invalid username
-			if ( is_multisite() ) {
-				wp_die( __( 'Invalid username. Only lowercase letters (a-z) and numbers are allowed.', 'edd-free-downloads' ), __( 'Oops!', 'edd-free-downloads' ), array( 'back_link' => true ) );
-			} else {
-				wp_die( __( 'Invalid username.', 'edd-free-downloads' ), __( 'Oops!', 'edd-free-downloads' ), array( 'back_link' => true ) );
+		if( edd_get_option( 'edd_free_downloads_user_registration', false ) && ! class_exists( 'EDD_Auto_Register' ) ) {
+			if ( ! isset( $_POST['edd_free_download_username'] ) || ! isset( $_POST['edd_free_download_pass'] ) || ! isset( $_POST['edd_free_download_pass2'] ) ) {
+				wp_die( __( 'The username and password fields are required, please try again.', 'edd-free-downloads' ), __( 'Oops!', 'edd-free-downloads' ), array( 'back_link' => true ) );
 			}
-		}
 
-		// Make sure the email doesn't already exist
-		if ( email_exists( $_POST['edd_free_download_email'] ) ) {
-			wp_die( __( 'The specified email has already been used, please log in or try again.', 'edd-free-downloads' ), __( 'Oops!', 'edd-free-downloads' ), array( 'back_link' => true ) );
+			if ( $_POST['edd_free_download_pass'] != $_POST['edd_free_download_pass2'] ) {
+				wp_die( __( 'Password and password confirmation fields don\'t match, please try again,', 'edd-free-downloads' ), __( 'Oops!', 'edd-free-downloads' ), array( 'back_link' => true ) );
+			}
+
+			// Make sure the username doesn't already exist
+			$username = trim( $_POST['edd_free_download_username'] );
+
+			if ( username_exists( $username ) ) {
+				wp_die( __( 'The specified username already exists, please log in or try again.', 'edd-free-downloads' ), __( 'Oops!', 'edd-free-downloads' ), array( 'back_link' => true ) );
+			} elseif ( ! edd_validate_username( $username ) ) {
+				// Invalid username
+				if ( is_multisite() ) {
+					wp_die( __( 'Invalid username. Only lowercase letters (a-z) and numbers are allowed.', 'edd-free-downloads' ), __( 'Oops!', 'edd-free-downloads' ), array( 'back_link' => true ) );
+				} else {
+					wp_die( __( 'Invalid username.', 'edd-free-downloads' ), __( 'Oops!', 'edd-free-downloads' ), array( 'back_link' => true ) );
+				}
+			}
+
+			// Make sure the email doesn't already exist
+			if ( email_exists( $_POST['edd_free_download_email'] ) ) {
+				wp_die( __( 'The specified email has already been used, please log in or try again.', 'edd-free-downloads' ), __( 'Oops!', 'edd-free-downloads' ), array( 'back_link' => true ) );
+			}
 		}
 	}
 
@@ -315,6 +323,13 @@ function edd_free_downloads_process_auto_download() {
 	} else {
 		$download_url = array_values( $download_files );
 		$download_url = $download_url[0];
+		$hosted       = edd_free_downloads_get_host( $download_url );
+
+		if ( $hosted == 'local' ) {
+			$download_url = str_replace( WP_CONTENT_URL, WP_CONTENT_DIR, $download_url );
+		} else {
+			$download_url = edd_free_downloads_fetch_remote_file( $download_url, $hosted );
+		}
 	}
 
 	edd_free_downloads_download_file( $download_url );

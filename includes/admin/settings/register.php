@@ -104,6 +104,12 @@ function edd_free_downloads_add_settings( $settings ) {
 			'tooltip_desc'  => __( 'Enabling this option allows you to display notes in the modal.', 'edd-free-downloads' )
 		),
 		array(
+			'id'   => 'edd_free_downloads_disable_global_notes',
+			'name' => __( 'Disable Global Notes', 'edd-free-downloads' ),
+			'desc' => __( 'Check to disable global notes and only use notes defined per-product.', 'edd-free-downloads' ),
+			'type' => 'checkbox'
+		),
+		array(
 			'id'   => 'edd_free_downloads_notes_title',
 			'name' => __( 'Notes Field Title', 'edd-free-downloads' ),
 			'desc' => __( 'Enter the title to display for the notes field, or leave blank for none.', 'edd-free-downloads' ),
@@ -179,6 +185,31 @@ function edd_free_downloads_add_settings( $settings ) {
 		)
 	) );
 
+	$cache_settings = apply_filters( 'edd_free_downloads_cache_settings', array(
+		array(
+			'id'            => 'edd_free_downloads_cache_settings',
+			'name'          => '<h3>' . __( 'Cache Settings', 'edd-free-downloads' ) . '</h3>',
+			'desc'          => '',
+			'type'          => 'header',
+			'tooltip_title' => __( 'Cache Settings', 'edd-free-downloads' ),
+			'tooltip_desc'  => __( 'The fields below define how Free Downloads handles file caching. Free Downloads caches files which are stored remotely while compressing them if direct download or auto download are enabled.', 'edd-free-downloads' )
+		),
+		array(
+			'id'            => 'edd_free_downloads_disable_cache',
+			'name'          => __( 'Disable Cache', 'edd-free-downloads' ),
+			'desc'          => __( 'Check to disable caching remote files entirely.', 'edd-free-downloads'),
+			'type'          => 'checkbox',
+			'tooltip_title' => __( 'Disable Cache', 'edd-free-downloads' ),
+			'tooltip_desc'  => __( 'Free Downloads caches remote files to prevent long download times while compressing multi-file downloads. If you prefer not to use this feature, check this option.', 'edd-free-downloads' )
+		),
+		array(
+			'id'   => 'free_downloads_display_purge_cache',
+			'name' => __( 'Purge Cache', 'edd-free-downloads' ),
+			'desc' => '',
+			'type' => 'hook'
+		)
+	) );
+
 	// Allow extension of the settings.
 	$integration_settings = apply_filters( 'edd_free_downloads_integration_settings', array() );
 
@@ -197,7 +228,7 @@ function edd_free_downloads_add_settings( $settings ) {
 		$integration_settings = array_merge( $integration_header, $integration_settings );
 	}
 
-	$plugin_settings = array_merge( $display_settings, $fields_settings, $processing_settings, $integration_settings );
+	$plugin_settings = array_merge( $display_settings, $fields_settings, $processing_settings, $cache_settings, $integration_settings );
 	$plugin_settings = array( 'free_downloads' => $plugin_settings );
 
 	return array_merge( $settings, $plugin_settings );
@@ -224,7 +255,20 @@ function edd_free_downloads_auto_register_settings( $settings ) {
 				'name' => __( 'User Registration', 'edd-free-downloads' ),
 				'desc' => __( 'Check to display a registration form in the download modal for logged-out users.', 'edd-free-downloads' ),
 				'type' => 'checkbox',
-			),
+			)
+		);
+
+		$settings = array_merge( $settings, $auto_register_settings );
+	} else {
+		$auto_register_settings = array(
+			array(
+				'id'            => 'edd_free_downloads_bypass_auto_register',
+				'name'          => __( 'Bypass Auto Registration', 'edd-free-downloads' ),
+				'desc'          => __( 'Check to bypass auto-registration for free downloads.', 'edd-free-downloads' ),
+				'type'          => 'checkbox',
+				'tooltip_title' => __( 'Bypass Auto Registration', 'edd-free-downloads' ),
+				'tooltip_desc'  => __( 'By default, the Auto Registration plugin registers a new user account when a free download is processed. Check this to prevent user accounts from being automatically created.', 'edd-free-downloads' )
+			)
 		);
 
 		$settings = array_merge( $settings, $auto_register_settings );
