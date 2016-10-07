@@ -50,7 +50,7 @@ function edd_free_downloads_render_download_meta_box() {
 	<label for="_edd_free_downloads_bypass">
 		<?php echo EDD()->html->checkbox( array(
 			'name'    => '_edd_free_downloads_bypass',
-			'current' => $bypass_modal
+			'current' => $bypass_modal,
 		) ); ?>
 		<?php _e( 'Disable Free Downloads modal', 'edd-free-downloads' ); ?>
 		<span alt="f223" class="edd-help-tip dashicons dashicons-editor-help" title="<strong><?php _e( 'Bypass Modal', 'edd-free-downloads' ); ?></strong>: <?php printf( __( 'When checked, this will get treated as a normal %s and will require the user to go through the checkout process.', 'edd-free-downloads' ), edd_get_label_singular( true ) ); ?>"></span>
@@ -61,7 +61,7 @@ function edd_free_downloads_render_download_meta_box() {
 		<label for="_edd_free_downloads_bundle">
 			<?php echo EDD()->html->checkbox( array(
 				'name'    => '_edd_free_downloads_bundle',
-				'current' => $bundle_enable
+				'current' => $bundle_enable,
 			) ); ?>
 			<?php _e( 'Enforce use on bundle', 'edd-free-downloads' ); ?>
 			<span alt="f223" class="edd-help-tip dashicons dashicons-editor-help" title="<strong><?php _e( 'Use On Bundle', 'edd-free-downloads' ); ?></strong>: <?php printf( __( 'Free Downloads can\'t reliably determine the value of products in a bundle, so by default it ignores bundles. Check this to enforce use on this bundle and treat all bundled %s as free.', 'edd-free-downloads' ), edd_get_label_plural( true ) ); ?>"></span>
@@ -76,7 +76,7 @@ function edd_free_downloads_render_download_meta_box() {
 				'name'        => '_edd_free_downloads_file',
 				'class'       => 'widefat',
 				'placeholder' => 'http://',
-				'value'       => $download_file
+				'value'       => $download_file,
 			) ); ?>
 			<?php _e( 'Enter archive URL, or leave blank to attempt auto-detection', 'edd-free-downloads' ); ?>
 			<span alt="f223" class="edd-help-tip dashicons dashicons-editor-help" title="<strong><?php _e( 'Download Archive', 'edd-free-downloads' ); ?></strong>: <?php printf( __( 'If this %s includes multiple files, specify an archive file here to use for the Direct Download and Auto Download options.', 'edd-free-downloads' ), edd_get_label_singular( true ) ); ?>"></span>
@@ -91,7 +91,7 @@ function edd_free_downloads_render_download_meta_box() {
 			<?php echo EDD()->html->text( array(
 				'name'  => '_edd_free_downloads_notes_title',
 				'class' => 'widefat',
-				'value' => $notes_title
+				'value' => $notes_title,
 			) ); ?>
 			<?php _e( 'Enter the title for the notes field, or leave blank to use the global option', 'edd-free-downloads' ); ?>
 		</label>
@@ -101,7 +101,7 @@ function edd_free_downloads_render_download_meta_box() {
 			<?php echo EDD()->html->textarea( array(
 				'name'  => '_edd_free_downloads_notes',
 				'class' => 'widefat',
-				'value' => $notes
+				'value' => $notes,
 			) ); ?>
 			<?php _e( 'Enter any notes, or leave blank to use the global option', 'edd-free-downloads' ); ?>
 		</label>
@@ -147,7 +147,7 @@ function edd_free_downloads_meta_box_save( $post_id ) {
 	}
 
 	// Don't process if the current user shouldn't be editing this product
-	if ( ! current_user_can( 'edit_product', $post_id ) ){
+	if ( ! current_user_can( 'edit_product', $post_id ) ) {
 		return $post_id;
 	}
 
@@ -157,7 +157,7 @@ function edd_free_downloads_meta_box_save( $post_id ) {
 		'_edd_free_downloads_bundle',
 		'_edd_free_downloads_file',
 		'_edd_free_downloads_notes_title',
-		'_edd_free_downloads_notes'
+		'_edd_free_downloads_notes',
 	) );
 
 	foreach ( $fields as $field ) {
