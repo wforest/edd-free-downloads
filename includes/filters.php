@@ -92,8 +92,10 @@ function edd_free_downloads_purchase_download_form( $purchase_form, $args ) {
 			// Strip the price from the text argument
 			$args['text'] = substr( $args['text'], strpos( $args['text'], '&nbsp;&ndash;&nbsp;' )+19, strlen( $args['text'] ) );
 
-			if( ! in_array( $args['text'], array( $add_to_cart_label, $checkout_label, $buy_now_label ) ) ) {
+			if( ! empty( $args['text'] ) && ! in_array( $args['text'], array( $add_to_cart_label, $checkout_label, $buy_now_label ) ) ) {
+
 				$download_label = $args['text'];
+
 			}
 		}
 
