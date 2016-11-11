@@ -282,6 +282,10 @@ function edd_free_downloads_process_auto_download() {
 				$download_id = $item['id'];
 				$archive_url = get_post_meta( $download_id, '_edd_free_downloads_file', true );
 
+				if( ! edd_is_free_download( $download_id ) ) {
+					wp_die( __( 'You have tried to cheat. Play nice please.', 'edd-free-downloads' ), __( 'Trying to cheat?', 'edd-free-downloads' ), array( 'response' => 403 ) );
+				}
+
 				if ( $archive_url && $archive_url != '' ) {
 					$download_files = array_merge( $download_files, array( basename( $archive_url ) => $archive_url ) );
 				} else {
@@ -294,14 +298,23 @@ function edd_free_downloads_process_auto_download() {
 			}
 		}
 	} else {
+
 		$download_id = absint( $_GET['download_id'] );
 		$price_ids   = absint( $_GET['price_ids'] );
 		$archive_url = get_post_meta( $download_id, '_edd_free_downloads_file', true );
 
 		if ( $archive_url && $archive_url != '' ) {
+
+			if( ! edd_is_free_download( $download_id ) ) {
+				wp_die( __( 'You have tried to cheat. Play nice please.', 'edd-free-downloads' ), __( 'Trying to cheat?', 'edd-free-downloads' ), array( 'response' => 403 ) );
+			}
+
 			$download_files = array_merge( $download_files, array( basename( $archive_url ) => $archive_url ) );
+
 		} elseif ( ! edd_is_bundled_product( $download_id ) ) {
+
 			if ( $price_ids ) {
+
 				$price_ids = explode( ',', trim( $price_ids ) );
 
 				foreach ( $price_ids as $price_id ) {
@@ -320,7 +333,13 @@ function edd_free_downloads_process_auto_download() {
 
 				$download_files = array_merge( $download_files, edd_free_downloads_get_files( $download_id ) );
 			}
+
 		} else {
+
+			if( ! edd_is_free_download( $download_id ) ) {
+				wp_die( __( 'You have tried to cheat. Play nice please.', 'edd-free-downloads' ), __( 'Trying to cheat?', 'edd-free-downloads' ), array( 'response' => 403 ) );
+			}
+
 			$download_files = array_merge( $download_files, edd_free_downloads_get_files( $download_id ) );
 		}
 	}
