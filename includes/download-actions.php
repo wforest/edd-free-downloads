@@ -305,9 +305,19 @@ function edd_free_downloads_process_auto_download() {
 				$price_ids = explode( ',', trim( $price_ids ) );
 
 				foreach ( $price_ids as $price_id ) {
+
+					if( ! edd_is_free_download( $download_id, $price_id ) ) {
+						wp_die( __( 'You have tried to cheat. Play nice please.', 'edd-free-downloads' ), __( 'Trying to cheat?', 'edd-free-downloads' ), array( 'response' => 403 ) );
+					}
+
 					$download_files = array_merge( $download_files, edd_free_downloads_get_files( $download_id, $price_id ) );
 				}
 			} else {
+
+				if( ! edd_is_free_download( $download_id ) ) {
+					wp_die( __( 'You have tried to cheat. Play nice please.', 'edd-free-downloads' ), __( 'Trying to cheat?', 'edd-free-downloads' ), array( 'response' => 403 ) );
+				}
+
 				$download_files = array_merge( $download_files, edd_free_downloads_get_files( $download_id ) );
 			}
 		} else {
