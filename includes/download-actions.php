@@ -274,8 +274,8 @@ function edd_free_downloads_process_auto_download() {
 	$download_files = array();
 
 	if ( isset( $_GET['payment-id'] ) ) {
-		$payment_meta = edd_get_payment_meta( $_GET['payment-id'] );
-		$cart         = edd_get_payment_meta_cart_details( $_GET['payment-id'], true );
+		$payment_meta = edd_get_payment_meta( absint( $_GET['payment-id'] ) );
+		$cart         = edd_get_payment_meta_cart_details( absint( $_GET['payment-id'] ), true );
 
 		if ( $cart ) {
 			foreach ( $cart as $key => $item ) {
@@ -297,6 +297,7 @@ function edd_free_downloads_process_auto_download() {
 				}
 			}
 		}
+
 	} else {
 
 		$download_id = absint( $_GET['download_id'] );
