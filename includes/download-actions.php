@@ -356,6 +356,11 @@ function edd_free_downloads_process_auto_download() {
 		$download_url = str_replace( WP_CONTENT_DIR, WP_CONTENT_URL, $download_url );
 	} else {
 		$download_url = array_values( $download_files );
+
+		if( empty( $download_url[0] ) ) {
+			wp_die( __( 'The specified product does not have any download files attached.', 'edd-free-downloads' ), __( 'Oops!', 'edd-free-downloads' ), array( 'response' => 403 ) );
+		}
+
 		$download_url = $download_url[0];
 		$hosted       = edd_free_downloads_get_host( $download_url );
 
