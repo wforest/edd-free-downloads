@@ -300,9 +300,13 @@ function edd_free_downloads_process_auto_download() {
 
 	} else {
 
-		$download_id = absint( $_GET['download_id'] );
-		$price_ids   = absint( $_GET['price_ids'] );
+		$download_id = isset( $_GET['download_id'] ) ? absint( $_GET['download_id'] ) : 0;
+		$price_ids   = isset( $_GET['price_ids'] ) ? sanitize_text_field( $_GET['price_ids'] ) : '';
 		$archive_url = get_post_meta( $download_id, '_edd_free_downloads_file', true );
+
+		if( empty( $download_id ) ) {
+			wp_die( __( 'No product ID supplied.', 'edd-free-downloads' ), __( 'Error', 'edd-free-downloads' ), array( 'response' => 403 ) );
+		}
 
 		if ( $archive_url && $archive_url != '' ) {
 
