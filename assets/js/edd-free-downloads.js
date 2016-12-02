@@ -6,7 +6,7 @@ jQuery(document.body).ready(function ($) {
     var newModal;
 
     if ($('input[name="edd_options[price_id][]"]').length > 0) {
-    	var classes, buttonPrefix, buttonSuffix, href;
+    	var classes, wrapperPrefix, linkPrefix, linkSuffix, wrapperSuffix, href;
 
         classes = $('.edd_purchase_submit_wrapper').find('a.edd-add-to-cart').attr('class');
         classes = classes.replace('edd-add-to-cart', '');
@@ -18,11 +18,15 @@ jQuery(document.body).ready(function ($) {
         }
 
         if (edd_free_downloads_vars.has_ajax === '1') {
-            buttonPrefix = '<div class="edd-free-downloads-variable-wrapper"><a class="edd-free-downloads-variable edd-free-download ' + classes + '" href="' + href + '" data-download-id=""><span>';
-            buttonSuffix = '</span></a></div>';
+            wrapperPrefix = '<div class="edd-free-downloads-variable-wrapper">';
+            linkPrefix    = '<a class="edd-free-downloads-variable edd-free-download ' + classes + '" href="' + href + '" data-download-id=""><span>';
+            linkSuffix    = '</span></a>';
+            wrapperSuffix = '</div>';
         } else {
-            buttonPrefix = '<input type="submit" class="edd-free-downloads-variable edd-free-download ' + classes + '" name="edd_purchase_download" value="';
-            buttonSuffix = '" href="' + href + '" data-download-id="" />';
+            wrapperPrefix = '';
+            linkPrefix    = '<input type="submit" class="edd-free-downloads-variable edd-free-download ' + classes + '" name="edd_purchase_download" value="';
+            linkSuffix    = '" href="' + href + '" data-download-id="" />';
+            wrapperSuffix = '';
         }
 
         $('.edd_purchase_submit_wrapper').each(function (i) {
@@ -30,9 +34,9 @@ jQuery(document.body).ready(function ($) {
                 var download_id = $(this).closest('form').attr('id').replace('edd_purchase_', '');
 
                 if (edd_free_downloads_vars.bypass_logged_in === 'true') {
-                    $(this).after('<a href="#" class="edd-free-downloads-direct-download-link ' + classes + '" data-download-id="' + download_id + '">' + edd_free_downloads_vars.download_label + '</a>');
+                    $(this).after(wrapperPrefix + '<a href="#" class="edd-free-downloads-direct-download-link ' + classes + '" data-download-id="' + download_id + '">' + edd_free_downloads_vars.download_label + '</a>' + wrapperSuffix);
                 } else {
-                    $(this).after(buttonPrefix + edd_free_downloads_vars.download_label + buttonSuffix);
+                    $(this).after(wrapperPrefix + linkPrefix + edd_free_downloads_vars.download_label + linkSuffix + wrapperSuffix);
                 }
 
                 $(this).parent().find('.edd-free-downloads-variable').attr('data-download-id', download_id);
@@ -94,6 +98,7 @@ jQuery(document.body).ready(function ($) {
         });
     } else {
         newModal = new jBox('Modal', {
+            attach: $('.edd-free-download'),
             content: $('#edd-free-downloads-modal'),
             width: 350,
             delayClose: 3000,
@@ -111,56 +116,17 @@ jQuery(document.body).ready(function ($) {
         $(document.body).on('click', '.edd-free-download', function (e) {
             e.preventDefault();
 
-            var button = $(this);
-            var download_id = $(this).data('download-id');
-            var button_html = $(this).html();
-
-            button.append(' <i class="edd-icon-spinner edd-icon-spin"></i>');
-
-            // Setup the notes field
-            var postData = {
-                action : 'edd_free_downloads_get_notes',
-                download_id: download_id
-            };
-
-            $.ajax({
-                type: 'POST',
-                data: postData,
-                dataType: 'json',
-                url: edd_free_downloads_vars.ajaxurl,
-                success: function (response) {
-                    if (response !== null) {
-                        if (response.title !== '') {
-                            $('.edd-free-downloads-note-title strong').html(response.title);
-                        }
-
-                        if (response.content !== '') {
-                            $('.edd-free-downloads-note-content').html(response.content);
-                        }
-                    }
-
-                    if (! isMobile.any) {
-                        newModal.open();
-                    }
-
-                    button.html(button_html);
-                }
-            }).fail(function (data) {
-                if ( window.console && window.console.log ) {
-                    console.log( data );
-                }
-            });
-
             // Select email field on click
             $('input[name="edd_free_download_email"]').focus();
             $('input[name="edd_free_download_email"]').select();
 
+            var download_id = $(this).data('download-id');
             $('input[name="edd_free_download_id"]').val(download_id);
 
-            if (button.parent().parent().find('input[name="edd_options[price_id][]"]').length > 0) {
+            if ($(this).parent().find('input[name="edd_options[price_id][]"]').length > 0) {
                 $('input[name="edd_free_download_price_id[]"]').remove();
 
-                button.parent().parent().find('input[name="edd_options[price_id][]"]').each(function () {
+                $(this).parent().find('input[name="edd_options[price_id][]"]').each(function () {
                     if ($(this).prop('checked')) {
                         $('.edd-free-download-submit').before('<input type="hidden" name="edd_free_download_price_id[]" value="' + $(this).val().toString() + '"/>');
                     }
@@ -303,9 +269,13 @@ jQuery(document.body).ready(function ($) {
             download_id = $(this).data('download-id');
         }
 
-        $(this).parent().parent().find('input[name="edd_free_download_price_id[]"]').each(function () {
-            price_ids = price_ids + $(this).val() + ',';
-        });
+        if ($(this).parent().parent().find('input[name="edd_options[price_id][]"]').length > 0) {
+            $(this).parent().parent().find('input[name="edd_options[price_id][]"]').each(function () {
+                if ($(this).prop('checked')) {
+                    price_ids = price_ids + $(this).val().toString();
+                }
+            });
+        }
 
         window.location = window.location + '?edd_action=free_downloads_process_download&download_id=' + download_id + '&price_ids=' + price_ids;
     });
