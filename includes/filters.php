@@ -86,6 +86,7 @@ function edd_free_downloads_purchase_download_form( $purchase_form, $args ) {
 		$buy_now_label     = edd_get_option( 'buy_now_text', __( 'Buy Now', 'edd' ) );
 		$button_style      = ( array_key_exists( 'style', $args ) && isset( $args['style'] ) ) ? $args['style'] : edd_get_option( 'button_style', 'button' );
 		$button_color      = ( array_key_exists( 'color', $args ) && isset( $args['color'] ) ) ? $args['color'] : edd_get_option( 'checkout_color', 'blue' );
+		$button_class      = ( array_key_exists( 'class', $args ) && isset( $args['class'] ) ) ? $args['class'] : '';
 
 		// Maybe override text for shortcodes
 		if( array_key_exists( 'text', $args ) && isset( $args['text'] ) ) {
@@ -100,7 +101,7 @@ function edd_free_downloads_purchase_download_form( $purchase_form, $args ) {
 		}
 
 		if ( ! is_user_logged_in() || edd_get_option( 'edd_free_downloads_bypass_logged_in', false ) === false ) {
-			$download_class = implode( ' ', array( $button_style, $button_color, 'edd-submit edd-free-download edd-free-download-single' ) );
+			$download_class = implode( ' ', array( $button_style, $button_color, $button_class, 'edd-submit edd-free-download edd-free-download-single' ) );
 
 			$purchase_form .= '<form id="' . $form_id . '" class="edd_download_purchase_form">';
 			$purchase_form .= '<div class="edd_free_downloads_form_class">';
