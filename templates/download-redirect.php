@@ -69,9 +69,27 @@ $label = edd_get_option( 'edd_free_downloads_modal_button_label', __( 'Download 
 	<?php endif; ?>
 
 	<?php if ( edd_get_option( 'edd_free_downloads_show_notes', false ) ) : ?>
+		<?php
+			$title = $content = '';
+
+			if ( is_singular( 'download' ) ) {
+				if ( ! edd_get_option( 'edd_free_downloads_disable_global_notes', false ) ) {
+					$title   = edd_get_option( 'edd_free_downloads_notes_title', '' );
+					$content = edd_get_option( 'edd_free_downloads_notes', '' );
+				}
+
+				if ( $download_title = get_post_meta( $post->ID, '_edd_free_downloads_notes_title', true ) ) {
+					$title = $download_title;
+				}
+
+				if ( $download_note = get_post_meta( $post->ID, '_edd_free_downloads_notes', true ) ) {
+					$content = $download_note;
+				}
+			}
+		?>
 		<div class="edd-free-downloads-note-wrapper">
-			<div class="edd-free-downloads-note-title"><strong></strong></div>
-			<p class="edd-free-downloads-note-content"></p>
+			<div class="edd-free-downloads-note-title"><strong><?php echo $title; ?></strong></div>
+			<p class="edd-free-downloads-note-content"><?php echo wpautop( stripslashes( $content ) ); ?></p>
 		</div>
 	<?php endif; ?>
 
