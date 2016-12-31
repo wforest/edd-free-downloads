@@ -23,3 +23,42 @@
 	vertical-align: text-bottom;
 	color: #82878c;
 }
+
+.edd-free-downloads-form-builder .header {
+	font-size: 14px;
+	padding: 8px 12px;
+	margin: 0;
+	line-height: 1.4;
+	border-bottom: 1px solid #eee;
+}
+
+.edd-free-downloads-form-builder .fieldsdiv .inside {
+	margin-top: 0 !important;
+	margin-bottom: 10px;
+	padding: 12px;
+}
+
+.edd-free-downloads-form-builder .fieldsdiv ol {
+	display: block;
+	overflow: hidden;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.edd-free-downloads-form-builder .fieldsdiv ol li {
+	float: left;
+	width: 50%;
+	margin-bottom: 10px;
+	position: relative;
+	list-style: none;
+}
+
+.edd-free-downloads-form-builder .fieldsdiv ol li input {
+	width: 120px;
+	text-align: center;
+}
+
+.edd-free-downloads-form-builder .preview {
+	font-weight: 400;
+}

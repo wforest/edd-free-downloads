@@ -3,7 +3,7 @@
 jQuery(document).ready(function ($) {
     'use strict';
 
-    var EDD_Free_Downloads_Settings, EDD_Free_Downloads_Meta_Box;
+    var EDD_Free_Downloads_Settings, EDD_Free_Downloads_Meta_Box, EDD_Free_Downloads_Form_Builder;
 
     /**
      * Settings
@@ -147,4 +147,20 @@ jQuery(document).ready(function ($) {
         }
     };
     EDD_Free_Downloads_Meta_Box.init();
+
+    /**
+     * Form builder
+     */
+    EDD_Free_Downloads_Form_Builder = {
+        init : function () {
+            this.general();
+        },
+
+        general : function () {
+            $('.edd-free-downloads-form-builder .fieldsdiv input').click(function (e) {
+                e.preventDefault();
+            });
+        }
+    };
+    EDD_Free_Downloads_Form_Builder.init();
 });

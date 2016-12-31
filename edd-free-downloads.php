@@ -91,6 +91,7 @@ if ( ! class_exists( 'EDD_Free_Downloads' ) ) {
 			require_once EDD_FREE_DOWNLOADS_DIR . 'includes/download-actions.php';
 			require_once EDD_FREE_DOWNLOADS_DIR . 'includes/template-actions.php';
 			require_once EDD_FREE_DOWNLOADS_DIR . 'includes/shortcodes.php';
+			require_once EDD_FREE_DOWNLOADS_DIR . 'includes/class.formbuilder.php';
 
 			if ( is_admin() ) {
 				require_once EDD_FREE_DOWNLOADS_DIR . 'includes/admin/class.admin-notices.php';
