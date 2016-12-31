@@ -157,7 +157,17 @@ jQuery(document).ready(function ($) {
         },
 
         general : function () {
-            $('.edd-free-downloads-form-builder .fieldsdiv input').click(function (e) {
+            // Hack to make WordPress highlight the right menu item on form edit pages
+            $('.post-type-free_downloads_form #menu-posts-download').removeClass('wp-not-current-submenu');
+            $('.post-type-free_downloads_form #menu-posts-download').addClass('wp-has-current-submenu wp-menu-open');
+            $('.post-type-free_downloads_form #menu-posts-download .menu-top').addClass('wp-has-current-submenu wp-menu-open');
+            $('.post-type-free_downloads_form #menu-posts-download a[href^="edit.php?post_type=download&page=edd-tools"]').parent().addClass('current');
+
+            $('.edd-free-downloads-form-builder-fields input').click(function (e) {
+                e.preventDefault();
+            });
+
+            $('.edd-free-downloads-form-preview').click(function (e) {
                 e.preventDefault();
             });
         }

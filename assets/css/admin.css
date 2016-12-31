@@ -1,3 +1,6 @@
+/* Settings styles
+-------------------------------------------------------------- */
+
 .edd-free-downloads-zip-status-available {
 	color: #46b450;
 	font-weight: bold;
@@ -24,21 +27,32 @@
 	color: #82878c;
 }
 
-.edd-free-downloads-form-builder .header {
-	font-size: 14px;
-	padding: 8px 12px;
-	margin: 0;
-	line-height: 1.4;
-	border-bottom: 1px solid #eee;
+/* Form builder
+-------------------------------------------------------------- */
+.post-type-free_downloads_form #edit-slug-box {
+	display: none;
 }
 
-.edd-free-downloads-form-builder .fieldsdiv .inside {
-	margin-top: 0 !important;
-	margin-bottom: 10px;
-	padding: 12px;
+.post-type-free_downloads_form #minor-publishing .misc-pub-free-downloads-form-preview:before {
+	content: "\f115";
+	font: normal 20px/1 dashicons;
+	display: inline-block;
+	margin-left: -1px;
+	padding-right: 3px;
+	vertical-align: top;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	speak: none;
+	color: #82878c;
 }
 
-.edd-free-downloads-form-builder .fieldsdiv ol {
+.post-type-free_downloads_form #minor-publishing #minor-publishing-actions,
+.post-type-free_downloads_form #minor-publishing .misc-pub-visibility,
+.post-type-free_downloads_form #minor-publishing .misc-pub-curtime {
+	display: none;
+}
+
+.edd-free-downloads-form-builder-fields {
 	display: block;
 	overflow: hidden;
 	margin: 0;
@@ -46,7 +60,7 @@
 	list-style: none;
 }
 
-.edd-free-downloads-form-builder .fieldsdiv ol li {
+.edd-free-downloads-form-builder-fields li {
 	float: left;
 	width: 50%;
 	margin-bottom: 10px;
@@ -54,11 +68,15 @@
 	list-style: none;
 }
 
-.edd-free-downloads-form-builder .fieldsdiv ol li input {
+.edd-free-downloads-form-builder-fields li input {
 	width: 120px;
 	text-align: center;
 }
 
 .edd-free-downloads-form-builder .preview {
 	font-weight: 400;
+}
+
+.wp-heading-inline.edd-free-downloads-table-header {
+	margin-top: -15px;
 }

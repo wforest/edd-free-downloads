@@ -38,6 +38,20 @@ if ( ! class_exists( 'EDD_Free_Downloads' ) ) {
 
 
 		/**
+		 * @var         object $formbuilder The form builder object
+		 * @since       2.2.0
+		 */
+		public $formbuilder;
+
+
+		/**
+		 * @var         bool $debugging Whether or not debugging is available
+		 * @since       2.2.0
+		 */
+		public $debugging = false;
+
+
+		/**
 		 * Get active instance
 		 *
 		 * @access      public
@@ -51,6 +65,13 @@ if ( ! class_exists( 'EDD_Free_Downloads' ) ) {
 				self::$instance->includes();
 				self::$instance->load_textdomain();
 				self::$instance->hooks();
+				self::$instance->formbuilder = new EDD_Free_Downloads_Form_Builder();
+
+				if ( class_exists( 'S214_Debug' ) ) {
+					if ( edd_get_option( 'edd_free_downloads_enable_debug', false ) ) {
+						self::$instance->debugging = true;
+					}
+				}
 			}
 
 			return self::$instance;
@@ -88,6 +109,7 @@ if ( ! class_exists( 'EDD_Free_Downloads' ) ) {
 			require_once EDD_FREE_DOWNLOADS_DIR . 'includes/functions.php';
 			require_once EDD_FREE_DOWNLOADS_DIR . 'includes/actions.php';
 			require_once EDD_FREE_DOWNLOADS_DIR . 'includes/filters.php';
+			require_once EDD_FREE_DOWNLOADS_DIR . 'includes/post-types.php';
 			require_once EDD_FREE_DOWNLOADS_DIR . 'includes/download-actions.php';
 			require_once EDD_FREE_DOWNLOADS_DIR . 'includes/template-actions.php';
 			require_once EDD_FREE_DOWNLOADS_DIR . 'includes/shortcodes.php';
@@ -97,6 +119,7 @@ if ( ! class_exists( 'EDD_Free_Downloads' ) ) {
 				require_once EDD_FREE_DOWNLOADS_DIR . 'includes/admin/class.admin-notices.php';
 				require_once EDD_FREE_DOWNLOADS_DIR . 'includes/admin/settings/register.php';
 				require_once EDD_FREE_DOWNLOADS_DIR . 'includes/admin/downloads/meta-boxes.php';
+				require_once EDD_FREE_DOWNLOADS_DIR . 'includes/admin/forms/meta-boxes.php';
 			}
 		}
 

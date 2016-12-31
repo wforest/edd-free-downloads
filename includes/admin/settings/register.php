@@ -237,7 +237,9 @@ function edd_free_downloads_add_settings( $settings ) {
 		$integration_settings = array_merge( $integration_header, $integration_settings );
 	}
 
-	$plugin_settings = array_merge( $display_settings, $fields_settings, $processing_settings, $cache_settings, $integration_settings );
+	$debug_settings = apply_filters( 'edd_free_downloads_debug_settings', array() );
+
+	$plugin_settings = array_merge( $display_settings, $fields_settings, $processing_settings, $cache_settings, $integration_settings, $debug_settings );
 	$plugin_settings = array( 'free_downloads' => $plugin_settings );
 
 	return array_merge( $settings, $plugin_settings );
@@ -319,3 +321,34 @@ function edd_free_downloads_newsletter_settings( $settings ) {
 	return $settings;
 }
 add_filter( 'edd_free_downloads_integration_settings', 'edd_free_downloads_newsletter_settings' );
+
+
+/**
+ * Add debug option if the S214 Debug plugin is enabled
+ *
+ * @since       3.0.0
+ * @param       array $settings The current settings
+ * @return      array $settings The updated settings
+ */
+function edd_free_downloads_add_debug( $settings ) {
+	if( class_exists( 'S214_Debug' ) ) {
+		$debug_setting[] = array(
+			'id'   => 'edd_free_downloads_debugging',
+			'name' => '<strong>' . __( 'Debugging', 'edd-free-downloads' ) . '</strong>',
+			'desc' => '',
+			'type' => 'header'
+		);
+
+		$debug_setting[] = array(
+			'id'   => 'edd_free_downloads_enable_debug',
+			'name' => __( 'Enable Debugging', 'edd-free-downloads' ),
+			'desc' => sprintf( __( 'Log plugin errors. You can view errors %s and in the Javascript console', 'edd-free-downloads' ), '<a href="' . admin_url( 'tools.php?page=s214-debug-logs' ) . '">' . __( 'here', 'edd-free-downloads' ) . '</a>' ),
+			'type' => 'checkbox'
+		);
+
+		$settings = array_merge( $settings, $debug_setting );
+	}
+
+	return $settings;
+}
+add_filter( 'edd_free_downloads_debug_settings', 'edd_free_downloads_add_debug' );
