@@ -190,7 +190,7 @@ class EDD_Free_Downloads_Form_Table extends WP_List_Table {
 	public function bulk_actions( $which = '' ) {
 		// These aren't really bulk actions but this outputs the markup in the right place
 		if ( $which == 'top' ) {
-			printf( '<h1 class="wp-heading-inline edd-free-downloads-table-header">%s</h1><a class="page-title-action" href="%s">%s</a>', __( 'Free Downloads Forms', 'edd-free-downloads' ), admin_url( 'post-new.php?post_type=free_downloads_form' ), __( 'New Form', 'edd-free-downloads' ) );
+			printf( '<h1 class="wp-heading-inline edd-free-downloads-table-header">%s</h1><a class="page-title-action" href="%s">%s</a>', __( 'Free Downloads Forms', 'edd-free-downloads' ), admin_url( 'post-new.php?post_type=free_downloads_form' ), __( 'Add New', 'edd-free-downloads' ) );
 		}
 	}
 
