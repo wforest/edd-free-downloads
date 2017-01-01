@@ -166,7 +166,15 @@ class EDD_Free_Downloads_Form_Table extends WP_List_Table {
 		$counts = wp_count_posts( 'free_downloads_form', 'readable' );
 
 		foreach ( $counts as $status => $count ) {
-			$total += $count;
+			switch( $status ) {
+				case 'publish':
+				case 'draft':
+				case 'pending':
+					$total += $count;
+					break;
+				default:
+					break;
+			}
 		}
 
 		return $total;
