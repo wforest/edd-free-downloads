@@ -84,36 +84,29 @@ class EDD_Free_Downloads_Form_Table extends WP_List_Table {
 	 * @return      string Column name
 	 */
 	public function column_default( $item, $column_name ) {
-		switch( $column_name ){
+		switch( $column_name ) {
+			case 'title':
+				//Build row actions
+				$actions = array();
+				$base    = admin_url( 'edit.php?post_type=download&page=edd-tools&tab=free_downloads' );
+				$base    = wp_nonce_url( $base, 'edd_free_downloads_form_nonce' );
+				$form    = get_post( $item['ID'] );
+
+				$title = sprintf( '<strong><a class="row-title" href="post.php?post=%s&action=edit">%s</a></strong>', $item['ID'], get_the_title( $item['ID'] ) );
+
+				$actions['edit']         = sprintf( '<a href="post.php?post=%s&action=edit">' . __( 'Edit', 'edd-free-downloads' ) . '</a>', $item['ID'] );
+				$actions['preview-form'] = sprintf( '<a href="">' . __( 'Preview', 'edd-free-downloads' ) . '</a>' );
+				$actions['delete']       = sprintf( '<a href="%s&view=%s&free_downloads_form=%s">' . __( 'Delete', 'edd-free-downloads' ) . '</a>', $base, 'delete', $item['ID'] );
+
+				// Filter the existing actions and include the license object.
+				$actions = apply_filters( 'edd_free_downloads_form_row_actions', $actions, $form );
+
+				return $title . $this->row_actions( $actions );
+			case 'added':
+				return esc_html( $item['added'] );
 			default:
 				return $item[ $column_name ];
 		}
-	}
-
-
-	/**
-	 * Output the title column
-	 *
-	 * @access      public
-	 * @since       3.0.0
-	 * @return      void
-	 */
-	public function column_title( $item ) {
-		//Build row actions
-		$actions = array();
-		$base    = admin_url( 'edit.php?post_type=download&page=edd-tools&tab=free_downloads' );
-		$base    = wp_nonce_url( $base, 'edd_free_downloads_form_nonce' );
-		$form    = get_post( $item['ID'] );
-
-		$title = sprintf( '<strong><a class="row-title" href="post.php?post=%s&action=edit">%s</a></strong>', $item['ID'], get_the_title( $item['ID'] ) );
-
-		$actions['edit']   = sprintf( '<a href="post.php?post=%s&action=edit">' . __( 'Edit', 'edd-free-downloads' ) . '</a>', $item['ID'] );
-		$actions['delete'] = sprintf( '<a href="%s&view=%s&free_downloads_form=%s">' . __( 'Delete', 'edd-free-downloads' ) . '</a>', $base, 'delete', $item['ID'] );
-
-		// Filter the existing actions and include the license object.
-		$actions = apply_filters( 'edd_free_downloads_form_row_actions', $actions, $form );
-
-		return $title . $this->row_actions( $actions );
 	}
 
 
@@ -126,7 +119,9 @@ class EDD_Free_Downloads_Form_Table extends WP_List_Table {
 	 */
 	public function get_columns() {
 		$columns = array(
-			'title' => __( 'Form', 'edd-free-downloads' )
+			'title'        => __( 'Form', 'edd-free-downloads' ),
+			'used-on'      => __( 'Used On', 'edd-free-downloads' ),
+			'added'        => __( 'Added On', 'edd-free-downloads' )
 		);
 
 		return $columns;
@@ -243,8 +238,10 @@ class EDD_Free_Downloads_Form_Table extends WP_List_Table {
 		if ( $forms ) {
 			foreach ( $forms as $form ) {
 				$forms_data[] = array(
-					'ID'    => $form,
-					'title' => get_the_title( $form )
+					'ID'           => $form,
+					'title'        => get_the_title( $form ),
+					'used-on'      => '',
+					'added'        => get_the_time( get_option( 'date_format' ), $form )
 				);
 			}
 		}
