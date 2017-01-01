@@ -81,6 +81,11 @@ class EDD_Free_Downloads_Form_Builder {
 				'tooltip_title' => __( 'Newsletter Fields', 'edd-free-downloads' ),
 				'tooltip_desc'  => __( 'These fields are related to newsletter integration with Free Downloads.', 'edd-free-downloads' )
 			),
+			'download' => array(
+				'name'          => __( 'Download Buttons', 'edd-free-downloads' ),
+				'tooltip_title' => __( 'Download Buttons', 'edd-free-downloads' ),
+				'tooltip_desc'  => __( 'These fields provide the download button options for Free Downloads. At least one of these must be included for yuor form to work!', 'edd-free-downloads' )
+			),
 			'custom' => array(
 				'name'          => __( 'Custom Fields', 'edd-free-downloads' ),
 				'tooltip_title' => __( 'Custom Fields', 'edd-free-downloads' ),
@@ -114,10 +119,13 @@ class EDD_Free_Downloads_Form_Builder {
 				'login'       => __( 'Login/Register', 'edd-free-downloads' ),
 				'html'        => __( 'HTML', 'edd-free-downloads' ),
 				'separator'   => __( 'Separator', 'edd-free-downloads' ),
-				'captcha'     => __( 'CAPTCHA', 'edd-free-downloads' ),
-				'direct-link' => __( 'Direct Download', 'edd-free-downloads' )
+				'captcha'     => __( 'CAPTCHA', 'edd-free-downloads' )
 			) ),
 			'newsletter' => apply_filters( 'edd_free_downloads_newsletter_fields', array() ),
+			'download'   => apply_filters( 'edd_free_downloads_download_fields', array(
+				'standard-download' => __( 'Standard', 'edd-free-downloads' ),
+				'direct-download'   => __( 'Direct', 'edd-free-downloads' )
+			) ),
 			'custom'     => apply_filters( 'edd_free_downloads_custom_fields', array() ),
 			'extension'  => apply_filters( 'edd_free_downloads_extension_fields', array() )
 		) );

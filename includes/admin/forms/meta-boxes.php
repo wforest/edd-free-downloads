@@ -26,7 +26,7 @@ function edd_free_downloads_add_form_meta_boxes() {
 		if ( ! empty( $fields ) ) {
 			$field_name = esc_attr( $data['name'] ) . '<span alt="f223" class="edd-help-tip dashicons dashicons-editor-help" title="<strong>' . esc_attr( $data['tooltip_title'] ) . '</strong>: ' . esc_attr( $data['tooltip_desc' ] ) . '"></span>';
 
-			add_meta_box( 'edd-free-downloads-' . $type . '-fields', $field_name, 'edd_free_downloads_render_' . $type . '_fields_meta_box', 'free_downloads_form', 'side', 'default' );
+			add_meta_box( 'edd-free-downloads-' . $type . '-fields', $field_name, 'edd_free_downloads_render_fields_meta_box', 'free_downloads_form', 'side', 'default', array( 'type' => $type ) );
 		}
 	}
 }
@@ -55,13 +55,22 @@ add_action( 'post_submitbox_misc_actions', 'edd_free_downloads_add_preview_butto
 
 
 /**
- * Render core fields meta box
+ * Render fields meta boxes
  *
  * @since       3.0.0
+ * @param       object $form The post object for this form
+ * @param       array $callback_args The arguements passed to the callback function
  * @return      void
  */
-function edd_free_downloads_render_core_fields_meta_box() {
-	$fields = edd_free_downloads()->formbuilder->get_registered_fields( 'core' );
+function edd_free_downloads_render_fields_meta_box( $form, $callback_args ) {
+	$type   = $callback_args['args']['type'];
+	$fields = edd_free_downloads()->formbuilder->get_registered_fields( $type );
+	$args   = array(
+		'type'   => $type,
+		'fields' => $fields
+	);
+
+	do_action( 'edd_free_downloads_before_' . $type . '_meta_box', $args );
 	?>
 	<ol class="edd-free-downloads-form-builder-fields">
 		<?php foreach( $fields as $field_name => $field_title ) : ?>
@@ -69,4 +78,5 @@ function edd_free_downloads_render_core_fields_meta_box() {
 		<?php endforeach; ?>
 	</ol>
 	<?php
+	do_action( 'edd_free_downloads_after_' . $type . '_meta_box', $args );
 }
