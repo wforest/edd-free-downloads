@@ -326,6 +326,13 @@ function edd_free_downloads_process_auto_download() {
 		} else {
 			$download_url = array_values( $download_files );
 			$download_url = $download_url[0];
+
+			$hosted = edd_free_downloads_get_host( $download_url );
+
+			if ( $hosted != 'local' ) {
+				$download_url = edd_free_downloads_fetch_remote_file( $download_url, $hosted );
+				$download_url = str_replace( WP_CONTENT_DIR, WP_CONTENT_URL, $download_url );
+			}
 		}
 
 		edd_free_downloads_download_file( $download_url );
