@@ -377,6 +377,16 @@ function edd_free_downloads_fetch_remote_file( $file_path, $hosted ) {
 	} elseif ( $hosted == 'dropbox' ) {
 		// We can't work with EDD's Dropbox extension yet...
 		if ( class_exists( 'EDDDropboxFileStore' ) ) {
+			add_filter( 'edd_file_download_method', 'edd_free_downloads_set_download_method' );
+			add_filter( 'edd_symlink_file_downloads', 'edd_free_downloads_disable_symlink' );
+
+			$dfs = new EDDDropboxFileStore();
+
+			$file_path = $dfs->getDownloadURL( $file_path );
+
+			$fileName = explode( '/', $file_path );
+			$fileName = end( $fileName );
+		} else {
 			return false;
 		}
 	} else {
@@ -392,16 +402,42 @@ function edd_free_downloads_fetch_remote_file( $file_path, $hosted ) {
 	if ( ! file_exists( $filePath . $fileName ) ) {
 		// Remote files must be downloaded to the local machine!
 		$args = array(
-			'timeout' => 0
+			'timeout' => 300
 		);
 
 		$response = wp_remote_get( $file_path, $args );
 		$new_file = wp_remote_retrieve_body( $response );
 
-		file_put_contents( $filePath . $fileName, $new_file );
+		file_put_contents( $filePath . urldecode( $fileName ), $new_file );
 	}
 
 	return $filePath . $fileName;
+}
+
+
+/**
+ * The DBFS filetype only works with symlinking disabled,
+ * disable it specifically for DBFS downloads
+ *
+ * @since       2.1.7
+ * @param       bool $symlink Existing symlink setting
+ * @return      false
+ */
+function edd_free_downloads_disable_symlink( $symlink ) {
+	return false;
+}
+
+
+/**
+ * The DBFS filetype only works with the redirect method,
+ * enforce it specifically for DBFS downloads
+ *
+ * @since       2.1.7
+ * @param       string $method Existing download method
+ * @return      string 'redirect'
+ */
+function edd_free_downloads_set_download_method( $method ) {
+	return 'redirect';
 }
 
 
