@@ -375,7 +375,6 @@ function edd_free_downloads_fetch_remote_file( $file_path, $hosted ) {
 		$fileName = explode( '/', $fileName );
 		$fileName = end( $fileName );
 	} elseif ( $hosted == 'dropbox' ) {
-		// We can't work with EDD's Dropbox extension yet...
 		if ( class_exists( 'EDDDropboxFileStore' ) ) {
 			add_filter( 'edd_file_download_method', 'edd_free_downloads_set_download_method' );
 			add_filter( 'edd_symlink_file_downloads', 'edd_free_downloads_disable_symlink' );
@@ -395,11 +394,11 @@ function edd_free_downloads_fetch_remote_file( $file_path, $hosted ) {
 	}
 
 	// If caching is disabled, make sure file is deleted
-	if ( file_exists( $filePath . $fileName ) && edd_get_option( 'edd_free_downloads_disable_cache', false ) ) {
-		unlink( $filePath . $fileName );
+	if ( file_exists( $filePath . remove_query_arg( 'dl', $fileName ) ) && edd_get_option( 'edd_free_downloads_disable_cache', false ) ) {
+		unlink( $filePath . remove_query_arg( 'dl', $fileName ) );
 	}
 
-	if ( ! file_exists( $filePath . $fileName ) ) {
+	if ( ! file_exists( $filePath . remove_query_arg( 'dl', $fileName ) ) ) {
 		// Remote files must be downloaded to the local machine!
 		$args = array(
 			'timeout' => 300
@@ -408,10 +407,10 @@ function edd_free_downloads_fetch_remote_file( $file_path, $hosted ) {
 		$response = wp_remote_get( $file_path, $args );
 		$new_file = wp_remote_retrieve_body( $response );
 
-		file_put_contents( $filePath . urldecode( $fileName ), $new_file );
+		file_put_contents( $filePath . urldecode( remove_query_arg( 'dl', $fileName ) ), $new_file );
 	}
 
-	return $filePath . $fileName;
+	return $filePath . remove_query_arg( 'dl', $fileName );
 }
 
 
