@@ -9,6 +9,11 @@ jQuery(document.body).ready(function ($) {
     	var classes, wrapperPrefix, linkPrefix, linkSuffix, wrapperSuffix, href;
 
         classes = $('.edd_purchase_submit_wrapper').find('a.edd-add-to-cart').attr('class');
+
+        if( ! classes ){
+            return;
+        }
+
         classes = classes.replace('edd-add-to-cart', '');
 
         if (isMobile.any) {
