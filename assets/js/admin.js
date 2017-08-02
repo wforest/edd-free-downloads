@@ -91,6 +91,38 @@ jQuery(document).ready(function ($) {
                 }
             }).change();
 
+            $('select[name="edd_settings[edd_free_downloads_mobile_on_complete]"]').change(function () {
+                var selectedItem = $('select[name="edd_settings[edd_free_downloads_mobile_on_complete]"] option:selected');
+
+                if (selectedItem.val() === 'auto-download' ) {
+                    $('select[name="edd_settings[edd_free_downloads_apple_on_complete]"]').closest('tr').fadeIn('fast').css('display', 'table-row');
+                } else {
+                    $('select[name="edd_settings[edd_free_downloads_apple_on_complete]"]').closest('tr').fadeOut('fast', function () {
+                        $(this).css('display', 'none');
+                    });
+                }
+
+                if (selectedItem.val() === 'redirect' ) {
+                    $('input[name="edd_settings[edd_free_downloads_mobile_redirect]"]').closest('tr').fadeIn('fast').css('display', 'table-row');
+                } else {
+                    $('input[name="edd_settings[edd_free_downloads_mobile_redirect]"]').closest('tr').fadeOut('fast', function () {
+                        $(this).css('display', 'none');
+                    });
+                }
+            }).change();
+
+            $('select[name="edd_settings[edd_free_downloads_apple_on_complete]"]').change(function () {
+                var selectedItem = $('select[name="edd_settings[edd_free_downloads_apple_on_complete]"] option:selected');
+
+                if (selectedItem.val() === 'redirect' ) {
+                    $('input[name="edd_settings[edd_free_downloads_apple_redirect]"]').closest('tr').fadeIn('fast').css('display', 'table-row');
+                } else {
+                    $('input[name="edd_settings[edd_free_downloads_apple_redirect]"]').closest('tr').fadeOut('fast', function () {
+                        $(this).css('display', 'none');
+                    });
+                }
+            }).change();
+
             $('input[name="edd_settings[edd_free_downloads_direct_download]"]').change(function () {
                 var onComplete = $('select[name="edd_settings[edd_free_downloads_on_complete]"] option:selected');
 

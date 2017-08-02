@@ -131,5 +131,5 @@ $label = edd_get_option( 'edd_free_downloads_modal_button_label', __( 'Download 
 		$("#edd_free_download_email").select();
 	});
 </script>
-
+<?php wp_footer(); ?>
 <?php exit; ?>

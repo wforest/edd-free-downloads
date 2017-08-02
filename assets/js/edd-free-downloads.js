@@ -6,7 +6,7 @@ jQuery(document.body).ready(function ($) {
     var newModal;
 
     if ($('input[name="edd_options[price_id][]"]').length > 0) {
-    	var classes, wrapperPrefix, linkPrefix, linkSuffix, wrapperSuffix, href;
+        var classes, wrapperPrefix, linkPrefix, linkSuffix, wrapperSuffix, href;
 
         classes = $('.edd_purchase_submit_wrapper').find('a.edd-add-to-cart').attr('class');
 
@@ -306,7 +306,9 @@ jQuery(document.body).ready(function ($) {
     $(document.body).on('click', '.edd-free-downloads-direct-download-link', function (e) {
         e.preventDefault();
 
-        newModal.close();
+        if (! isMobile.any) {
+            newModal.close();
+        }
 
         var price_ids = '';
         var download_id = $(this).parent().parent().find('input[name="edd_free_download_id"]').val();
@@ -325,6 +327,10 @@ jQuery(document.body).ready(function ($) {
             });
         }
 
-        window.location = window.location + '?edd_action=free_downloads_process_download&download_id=' + download_id + '&price_ids=' + price_ids;
+        if (isMobile.any) {
+            window.location = window.location + '&edd_action=free_downloads_process_download&download_id=' + download_id + '&price_ids=' + price_ids;
+        } else {
+            window.location = window.location + '?edd_action=free_downloads_process_download&download_id=' + download_id + '&price_ids=' + price_ids;
+        }
     });
 });

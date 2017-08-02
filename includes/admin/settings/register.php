@@ -168,6 +168,51 @@ function edd_free_downloads_add_settings( $settings ) {
 			'tooltip_desc'  => __( 'If no URL is set, users will be automatically redirected to the Purchase Confirmation page.', 'edd-free-downloads' )
 		),
 		array(
+			'id'            => 'edd_free_downloads_mobile_on_complete',
+			'name'          => __( 'Mobile On-Complete Handler', 'edd-free-downloads' ),
+			'desc'          => __( 'Specify what to do once the user has filled out the download form.', 'edd-free-downloads' ),
+			'type'          => 'select',
+			'tooltip_title' => __( 'Mobile On-Complete Handler', 'edd-free-downloads' ),
+			'tooltip_desc'  => __( 'Specify an alternate method of handling completion on mobile devices.', 'edd-free-downloads' ),
+			'std'     => 'default',
+			'options' => array(
+				'default'       => __( 'Use Main On-Complete Handler', 'edd-free-downloads' ),
+				'confirmation'  => __( 'Display Purchase Confirmation', 'edd-free-downloads' ),
+				'auto-download' => __( 'Auto Download', 'edd-free-downloads' ),
+				'redirect'      => __( 'Custom Redirect', 'edd-free-downloads' )
+			)
+		),
+		array(
+			'id'            => 'edd_free_downloads_mobile_redirect',
+			'name'          => __( 'Mobile Redirect URL', 'edd-free-downloads' ),
+			'desc'          => __( 'Enter a URL to redirect to on completion for mobile devices.', 'edd-free-downloads' ),
+			'type'          => 'text',
+			'tooltip_title' => __( 'Mobile Redirect URL', 'edd-free-downloads' ),
+			'tooltip_desc'  => __( 'If no URL is set, users will be automatically redirected to the Purchase Confirmation page.', 'edd-free-downloads' )
+		),
+		array(
+			'id'            => 'edd_free_downloads_apple_on_complete',
+			'name'          => __( 'Apple On-Complete Handler', 'edd-free-downloads' ),
+			'desc'          => __( 'Apple does not allow automatic downloads. Specify an alternative for Apple devices.', 'edd-free-downloads' ),
+			'type'          => 'select',
+			'tooltip_title' => __( 'Apple On-Complete Handler', 'edd-free-downloads' ),
+			'tooltip_desc'  => __( 'Specify an alternate method of handling completion on Apple mobile devices.', 'edd-free-downloads' ),
+			'std'     => 'default',
+			'options' => array(
+				'default'       => __( 'Use Main On-Complete Handler', 'edd-free-downloads' ),
+				'confirmation'  => __( 'Display Purchase Confirmation', 'edd-free-downloads' ),
+				'redirect'      => __( 'Custom Redirect', 'edd-free-downloads' )
+			)
+		),
+		array(
+			'id'            => 'edd_free_downloads_apple_redirect',
+			'name'          => __( 'Apple Redirect URL', 'edd-free-downloads' ),
+			'desc'          => __( 'Enter a URL to redirect to on completion for Apple devices.', 'edd-free-downloads' ),
+			'type'          => 'text',
+			'tooltip_title' => __( 'Apple Redirect URL', 'edd-free-downloads' ),
+			'tooltip_desc'  => __( 'If no URL is set, users will be automatically redirected to the Purchase Confirmation page.', 'edd-free-downloads' )
+		),
+		array(
 			'id'   => 'edd_free_downloads_disable_emails',
 			'name' => __( 'Disable Emails', 'edd-free-downloads' ),
 			'desc' => __( 'Check to disable purchase emails for free products.', 'edd-free-downloads' ),

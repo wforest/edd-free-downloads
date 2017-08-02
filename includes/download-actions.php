@@ -219,11 +219,17 @@ function edd_free_download_process() {
 		edd_register_and_login_new_user( $account );
 	}
 
-	$payment_meta = edd_get_payment_meta( $payment_id );
-	$on_complete  = edd_get_option( 'edd_free_downloads_on_complete', 'default' );
-	$success_page = edd_get_success_page_uri();
-	$custom_url   = edd_get_option( 'edd_free_downloads_redirect', false );
-	$custom_url   = $custom_url ? esc_url( $custom_url ) : $success_page;
+	$payment_meta       = edd_get_payment_meta( $payment_id );
+	$on_complete        = edd_get_option( 'edd_free_downloads_on_complete', 'default' );
+	$success_page       = edd_get_success_page_uri();
+	$custom_url         = edd_get_option( 'edd_free_downloads_redirect', false );
+	$custom_url         = $custom_url ? esc_url( $custom_url ) : $success_page;
+	$mobile_custom_url  = edd_get_option( 'edd_free_downloads_mobile_redirect', false );
+	$mobile_custom_url  = $mobile_custom_url ? esc_url( $mobile_custom_url ) : $success_page;
+	$apple_custom_url   = edd_get_option( 'edd_free_downloads_apple_redirect', false );
+	$appple_custom_url  = $apple_custom_url ? esc_url( $apple_custom_url ) : $success_page;
+	$mobile_on_complete = edd_get_option( 'edd_free_downloads_mobile_on_complete', 'default' );
+	$apple_on_complete  = edd_get_option( 'edd_free_downloads_apple_on_complete', 'default' );
 
 	switch ( $on_complete ) {
 		case 'default' :
@@ -238,6 +244,24 @@ function edd_free_download_process() {
 				'payment-id' => $payment_id
 			) );
 			break;
+	}
+
+	if ( wp_is_mobile() ) {
+		$mobile = new Mobile_Detect;
+		$is_ios = $mobile->isiOS();
+
+		if ( ( $is_ios && $apple_on_complete == 'default' ) || ( ! $is_ios && $mobile_on_complete == 'default' ) ) {
+			$redirect_url = $redirect_url;
+		} elseif( ( $is_ios && $apple_on_complete == 'confirmation' ) || ( ! $is_ios && $mobile_on_complete == 'confirmation' ) ) {
+			$redirect_url = $success_page;
+		} elseif( ( ! $is_ios && $mobile_on_complete == 'auto-download' ) ) {
+			$redirect_url = add_query_arg( array(
+				'edd_action' => 'free_downloads_process_download',
+				'payment-id' => $payment_id
+			) );
+		} elseif( ( $is_ios && $apple_on_complete == 'redirect' ) || ( ! $is_ios && $mobile_on_complete == 'redirect' ) ) {
+			$redirect_url = $is_ios ? $apple_custom_url : $mobile_custom_url;
+		}
 	}
 
 	$redirect_url = $redirect_url ? $redirect_url : $success_page;
