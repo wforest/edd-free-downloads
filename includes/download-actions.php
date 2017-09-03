@@ -341,6 +341,7 @@ function edd_free_downloads_process_auto_download() {
 		}
 	}
 
+
 	$download_files = array_unique( $download_files );
 
 	if( is_array( $download_files ) && count( $download_files ) > 0 ) {
@@ -348,18 +349,18 @@ function edd_free_downloads_process_auto_download() {
 			$download_url = edd_free_downloads_compress_files( $download_files, $download_id );
 			$download_url = str_replace( WP_CONTENT_DIR, WP_CONTENT_URL, $download_url );
 		} else {
+
 			$download_url = array_values( $download_files );
 			$download_url = $download_url[0];
 
 			$hosted = edd_free_downloads_get_host( $download_url );
-
-			if ( $hosted != 'local' ) {
+			if ( 'local' !== $hosted ) {
 				$download_url = edd_free_downloads_fetch_remote_file( $download_url, $hosted );
 				$download_url = str_replace( WP_CONTENT_DIR, WP_CONTENT_URL, $download_url );
 			}
 		}
 
-		edd_free_downloads_download_file( $download_url );
+		edd_free_downloads_download_file( $download_url, $hosted );
 	}
 }
 add_action( 'edd_free_downloads_process_download', 'edd_free_downloads_process_auto_download' );
