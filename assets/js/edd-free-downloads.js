@@ -182,7 +182,7 @@ jQuery(document.body).ready(function ($) {
                 $('input[name="edd_free_download_price_id[]"]').remove();
 
                 $(this).parent().parent().find('input[name="edd_options[price_id][]"]').each(function () {
-                    if ($(this).prop('checked')) {
+                    if ($(this).prop('checked') || $(this).attr('type') === 'hidden') {
                         $('.edd-free-download-submit').before('<input type="hidden" name="edd_free_download_price_id[]" value="' + $(this).val().toString() + '"/>');
                     }
                 });
