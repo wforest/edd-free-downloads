@@ -163,19 +163,24 @@ if ( ! class_exists( 'EDD_Free_Downloads' ) ) {
  */
 function edd_free_downloads() {
 	if ( ! class_exists( 'Easy_Digital_Downloads' ) ) {
-		if ( ! class_exists( 'S214_EDD_Activation' ) ) {
-			require_once 'includes/libraries/class.s214-edd-activation.php';
-		}
-
-		$activation = new S214_EDD_Activation( plugin_dir_path( __FILE__ ), basename( __FILE__ ) );
-		$activation = $activation->run();
-
-		return EDD_Free_Downloads::instance();
+		add_action( 'admin_notices', 'edd_free_downloads_edd_not_active' );
+		return;
 	} else {
 		return EDD_Free_Downloads::instance();
 	}
 }
 add_action( 'plugins_loaded', 'edd_free_downloads' );
+
+
+/**
+ * Display an error if EDD isn't active
+ *
+ * @since       2.1.8
+ * @return      void
+ */
+function edd_free_downloads_edd_not_active() {
+	echo '<div class="error"><p>' . __( 'Free Downloads requires Easy Digital Downloads! Please install or activate it to continue!', 'edd-free-downloads' ) . '</p></div>';
+}
 
 
 /**
