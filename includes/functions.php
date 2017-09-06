@@ -199,7 +199,7 @@ function edd_free_downloads_compress_files( $files = array(), $download_id = 0 )
 			$bundle_id .= $file_name;
 		}
 
-		$bundle_id = wp_hash( $bundle_id );
+		$bundle_id = wp_hash( $bundle_id, 'nonce' );
 
 		$zip_file = apply_filters( 'edd_free_downloads_zip_name', $zip_name . '-' . $bundle_id . '.zip' );
 		$zip_file = $upload_dir . '/' . $zip_file;
