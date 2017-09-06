@@ -385,6 +385,9 @@ function edd_free_downloads_process_auto_download() {
 		if ( count( $download_files ) > 1 ) {
 			$download_url = edd_free_downloads_compress_files( $download_files, $download_id );
 			$download_url = str_replace( WP_CONTENT_DIR, WP_CONTENT_URL, $download_url );
+
+			// Prevent errors with edd_free_downloads_download_file()
+			$hosted = 'multi';
 		} else {
 
 			$download_url = array_values( $download_files );
