@@ -191,8 +191,18 @@ function edd_free_downloads_compress_files( $files = array(), $download_id = 0 )
 	if ( class_exists( 'ZipArchive' ) ) {
 		$upload_dir = wp_upload_dir();
 		$upload_dir = $upload_dir['basedir'] . '/edd-free-downloads-cache';
-		$zip_name   = apply_filters( 'edd_free_downloads_zip_name', strtolower( str_replace( ' ', '-', get_bloginfo( 'name' ) ) ) . '-bundle-' . $download_id . '.zip' );
-		$zip_file   = $upload_dir . '/' . $zip_name;
+		$zip_name   = strtolower( str_replace( ' ', '-', get_bloginfo( 'name' ) ) ) . '-bundle-' . $download_id;
+
+		$bundle_id = '';
+
+		foreach( $files as $file_name => $file_path ) {
+			$bundle_id .= $file_name;
+		}
+
+		$bundle_id = wp_hash( $bundle_id, 'nonce' );
+
+		$zip_file = apply_filters( 'edd_free_downloads_zip_name', $zip_name . '-' . $bundle_id . '.zip' );
+		$zip_file = $upload_dir . '/' . $zip_file;
 
 		// If caching is disabled, make sure file is deleted
 		if ( file_exists( $zip_file ) && edd_get_option( 'edd_free_downloads_disable_cache', false ) ) {
