@@ -126,14 +126,19 @@ function edd_free_download_process() {
 		'discount'   => 'none'
 	);
 
-	$cart_details   = array();
-	$price_ids      = isset( $_POST['edd_free_download_price_id'] ) ? $_POST['edd_free_download_price_id'] : false;
+	$cart_details = array();
+	$price_ids    = isset( $_POST['edd_free_download_price_id'] ) ? $_POST['edd_free_download_price_id'] : false;
+
+	if ( ! $price_ids && isset( $_GET['price_ids'] ) ) {
+		$price_ids = sanitize_text_field( $_GET['price_ids'] );
+	}
+
 	$download_files = array();
 
-	if ( $price_ids ) {
+	if ( isset( $price_ids ) && is_array( $price_ids ) ) {
 		foreach ( $price_ids as $cart_id => $price_id ) {
 			if ( ! edd_is_free_download( $download_id, $price_id ) ) {
-				wp_die( __( 'An internal error has occurred, please try again or contact support.', 'edd-free-downloads' ), __( 'Oops!', 'edd-free-downloads' ) );
+				wp_die( __( 'The requested product is not a free product! Please try again or contact support.', 'edd-free-downloads' ), __( 'Oops!', 'edd-free-downloads' ) );
 			}
 
 			$download_files[] = edd_get_download_files( $download_id, $price_id );
@@ -155,6 +160,29 @@ function edd_free_download_process() {
 				)
 			);
 		}
+	} elseif( isset( $price_ids ) && ! is_array( $price_ids ) ) {
+		if ( ! edd_is_free_download( $download_id, $price_ids ) ) {
+			wp_die( __( 'The requested product is not a free product! Please try again or contact support.', 'edd-free-downloads' ), __( 'Oops!', 'edd-free-downloads' ) );
+		}
+
+		$download_files[] = edd_get_download_files( $download_id, $price_ids );
+
+		$cart_details[0] = array(
+			'name'        => get_the_title( $download_id ),
+			'id'          => $download_id,
+			'price'       => edd_format_amount( 0 ),
+			'subtotal'    => edd_format_amount( 0 ),
+			'quantity'    => 1,
+			'tax'         => edd_format_amount( 0 ),
+			'item_number' => array(
+				'id'       => $download_id,
+				'quantity' => 1,
+				'options'  => array(
+					'quantity' => 1,
+					'price_id' => $price_ids
+				)
+			)
+		);
 	} else {
 		if ( ! edd_is_free_download( $download_id ) ) {
 			wp_die( __( 'An internal error has occurred, please try again or contact support.', 'edd-free-downloads' ), __( 'Oops!', 'edd-free-downloads' ) );
@@ -321,13 +349,22 @@ function edd_free_downloads_process_auto_download() {
 		}
 	} else {
 		$download_id = absint( $_GET['download_id'] );
-		$price_ids   = sanitize_text_field( $_GET['price_ids'] );
+		$price_ids   = '';
+
+		if ( isset( $_GET['price_ids'] ) && $_GET['price_ids'] != '' ) {
+			$price_ids = sanitize_text_field( $_GET['price_ids'] );
+		} else {
+			if ( edd_has_variable_prices( $download_id ) ) {
+				$price_ids = edd_get_default_variable_price( $download_id );
+			}
+		}
+
 		$archive_url = get_post_meta( $download_id, '_edd_free_downloads_file', true );
 
 		if ( $archive_url && $archive_url != '' ) {
 			$download_files = array_merge( $download_files, array( basename( $archive_url ) => $archive_url ) );
 		} elseif ( ! edd_is_bundled_product( $download_id ) ) {
-			if ( $price_ids != '' ) {
+			if ( isset( $price_ids ) && $price_ids != '' ) {
 				$price_ids = explode( ',', trim( $price_ids ) );
 
 				foreach ( $price_ids as $price_id ) {
