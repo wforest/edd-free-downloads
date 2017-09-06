@@ -162,7 +162,7 @@ function edd_free_download_process() {
 		}
 	} elseif( isset( $price_ids ) && ! is_array( $price_ids ) ) {
 		if ( ! edd_is_free_download( $download_id, $price_ids ) ) {
-			wp_die( __( 'An internal error has occurred, please try again or contact support.', 'edd-free-downloads' ), __( 'Oops!', 'edd-free-downloads' ) );
+			wp_die( __( 'The requested product is not a free product! Please try again or contact support.', 'edd-free-downloads' ), __( 'Oops!', 'edd-free-downloads' ) );
 		}
 
 		$download_files[] = edd_get_download_files( $download_id, $price_ids );
