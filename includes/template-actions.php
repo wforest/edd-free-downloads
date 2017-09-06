@@ -30,32 +30,29 @@ function edd_free_downloads_display_inline() {
 }
 add_action( 'wp_footer', 'edd_free_downloads_display_inline' );
 
-
 /**
  * Listen for edd-free-download queries and handle accordingly
  *
  * @since       1.1.0
  * @return      void
  */
-function edd_free_downloads_display_redirect() {
+function edd_free_downloads_display_redirect( $template ) {
+
 	global $wp_query;
 
 	// Check for edd-free-download variable
 	if ( ! isset( $wp_query->query_vars['edd-free-download'] ) ) {
-		return;
+		return $template;
 	}
 
 	// Make sure we have a download InvalidArgumentException
 	if ( ! isset( $wp_query->query_vars['download_id'] ) ) {
-		return;
+		return $template;
 	}
 
-	echo'<div id="edd-free-downloads-modal" class="edd-free-downloads-mobile">';
+	$template = edd_locate_template( 'download-redirect.php' );
 
-	ob_start();
-	edd_get_template_part( 'download', 'redirect' );
-	echo ob_get_clean();
+	return $template;
 
-	echo '</div>';
 }
-add_action( 'wp_head', 'edd_free_downloads_display_redirect' );
+add_filter( 'template_include', 'edd_free_downloads_display_redirect' );
