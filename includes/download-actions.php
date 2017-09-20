@@ -82,7 +82,13 @@ function edd_free_download_process() {
 
 	// No banned emails please!
 	if ( edd_is_email_banned( $email ) ) {
-		wp_die( __( 'An internal error has occurred, please try again or contact support.', 'edd-free-downloads' ), __( 'Oops!', 'edd-free-downloads' ) );
+		/**
+		 * @todo  Update translation files
+		 */
+		wp_die(
+			esc_html( __( 'Your email address or domain are not allowed to download content. Please contact support if you feel this is an error.' ), 'edd-free-downloads'  ),
+			esc_html( __( 'Oops!' ), 'edd-free-downloads' )
+		);
 	}
 
 	$download_id = isset( $_POST['edd_free_download_id'] ) ? intval( $_POST['edd_free_download_id'] ) : false;
