@@ -20,6 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return      void
  */
 function edd_free_download_process() {
+
 	// No spammers please!
 	if ( ! empty( $_POST['edd_free_download_check'] ) ) {
 		wp_die( __( 'Bad spammer, no download!', 'edd-free-downloads' ), __( 'Oops!', 'edd-free-downloads' ) );
@@ -77,7 +78,10 @@ function edd_free_download_process() {
 	$user  = get_user_by( 'email', $email );
 
 	if ( ! is_email( $_POST['edd_free_download_email'] ) || ! filter_var( $email, FILTER_VALIDATE_EMAIL ) ) {
-		wp_die( __( 'An internal error has occurred, please try again or contact support.', 'edd-free-downloads' ), __( 'Oops!', 'edd-free-downloads' ) );
+		/**
+		 * This appears to actually be tested by the popup modal, stopping a user from moving forward with the download
+		 */
+		wp_die( esc_html__( 'An internal error has occurred, please try again or contact support.', 'edd-free-downloads' ), __( 'Oops!', 'edd-free-downloads' ) );
 	}
 
 	// No banned emails please!
@@ -92,19 +96,24 @@ function edd_free_download_process() {
 	}
 
 	$download_id = isset( $_POST['edd_free_download_id'] ) ? intval( $_POST['edd_free_download_id'] ) : false;
+	/**
+	 * @todo  Update translation files
+	 */
 	if ( empty( $download_id ) ) {
-		wp_die( __( 'An internal error has occurred, please try again or contact support.', 'edd-free-downloads' ), __( 'Oops!', 'edd-free-downloads' ) );
+		wp_die( esc_html__( 'An internal error has occurred, please try again or contact support. $download_id is empty', 'edd-free-downloads' ), esc_html__( 'Oops!', 'edd-free-downloads' ) );
 	}
 
 	$download = get_post( $download_id );
-
 	// Bail if this isn't a valid download
-	if ( ! is_object( $download ) ) {
-		wp_die( __( 'An internal error has occurred, please try again or contact support.', 'edd-free-downloads' ), __( 'Oops!', 'edd-free-downloads' ) );
+	/**
+	 * @todo  update translation files
+	 */
+	if ( ! $download instanceof WP_Post ) {
+		wp_die( esc_html__( 'An internal error has occurred, please try again or contact support. Download is not a valid object', 'edd-free-downloads' ), esc_html__( 'Oops!', 'edd-free-downloads' ) );
 	}
 
 	if ( 'download' != $download->post_type ) {
-		wp_die( __( 'An internal error has occurred, please try again or contact support.', 'edd-free-downloads' ), __( 'Oops!', 'edd-free-downloads' ) );
+		wp_die( esc_html__( 'An internal error has occurred, please try again or contact support.', 'edd-free-downloads' ), esc_html__( 'Oops!', 'edd-free-downloads' ) );
 	}
 
 	// Bail if this isn't a published download (or the current user can't edit it)
