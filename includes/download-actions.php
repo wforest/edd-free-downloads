@@ -78,6 +78,9 @@ function edd_free_download_process() {
 	$user  = get_user_by( 'email', $email );
 
 	if ( ! is_email( $_POST['edd_free_download_email'] ) || ! filter_var( $email, FILTER_VALIDATE_EMAIL ) ) {
+		/**
+		 * @todo  Update translation files
+		 */
 		wp_die( esc_html__( 'An internal error has occurred, please try again or contact support. Please enter a valid email address', 'edd-free-downloads' ), __( 'Oops!', 'edd-free-downloads' ) );
 	}
 
