@@ -1,4 +1,19 @@
+<!DOCTYPE html>
+<html <?php language_attributes(); ?> class="no-js">
+<head>
+<meta charset="<?php bloginfo( 'charset' ); ?>">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="profile" href="http://gmpg.org/xfn/11">
+
+<?php wp_head(); ?>
+</head>
+
+<body <?php body_class(); ?>>
+
+<div id="edd-free-downloads-modal" class="edd-free-downloads-mobile">
+
 <?php
+
 global $wp_query;
 
 // Pull user data if available
@@ -131,5 +146,8 @@ $label = edd_get_option( 'edd_free_downloads_modal_button_label', __( 'Download 
 		$("#edd_free_download_email").select();
 	});
 </script>
+</div>
+<?php wp_footer(); ?>
 
-<?php exit; ?>
+</body>
+</html>

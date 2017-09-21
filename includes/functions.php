@@ -191,8 +191,18 @@ function edd_free_downloads_compress_files( $files = array(), $download_id = 0 )
 	if ( class_exists( 'ZipArchive' ) ) {
 		$upload_dir = wp_upload_dir();
 		$upload_dir = $upload_dir['basedir'] . '/edd-free-downloads-cache';
-		$zip_name   = apply_filters( 'edd_free_downloads_zip_name', strtolower( str_replace( ' ', '-', get_bloginfo( 'name' ) ) ) . '-bundle-' . $download_id . '.zip' );
-		$zip_file   = $upload_dir . '/' . $zip_name;
+		$zip_name   = strtolower( str_replace( ' ', '-', get_bloginfo( 'name' ) ) ) . '-bundle-' . $download_id;
+
+		$bundle_id = '';
+
+		foreach( $files as $file_name => $file_path ) {
+			$bundle_id .= $file_name;
+		}
+
+		$bundle_id = wp_hash( $bundle_id, 'nonce' );
+
+		$zip_file = apply_filters( 'edd_free_downloads_zip_name', $zip_name . '-' . $bundle_id . '.zip' );
+		$zip_file = $upload_dir . '/' . $zip_file;
 
 		// If caching is disabled, make sure file is deleted
 		if ( file_exists( $zip_file ) && edd_get_option( 'edd_free_downloads_disable_cache', false ) ) {
@@ -237,7 +247,7 @@ function edd_free_downloads_compress_files( $files = array(), $download_id = 0 )
  * @param       string $download_url The URL of the file to download
  * @return      void
  */
-function edd_free_downloads_download_file( $download_url ) {
+function edd_free_downloads_download_file( $download_url, $hosted ) {
 	// If no file found, bail
 	if ( ! $download_url ) {
 		edd_die( __( 'An unknown error occurred, please try again!', 'edd-free-downloads' ), __( 'Oops!', 'edd-free-downloads' ) );
@@ -285,6 +295,10 @@ function edd_free_downloads_download_file( $download_url ) {
 		 */
 		$method = 'direct';
 
+	}
+
+	if( $hosted === 'dropbox' || $hosted == 'amazon' ) {
+		$method = 'redirect';
 	}
 
 	switch ( $method ) :
@@ -361,7 +375,7 @@ function edd_free_downloads_fetch_remote_file( $file_path, $hosted ) {
 	$wp_upload_dir = wp_upload_dir();
 	$filePath      = $wp_upload_dir['basedir'] . '/edd-free-downloads-cache/';
 
-	if ( $hosted == 'amazon' ) {
+	if ( $hosted == 'amazon' && isset( $GLOBALS['edd_s3'] ) ) {
 		// Handle S3
 		if ( false !== ( strpos( $file_path, 'AWSAccessKeyId' ) ) ) {
 			if ( $url = parse_url( $file_path ) ) {
@@ -369,14 +383,18 @@ function edd_free_downloads_fetch_remote_file( $file_path, $hosted ) {
 			}
 		}
 
-		$file_path = $GLOBALS['edd_s3']->get_s3_url( $file_path, 25 );
+		return $GLOBALS['edd_s3']->get_s3_url( $file_path, 25 );
 
-		$fileName = substr( $file_path, 0, strpos( $file_path, '?' ) );
-		$fileName = explode( '/', $fileName );
-		$fileName = end( $fileName );
 	} elseif ( $hosted == 'dropbox' ) {
-		// We can't work with EDD's Dropbox extension yet...
 		if ( class_exists( 'EDDDropboxFileStore' ) ) {
+			add_filter( 'edd_file_download_method', 'edd_free_downloads_set_download_method' );
+			add_filter( 'edd_symlink_file_downloads', 'edd_free_downloads_disable_symlink' );
+
+			$dfs = new EDDDropboxFileStore();
+
+			return $dfs->getDownloadURL( $file_path );
+
+		} else {
 			return false;
 		}
 	} else {
@@ -385,23 +403,49 @@ function edd_free_downloads_fetch_remote_file( $file_path, $hosted ) {
 	}
 
 	// If caching is disabled, make sure file is deleted
-	if ( file_exists( $filePath . $fileName ) && edd_get_option( 'edd_free_downloads_disable_cache', false ) ) {
-		unlink( $filePath . $fileName );
+	if ( file_exists( $filePath . remove_query_arg( 'dl', $fileName ) ) && edd_get_option( 'edd_free_downloads_disable_cache', false ) ) {
+		unlink( $filePath . remove_query_arg( 'dl', $fileName ) );
 	}
 
-	if ( ! file_exists( $filePath . $fileName ) ) {
+	if ( ! file_exists( $filePath . remove_query_arg( 'dl', $fileName ) ) ) {
 		// Remote files must be downloaded to the local machine!
 		$args = array(
-			'timeout' => 0
+			'timeout' => 300
 		);
 
 		$response = wp_remote_get( $file_path, $args );
 		$new_file = wp_remote_retrieve_body( $response );
 
-		file_put_contents( $filePath . $fileName, $new_file );
+		file_put_contents( $filePath . urldecode( remove_query_arg( 'dl', $fileName ) ), $new_file );
 	}
 
-	return $filePath . $fileName;
+	return $filePath . remove_query_arg( 'dl', $fileName );
+}
+
+
+/**
+ * The DBFS filetype only works with symlinking disabled,
+ * disable it specifically for DBFS downloads
+ *
+ * @since       2.1.7
+ * @param       bool $symlink Existing symlink setting
+ * @return      false
+ */
+function edd_free_downloads_disable_symlink( $symlink ) {
+	return false;
+}
+
+
+/**
+ * The DBFS filetype only works with the redirect method,
+ * enforce it specifically for DBFS downloads
+ *
+ * @since       2.1.7
+ * @param       string $method Existing download method
+ * @return      string 'redirect'
+ */
+function edd_free_downloads_set_download_method( $method ) {
+	return 'redirect';
 }
 
 
