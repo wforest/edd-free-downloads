@@ -81,7 +81,7 @@ function edd_free_download_process() {
 		/**
 		 * @todo  Update translation files
 		 */
-		wp_die( esc_html__( 'An internal error has occurred, please try again or contact support. Please enter a valid email address', 'edd-free-downloads' ), esc_html__( 'Oops!', 'edd-free-downloads' ) );
+		wp_die( esc_html__( 'Please enter a valid email address', 'edd-free-downloads' ), esc_html__( 'Oops!', 'edd-free-downloads' ) );
 	}
 
 	// No banned emails please!
@@ -89,7 +89,7 @@ function edd_free_download_process() {
 		/**
 		 * @todo  Update translation files
 		 */
-		wp_die( esc_html__( 'Your email address or domain are not allowed to download content. Please contact support if you feel this is an error.', 'edd-free-downloads' ), esc_html__( 'Oops!', 'edd-free-downloads' ) );
+		wp_die( esc_html__( 'Your email address or domain is not allowed to download content. Please contact support if you feel this is an error.', 'edd-free-downloads' ), esc_html__( 'Oops!', 'edd-free-downloads' ) );
 	}
 
 	$download_id = isset( $_POST['edd_free_download_id'] ) ? intval( $_POST['edd_free_download_id'] ) : false;
