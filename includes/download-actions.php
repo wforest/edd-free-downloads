@@ -112,13 +112,19 @@ function edd_free_download_process() {
 		wp_die( esc_html__( 'An internal error has occurred, please try again or contact support. Download is not a valid object', 'edd-free-downloads' ), esc_html__( 'Oops!', 'edd-free-downloads' ) );
 	}
 
+	/**
+	 * @todo  update translation files
+	 */
 	if ( 'download' != $download->post_type ) {
-		wp_die( esc_html__( 'An internal error has occurred, please try again or contact support.', 'edd-free-downloads' ), esc_html__( 'Oops!', 'edd-free-downloads' ) );
+		wp_die( esc_html__( 'An internal error has occurred, please try again or contact support. Invalid object type', 'edd-free-downloads' ), esc_html__( 'Oops!', 'edd-free-downloads' ) );
 	}
 
 	// Bail if this isn't a published download (or the current user can't edit it)
-	if ( ! current_user_can( 'edit_post', $download->ID ) && $download->post_status != 'publish' ) {
-		wp_die( __( 'An internal error has occurred, please try again or contact support.', 'edd-free-downloads' ), __( 'Oops!', 'edd-free-downloads' ) );
+	/**
+	 * @todo  update translation files
+	 */
+	if ( ! current_user_can( 'edit_post', $download->ID ) && 'publish' != $download->post_status ) {
+		wp_die( esc_html__( 'An internal error has occurred, please try again or contact support. User does not have access to this download or the download is not available', 'edd-free-downloads' ), esc_html__( 'Oops!', 'edd-free-downloads' ) );
 	}
 
 	if ( isset( $_POST['edd_free_download_fname'] ) ) {
