@@ -255,9 +255,16 @@ function edd_free_download_process() {
 	$mobile_custom_url  = edd_get_option( 'edd_free_downloads_mobile_redirect', false );
 	$mobile_custom_url  = $mobile_custom_url ? esc_url( $mobile_custom_url ) : $success_page;
 	$apple_custom_url   = edd_get_option( 'edd_free_downloads_apple_redirect', false );
-	$appple_custom_url  = $apple_custom_url ? esc_url( $apple_custom_url ) : $success_page;
+	$apple_custom_url   = $apple_custom_url ? esc_url( $apple_custom_url ) : $success_page;
 	$mobile_on_complete = edd_get_option( 'edd_free_downloads_mobile_on_complete', 'default' );
 	$apple_on_complete  = edd_get_option( 'edd_free_downloads_apple_on_complete', 'default' );
+
+	/**
+	 * For non logged in users and no download file is selected. though not for logged in users.
+	 */
+	if ( empty( $download_files ) ) {
+		$on_complete = 'default';
+	}
 
 	switch ( $on_complete ) {
 		case 'default' :
@@ -401,6 +408,11 @@ function edd_free_downloads_process_auto_download() {
 		}
 
 		edd_free_downloads_download_file( $download_url, $hosted );
+	} else {
+		/**
+		 * Our $download_files array is empty because there are no files and the user is logged in
+		 */
+		wp_safe_redirect( edd_get_success_page_uri() );
 	}
 }
 add_action( 'edd_free_downloads_process_download', 'edd_free_downloads_process_auto_download' );
