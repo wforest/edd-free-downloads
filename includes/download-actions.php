@@ -412,7 +412,20 @@ function edd_free_downloads_process_auto_download() {
 		/**
 		 * Our $download_files array is empty because there are no files and the user is logged in
 		 */
-		wp_safe_redirect( edd_get_success_page_uri() );
+
+		// error_log( print_r( $_GET, 1 ) );
+
+		/**
+		 * Temporary code to ensure this will work
+		 */
+		if ( ! isset( $_GET['payment-id'] ) ) {
+			$_GET['payment-id'] = time();
+		}
+
+		// error_log( print_r( $_GET, 1 ) );
+
+		wp_safe_redirect( add_query_arg( array( 'payment_key' => absint( $_GET['payment-id'] ) ), edd_get_success_page_uri() ) );
+
 	}
 }
 add_action( 'edd_free_downloads_process_download', 'edd_free_downloads_process_auto_download' );
