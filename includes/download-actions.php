@@ -462,11 +462,29 @@ function edd_free_downloads_process_auto_download() {
 			'status'       => 'publish',
 		);
 
-		error_log('purchase data: ' . print_r($purchase_data, 1));
+		// error_log('purchase data: ' . print_r($purchase_data, 1));
 
-		error_log( 'download id: ' . $download_id );
+		// error_log( 'download id: ' . $download_id );
+
+		$edd_payment_check = get_posts( array(
+			'suppress_filters' => false,
+			'post_type' => 'edd_payment',
+			'meta_key' => '_edd_purchased_product',
+			'meta value' => $download_id,
+			'posts_per_page' => 1,
+		) );
+
+		error_log('edd_payment_check: ' . print_r($edd_payment_check, 1) );
 
 		$payment_id = edd_insert_payment( $purchase_data );
+
+		/**
+		 * Adding "purchased" product post ID to payment edd_payment post type
+		 * to allow for future queries to check if the user has already "purchased"
+		 * this free download. If so we will not create a new payment record,
+		 * i.e not creating a new edd_payment post.
+		 */
+		update_post_meta( $payment_id, '_edd_purchased_product', $download_id );
 
 		/**
 		 * Temporary code to ensure this will work
