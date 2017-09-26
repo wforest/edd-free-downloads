@@ -160,7 +160,7 @@ function edd_free_download_process() {
 				)
 			);
 		}
-	} elseif( isset( $price_ids ) && ! is_array( $price_ids ) ) {
+	} elseif ( isset( $price_ids ) && ! is_array( $price_ids ) ) {
 		if ( ! edd_is_free_download( $download_id, $price_ids ) ) {
 			wp_die( __( 'The requested product is not a free product! Please try again or contact support.', 'edd-free-downloads' ), __( 'Oops!', 'edd-free-downloads' ) );
 		}
@@ -216,7 +216,7 @@ function edd_free_download_process() {
 		'downloads'    => array( $download_id ),
 		'cart_details' => $cart_details,
 		'gateway'      => 'manual',
-		'status'       => 'pending'
+		'status'       => 'pending',
 	);
 
 	$payment_id = edd_insert_payment( $purchase_data );
@@ -413,7 +413,60 @@ function edd_free_downloads_process_auto_download() {
 		 * Our $download_files array is empty because there are no files and the user is logged in
 		 */
 
-		// error_log( print_r( $_GET, 1 ) );
+		/**
+		 * Adding purchase record for logged in user
+		 *
+		 * @todo Check if the user is purchasing the free product with no
+		 * download file a second ( or more time )
+		 *
+		 * @var array
+		 */
+
+		/**
+		 * Getting our logged in user info
+		 */
+		$user = get_current_user_id();
+		$user = get_userdata( $user );
+
+		$date = date( 'Y-m-d H:i:s', current_time( 'timestamp' ) );
+		$email = sanitize_email( trim( $user->data->user_email ) );
+
+		$user_info = array(
+			'id'         => $user ? $user->data->ID : '-1',
+			'email'      => $user->data->user_email,
+			'first_name' => $user->first_name,
+			'last_name'  => $user->last_name,
+			'discount'   => 'none'
+		);
+
+		$cart_details[0] = array(
+			'name'     => get_the_title( $download_id ),
+			'id'       => $download_id,
+			'price'    => edd_format_amount( 0 ),
+			'subtotal' => edd_format_amount( 0 ),
+			'quantity' => 1,
+			'tax'      => edd_format_amount( 0 )
+		);
+
+		$purchase_data = array(
+			'price'        => edd_format_amount( 0 ),
+			'tax'          => edd_format_amount( 0 ),
+			'post_date'    => $date,
+			'purchase_key' => strtolower( md5( uniqid() ) ),
+			'user_email'   => $email,
+			'user_info'    => $user_info,
+			'currency'     => edd_get_currency(),
+			'downloads'    => null,
+			'cart_details' => $cart_details,
+			'gateway'      => 'manual',
+			'status'       => 'publish',
+		);
+
+		error_log('purchase data: ' . print_r($purchase_data, 1));
+
+		error_log( 'download id: ' . $download_id );
+
+		$payment_id = edd_insert_payment( $purchase_data );
 
 		/**
 		 * Temporary code to ensure this will work
@@ -422,10 +475,9 @@ function edd_free_downloads_process_auto_download() {
 			$_GET['payment-id'] = time();
 		}
 
-		// error_log( print_r( $_GET, 1 ) );
-
 		wp_safe_redirect( add_query_arg( array( 'payment_key' => absint( $_GET['payment-id'] ) ), edd_get_success_page_uri() ) );
 
-	}
+	} // End if logged in and "purchasing" a free product with no download file.
 }
+
 add_action( 'edd_free_downloads_process_download', 'edd_free_downloads_process_auto_download' );
