@@ -414,7 +414,10 @@ function edd_free_downloads_process_auto_download() {
 		 */
 
 		/**
-		 * Adding purchase record for logged in user
+		 * Adding purchase record for logged in user.
+		 * Note the below logic will _not_ create a payment
+		 * record if the user is logged in though has already
+		 * "purchased" product.
 		 */
 
 		/**
@@ -430,9 +433,9 @@ function edd_free_downloads_process_auto_download() {
 
 		$customer = new EDD_Customer( $user->data->user_email );
 
-		$have_purchased = edd_has_user_purchased( $user_id, $download_id, $variable_price_id = null );
+		$has_purchased = edd_has_user_purchased( $user_id, $download_id, $variable_price_id = null );
 
-		if ( true === $have_purchased ) {
+		if ( true === $has_purchased ) {
 
 			/**
 			 * The logged in user has already "purchased" this item
