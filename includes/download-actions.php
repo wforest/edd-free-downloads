@@ -260,7 +260,7 @@ function edd_free_download_process() {
 	$apple_on_complete  = edd_get_option( 'edd_free_downloads_apple_on_complete', 'default' );
 
 	/**
-	 * For non logged in users and no download file is selected. though not for logged in users.
+	 * This accounts for logged in users when no download file is attached to the purchase.
 	 */
 	if ( empty( $download_files ) ) {
 		$on_complete = 'default';
