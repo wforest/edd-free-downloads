@@ -74,10 +74,9 @@ add_filter( 'edd_straight_to_checkout', 'edd_free_downloads_override_redirect' )
  * @return      string $purchase_form Our updated purchase form
  */
 function edd_free_downloads_purchase_download_form( $purchase_form, $args ) {
+
 	$download_id   = absint( $args['download_id'] );
 	$download_file = edd_get_download_files( $download_id );
-
-	do_action( 'edd_purchase_link_top', $download_id, $args );
 
 	if ( edd_free_downloads_use_modal( $download_id ) && ! edd_has_variable_prices( $download_id ) ) {
 		$purchase_form     = '';
@@ -106,6 +105,7 @@ function edd_free_downloads_purchase_download_form( $purchase_form, $args ) {
 			$download_class = implode( ' ', array( $button_style, $button_color, $button_class, 'edd-submit edd-free-download edd-free-download-single' ) );
 
 			$purchase_form .= '<form id="' . $form_id . '" class="edd_download_purchase_form">';
+			$purchase_form .= apply_filters( 'edd_free_download_purchase_link_top_filter', null );
 			$purchase_form .= '<div class="edd_free_downloads_form_class">';
 
 			if ( wp_is_mobile() ) {
@@ -131,7 +131,9 @@ function edd_free_downloads_purchase_download_form( $purchase_form, $args ) {
 			}
 
 			$purchase_form .= '</div>';
+			$purchase_form .= apply_filters( 'edd_free_download_purchase_link_end_filter', null );
 			$purchase_form .= '</form>';
+
 		} else {
 			$download_class = implode( ' ', array( edd_get_option( 'button_style', 'button' ), edd_get_option( 'checkout_color', 'blue' ), 'edd-submit' ) );
 
@@ -144,8 +146,7 @@ function edd_free_downloads_purchase_download_form( $purchase_form, $args ) {
 		}
 	}
 
-	do_action( 'edd_purchase_link_end', $download_id, $args );
-
 	return $purchase_form;
+
 }
 add_filter( 'edd_purchase_download_form', 'edd_free_downloads_purchase_download_form', 10, 2 );
