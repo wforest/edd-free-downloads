@@ -425,75 +425,64 @@ function edd_free_downloads_process_auto_download() {
 		/**
 		 * Getting our logged in user info
 		 */
-		$user = get_current_user_id();
-		$user = get_userdata( $user );
-
-		$date = date( 'Y-m-d H:i:s', current_time( 'timestamp' ) );
-		$email = sanitize_email( trim( $user->data->user_email ) );
-
-		$user_info = array(
-			'id'         => $user ? $user->data->ID : '-1',
-			'email'      => $user->data->user_email,
-			'first_name' => $user->first_name,
-			'last_name'  => $user->last_name,
-			'discount'   => 'none'
-		);
-
-		$cart_details[0] = array(
-			'name'     => get_the_title( $download_id ),
-			'id'       => $download_id,
-			'price'    => edd_format_amount( 0 ),
-			'subtotal' => edd_format_amount( 0 ),
-			'quantity' => 1,
-			'tax'      => edd_format_amount( 0 )
-		);
-
-		$purchase_data = array(
-			'price'        => edd_format_amount( 0 ),
-			'tax'          => edd_format_amount( 0 ),
-			'post_date'    => $date,
-			'purchase_key' => strtolower( md5( uniqid() ) ),
-			'user_email'   => $email,
-			'user_info'    => $user_info,
-			'currency'     => edd_get_currency(),
-			'downloads'    => null,
-			'cart_details' => $cart_details,
-			'gateway'      => 'manual',
-			'status'       => 'publish',
-		);
-
-		// error_log('purchase data: ' . print_r($purchase_data, 1));
-
-		// error_log( 'download id: ' . $download_id );
-
-		$edd_payment_check = get_posts( array(
-			'suppress_filters' => false,
-			'post_type' => 'edd_payment',
-			'meta_key' => '_edd_purchased_product',
-			'meta value' => $download_id,
-			'posts_per_page' => 1,
-		) );
-
-		error_log('edd_payment_check: ' . print_r($edd_payment_check, 1) );
-
-		$payment_id = edd_insert_payment( $purchase_data );
 
 		/**
-		 * Adding "purchased" product post ID to payment edd_payment post type
-		 * to allow for future queries to check if the user has already "purchased"
-		 * this free download. If so we will not create a new payment record,
-		 * i.e not creating a new edd_payment post.
+		 * This is needed to correctly get currently logged in
+		 * user
 		 */
-		update_post_meta( $payment_id, '_edd_purchased_product', $download_id );
+		do_action( 'edd_pre_process_purchase' );
 
-		/**
-		 * Temporary code to ensure this will work
-		 */
-		if ( ! isset( $_GET['payment-id'] ) ) {
-			$_GET['payment-id'] = time();
+		$user_id = get_current_user_id();
+		$user = get_userdata( $user_id );
+
+		$customer = new EDD_Customer( $user->data->user_email );
+
+		$have_purchased = edd_has_user_purchased( $user_id, $download_id, $variable_price_id = null );
+
+		if ( true === $have_purchased ) {
+
+			/**
+			 * The logged in user has already "purchased" this item
+			 */
+
+			global $edd_logs;
+
+			$logs = $edd_logs->get_connected_logs( array(
+				'suppress_filters' => false,
+				'posts_per_page' => 1,
+				'fields' => 'ids',
+				'post_parent' => $download_id,
+				'meta_query' => array( array(
+					'key' => '_edd_log_payment_id',
+					'value' => explode( ',', $customer->payment_ids ),
+					'compare' => 'IN',
+				) ),
+			) );
+
+			error_log( 'sales log: ' . print_r($logs, 1) );
+
+			$payment_id = get_post_meta( $logs[0], '_edd_log_payment_id', true );
+			$payment = edd_get_payment( $payment_id );
+
+			error_log('payment_key ' . print_r( $payment->key, 1 ) );
+
+
+			error_log( 'have_purchased ' .  $have_purchased );
+
+		} else {
+			/**
+			 * actually create a payment record
+			 */
+			$payment = new EDD_Payment();
+			$payment->user_id = $customer->user_id;
+			$payment->user_email = $user->data->user_email;
+			$payment->customer_id = $customer->id;
+			$payment->add_download( $download_id, array( 'price' => 0 ) );
+			$payment->status = 'publish';
+			$payment->save();
 		}
 
-		wp_safe_redirect( add_query_arg( array( 'payment_key' => absint( $_GET['payment-id'] ) ), edd_get_success_page_uri() ) );
+		wp_safe_redirect( add_query_arg( array( 'payment_key' => $payment->key ), edd_get_success_page_uri() ) );
 
 	} // End if logged in and "purchasing" a free product with no download file.
 }
