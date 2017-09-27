@@ -77,6 +77,8 @@ function edd_free_downloads_purchase_download_form( $purchase_form, $args ) {
 	$download_id   = absint( $args['download_id'] );
 	$download_file = edd_get_download_files( $download_id );
 
+	do_action( 'edd_purchase_link_top', $download_id, $args );
+
 	if ( edd_free_downloads_use_modal( $download_id ) && ! edd_has_variable_prices( $download_id ) ) {
 		$purchase_form     = '';
 		$form_id           = 'edd_purchase_' . $download_id;
@@ -141,6 +143,8 @@ function edd_free_downloads_purchase_download_form( $purchase_form, $args ) {
 			), $download_id );
 		}
 	}
+
+	do_action( 'edd_purchase_link_end', $download_id, $args );
 
 	return $purchase_form;
 }
