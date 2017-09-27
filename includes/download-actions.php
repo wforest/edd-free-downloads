@@ -415,19 +415,12 @@ function edd_free_downloads_process_auto_download() {
 
 		/**
 		 * Adding purchase record for logged in user
-		 *
-		 * @todo Check if the user is purchasing the free product with no
-		 * download file a second ( or more time )
-		 *
-		 * @var array
 		 */
 
 		/**
 		 * Getting our logged in user info
-		 */
-
-		/**
-		 * This is needed to correctly get currently logged in
+		 *
+		 * This do_action is needed to correctly get currently logged in
 		 * user
 		 */
 		do_action( 'edd_pre_process_purchase' );
@@ -447,6 +440,10 @@ function edd_free_downloads_process_auto_download() {
 
 			global $edd_logs;
 
+			/**
+			 * The function get_connected_logs() takes an array using the same
+			 * parameters as get_posts
+			 */
 			$logs = $edd_logs->get_connected_logs( array(
 				'suppress_filters' => false,
 				'posts_per_page' => 1,
@@ -459,19 +456,12 @@ function edd_free_downloads_process_auto_download() {
 				) ),
 			) );
 
-			error_log( 'sales log: ' . print_r($logs, 1) );
-
 			$payment_id = get_post_meta( $logs[0], '_edd_log_payment_id', true );
 			$payment = edd_get_payment( $payment_id );
 
-			error_log('payment_key ' . print_r( $payment->key, 1 ) );
-
-
-			error_log( 'have_purchased ' .  $have_purchased );
-
 		} else {
 			/**
-			 * actually create a payment record
+			 * actually creating a payment record
 			 */
 			$payment = new EDD_Payment();
 			$payment->user_id = $customer->user_id;
