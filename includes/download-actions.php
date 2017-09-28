@@ -409,6 +409,11 @@ function edd_free_downloads_process_auto_download() {
 
 		edd_free_downloads_download_file( $download_url, $hosted );
 	} else {
+
+		if ( ! is_user_logged_in() ) {
+			return;
+		}
+
 		/**
 		 * Our $download_files array is empty because there are no files and the user is logged in
 		 */
