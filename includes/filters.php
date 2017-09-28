@@ -116,7 +116,7 @@ function edd_free_downloads_purchase_download_form( $purchase_form, $args ) {
 			 */
 			ob_start(); ?>
 
-				<form id="' . $form_id . '" class="edd_download_purchase_form">
+				<form id="<?php echo esc_attr( $form_id ); ?>" class="edd_download_purchase_form">
 					<?php do_action( 'edd_purchase_link_top', $download_id, $args );?>
 					<div class="edd_free_downloads_form_class">
 						<?php
