@@ -102,11 +102,8 @@ function edd_free_downloads_purchase_download_form( $purchase_form, $args ) {
 		}
 
 		if ( ! is_user_logged_in() || edd_get_option( 'edd_free_downloads_bypass_logged_in', false ) === false ) {
-			$download_class = implode( ' ', array( $button_style, $button_color, $button_class, 'edd-submit edd-free-download edd-free-download-single' ) );
 
-			$purchase_form .= '<form id="' . $form_id . '" class="edd_download_purchase_form">';
-			$purchase_form .= apply_filters( 'edd_free_download_purchase_link_top_filter', null );
-			$purchase_form .= '<div class="edd_free_downloads_form_class">';
+			$download_class = implode( ' ', array( $button_style, $button_color, $button_class, 'edd-submit edd-free-download edd-free-download-single' ) );
 
 			if ( wp_is_mobile() ) {
 				$href = esc_url( add_query_arg( array( 'edd-free-download' => 'true', 'download_id' => $args['download_id'] ) ) );
@@ -114,25 +111,38 @@ function edd_free_downloads_purchase_download_form( $purchase_form, $args ) {
 				$href = '#edd-free-download-modal';
 			}
 
-			if ( edd_is_ajax_enabled() ) {
-				$purchase_form .= apply_filters( 'edd_free_downloads_button_override', sprintf(
-					'<a class="edd-add-to-cart %1$s" href="' . $href . '" data-download-id="%3$s">%2$s</a>',
-					$download_class,
-					$download_label,
-					$download_id
-				), $download_id );
-			} else {
-				$purchase_form .= apply_filters( 'edd_free_downloads_button_override', sprintf(
-					'<input type="submit" class="edd-no-js %1$s" name="edd_purchase_download" value="%2$s" href="' . $href . '" data-download-id="%3$s" />',
-					$download_class,
-					$download_label,
-					$download_id
-				), $download_id );
-			}
+			/**
+			 * Output buffer is needed here to allow for do_action to work as expected
+			 */
+			ob_start(); ?>
 
-			$purchase_form .= '</div>';
-			$purchase_form .= apply_filters( 'edd_free_download_purchase_link_end_filter', null );
-			$purchase_form .= '</form>';
+				<form id="' . $form_id . '" class="edd_download_purchase_form">
+					<?php do_action( 'edd_purchase_link_top', $download_id, $args );?>
+					<div class="edd_free_downloads_form_class">
+						<?php
+						if ( edd_is_ajax_enabled() ) {
+							echo apply_filters( 'edd_free_downloads_button_override', sprintf(
+								'<a class="edd-add-to-cart %1$s" href="' . $href . '" data-download-id="%3$s">%2$s</a>',
+								$download_class,
+								$download_label,
+								$download_id
+							), $download_id );
+						} else {
+							echo apply_filters( 'edd_free_downloads_button_override', sprintf(
+								'<input type="submit" class="edd-no-js %1$s" name="edd_purchase_download" value="%2$s" href="' . $href . '" data-download-id="%3$s" />',
+								$download_class,
+								$download_label,
+								$download_id
+							), $download_id );
+						}
+						?>
+					</div>
+					<?php do_action( 'edd_purchase_link_end', $download_id, $args ); ?>
+				</form>
+
+			<?php
+
+			$purchase_form = ob_get_clean();
 
 		} else {
 			$download_class = implode( ' ', array( edd_get_option( 'button_style', 'button' ), edd_get_option( 'checkout_color', 'blue' ), 'edd-submit' ) );
