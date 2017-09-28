@@ -81,7 +81,7 @@ function edd_free_download_process() {
 		/**
 		 * @todo  Update translation files
 		 */
-		wp_die( esc_html__( 'Please enter a valid email address', 'edd-free-downloads' ), esc_html__( 'Oops!', 'edd-free-downloads' ) );
+		wp_die( esc_html__( 'Please enter a valid email address.', 'edd-free-downloads' ), esc_html__( 'Oops!', 'edd-free-downloads' ) );
 	}
 
 	// No banned emails please!
