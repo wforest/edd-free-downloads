@@ -16,6 +16,13 @@ $rname = edd_get_option( 'edd_free_downloads_require_name', false ) ? ' <span cl
 $color = edd_get_option( 'checkout_color', 'blue' );
 $color = ( $color == 'inherit' ) ? '' : $color;
 $label = edd_get_option( 'edd_free_downloads_modal_button_label', __( 'Download Now', 'edd-free-downloads' ) );
+
+if ( is_page() ) {
+	preg_match('#\[purchase_link id="(\d+)"#', get_the_content(), $product_post_id );
+	if ( isset( $product_post_id[1] ) ) {
+		$post = get_post( $product_post_id[1] );
+	}
+}
 ?>
 <form id="edd_free_download_form" method="post">
 	<?php do_action( 'edd_free_downloads_before_modal_form', $post ); ?>
@@ -123,3 +130,6 @@ $label = edd_get_option( 'edd_free_downloads_modal_button_label', __( 'Download 
 
 	<?php do_action( 'edd_free_downloads_after_download_button', $post ); ?>
 </form>
+<?php if ( is_page() ) {
+	wp_reset_postdata();
+}
