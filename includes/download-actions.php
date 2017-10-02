@@ -178,7 +178,7 @@ function edd_free_download_process() {
 				)
 			);
 		}
-	} elseif( isset( $price_ids ) && ! is_array( $price_ids ) ) {
+	} elseif ( isset( $price_ids ) && ! is_array( $price_ids ) ) {
 		if ( ! edd_is_free_download( $download_id, $price_ids ) ) {
 			wp_die( __( 'The requested product is not a free product! Please try again or contact support.', 'edd-free-downloads' ), __( 'Oops!', 'edd-free-downloads' ) );
 		}
@@ -234,7 +234,7 @@ function edd_free_download_process() {
 		'downloads'    => array( $download_id ),
 		'cart_details' => $cart_details,
 		'gateway'      => 'manual',
-		'status'       => 'pending'
+		'status'       => 'pending',
 	);
 
 	$payment_id = edd_insert_payment( $purchase_data );
@@ -273,9 +273,16 @@ function edd_free_download_process() {
 	$mobile_custom_url  = edd_get_option( 'edd_free_downloads_mobile_redirect', false );
 	$mobile_custom_url  = $mobile_custom_url ? esc_url( $mobile_custom_url ) : $success_page;
 	$apple_custom_url   = edd_get_option( 'edd_free_downloads_apple_redirect', false );
-	$appple_custom_url  = $apple_custom_url ? esc_url( $apple_custom_url ) : $success_page;
+	$apple_custom_url   = $apple_custom_url ? esc_url( $apple_custom_url ) : $success_page;
 	$mobile_on_complete = edd_get_option( 'edd_free_downloads_mobile_on_complete', 'default' );
 	$apple_on_complete  = edd_get_option( 'edd_free_downloads_apple_on_complete', 'default' );
+
+	/**
+	 * This accounts for logged in users when no download file is attached to the purchase.
+	 */
+	if ( empty( $download_files ) ) {
+		$on_complete = 'default';
+	}
 
 	switch ( $on_complete ) {
 		case 'default' :
@@ -419,6 +426,81 @@ function edd_free_downloads_process_auto_download() {
 		}
 
 		edd_free_downloads_download_file( $download_url, $hosted );
-	}
+	} else {
+
+		if ( ! is_user_logged_in() ) {
+			return;
+		}
+
+		/**
+		 * Our $download_files array is empty because there are no files and the user is logged in
+		 */
+
+		/**
+		 * Adding purchase record for logged in user.
+		 * Note the below logic will _not_ create a payment
+		 * record if the user is logged in though has already
+		 * "purchased" product.
+		 */
+
+		/**
+		 * Getting our logged in user info
+		 *
+		 * This do_action is needed to correctly get currently logged in
+		 * user
+		 */
+		do_action( 'edd_pre_process_purchase' );
+
+		$user_id = get_current_user_id();
+		$user = get_userdata( $user_id );
+
+		$customer = new EDD_Customer( $user->data->user_email );
+
+		$has_purchased = edd_has_user_purchased( $user_id, $download_id, $variable_price_id = null );
+
+		if ( true === $has_purchased ) {
+
+			/**
+			 * The logged in user has already "purchased" this item
+			 */
+
+			global $edd_logs;
+
+			/**
+			 * The function get_connected_logs() takes an array using the same
+			 * parameters as get_posts
+			 */
+			$logs = $edd_logs->get_connected_logs( array(
+				'suppress_filters' => false,
+				'posts_per_page' => 1,
+				'fields' => 'ids',
+				'post_parent' => $download_id,
+				'meta_query' => array( array(
+					'key' => '_edd_log_payment_id',
+					'value' => explode( ',', $customer->payment_ids ),
+					'compare' => 'IN',
+				) ),
+			) );
+
+			$payment_id = get_post_meta( $logs[0], '_edd_log_payment_id', true );
+			$payment = edd_get_payment( $payment_id );
+
+		} else {
+			/**
+			 * actually creating a payment record
+			 */
+			$payment = new EDD_Payment();
+			$payment->user_id = $customer->user_id;
+			$payment->user_email = $user->data->user_email;
+			$payment->customer_id = $customer->id;
+			$payment->add_download( $download_id, array( 'price' => 0 ) );
+			$payment->status = 'publish';
+			$payment->save();
+		}
+
+		wp_safe_redirect( add_query_arg( array( 'payment_key' => $payment->key ), edd_get_success_page_uri() ) ); exit;
+
+	} // End if logged in and "purchasing" a free product with no download file.
 }
+
 add_action( 'edd_free_downloads_process_download', 'edd_free_downloads_process_auto_download' );
