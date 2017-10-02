@@ -480,7 +480,7 @@ function edd_free_downloads_process_auto_download() {
 			$payment->save();
 		}
 
-		wp_safe_redirect( add_query_arg( array( 'payment_key' => $payment->key ), edd_get_success_page_uri() ) );
+		wp_safe_redirect( add_query_arg( array( 'payment_key' => $payment->key ), edd_get_success_page_uri() ) ); exit;
 
 	} // End if logged in and "purchasing" a free product with no download file.
 }
