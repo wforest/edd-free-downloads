@@ -126,7 +126,7 @@ function edd_free_downloads_purchase_download_form( $purchase_form, $args ) {
 							 * to allow for end user to manipulate data as needed
 							 * per https://github.com/easydigitaldownloads/edd-free-downloads/issues/152
 							 */
-							$download_post = get_post( $download_id );
+							$download_post = new EDD_Download( $download_id );
 							$download_post = json_encode( $download_post );
 
 							echo apply_filters( 'edd_free_downloads_button_override', sprintf(
