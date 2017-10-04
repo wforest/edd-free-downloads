@@ -121,8 +121,10 @@ function edd_free_downloads_purchase_download_form( $purchase_form, $args ) {
 					<div class="edd_free_downloads_form_class">
 						<?php
 						if ( edd_is_ajax_enabled() ) {
+							$download_post = get_post( $download_id );
+							$download_post = json_encode( $download_post );
 							echo apply_filters( 'edd_free_downloads_button_override', sprintf(
-								'<a class="edd-add-to-cart %1$s" href="' . $href . '" data-download-id="%3$s">%2$s</a>',
+								'<a class="edd-add-to-cart %1$s" href="' . $href . '" data-download-id="%3$s" data-download-post="' . $download_post . '">%2$s</a>',
 								$download_class,
 								$download_label,
 								$download_id
