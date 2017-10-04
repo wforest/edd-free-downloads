@@ -153,6 +153,11 @@ function edd_free_download_process() {
 
 	if ( isset( $price_ids ) && is_array( $price_ids ) ) {
 		foreach ( $price_ids as $cart_id => $price_id ) {
+			/**
+			 * This logic handles multi-purchase mode with multiple $price_ids selected.
+			 *
+			 * $price_ids should be an array here
+			 */
 			if ( ! edd_is_free_download( $download_id, $price_id ) ) {
 				wp_die( __( 'The requested product is not a free product! Please try again or contact support.', 'edd-free-downloads' ), __( 'Oops!', 'edd-free-downloads' ) );
 			}
@@ -166,6 +171,11 @@ function edd_free_download_process() {
 		/**
 		 * This logic deals with variable pricing and accounts for if there is a
 		 * free product as well.
+		 *
+		 * In this situation there is only a single price id though the
+		 * variable is still $price_ids.
+		 *
+		 * $price_ids should be a single integer here
 		 */
 		if ( ! edd_is_free_download( $download_id, $price_ids ) ) {
 			wp_die( __( 'The requested product is not a free product! Please try again or contact support.', 'edd-free-downloads' ), __( 'Oops!', 'edd-free-downloads' ) );
@@ -180,6 +190,9 @@ function edd_free_download_process() {
 	} else {
 		/**
 		 * This logic deal with a free download
+		 *
+		 * In this situation there is no price id set thus we
+		 * will set it to `false` below.
 		 */
 		if ( ! edd_is_free_download( $download_id ) ) {
 			wp_die( __( 'An internal error has occurred, please try again or contact support.', 'edd-free-downloads' ), __( 'Oops!', 'edd-free-downloads' ) );
