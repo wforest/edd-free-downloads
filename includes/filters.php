@@ -121,8 +121,14 @@ function edd_free_downloads_purchase_download_form( $purchase_form, $args ) {
 					<div class="edd_free_downloads_form_class">
 						<?php
 						if ( edd_is_ajax_enabled() ) {
+							/**
+							 * Getting and JSON encoding download post object
+							 * to allow for end user to manipulate data as needed
+							 * per https://github.com/easydigitaldownloads/edd-free-downloads/issues/152
+							 */
 							$download_post = get_post( $download_id );
 							$download_post = json_encode( $download_post );
+
 							echo apply_filters( 'edd_free_downloads_button_override', sprintf(
 								'<a class="edd-add-to-cart %1$s" href="' . $href . '" data-download-id="%3$s" data-download-post="' . $download_post . '">%2$s</a>',
 								$download_class,
