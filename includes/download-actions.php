@@ -136,108 +136,72 @@ function edd_free_download_process() {
 		$user_last = $user ? $user->last_name : '';
 	}
 
-	$user_info = array(
-		'id'         => $user ? $user->ID : '-1',
-		'email'      => $email,
-		'first_name' => $user_first,
-		'last_name'  => $user_last,
-		'discount'   => 'none'
-	);
-
-	$cart_details = array();
 	$price_ids    = isset( $_POST['edd_free_download_price_id'] ) ? $_POST['edd_free_download_price_id'] : false;
+
+	$payment = new EDD_Payment;
+	$payment->first_name = $user_first;
+	$payment->last_name  = $user_last;
+	$payment->user_id    = $user ? $user->ID : 0;
+	$payment->email      = $email;
+	$payment->total      = 0;
+	$payment->gateway    = 'manual';
+	$payment->status     = 'pending';
 
 	if ( ! $price_ids && isset( $_GET['price_ids'] ) ) {
 		$price_ids = sanitize_text_field( $_GET['price_ids'] );
 	}
 
-	$download_files = array();
-
 	if ( isset( $price_ids ) && is_array( $price_ids ) ) {
 		foreach ( $price_ids as $cart_id => $price_id ) {
+			/**
+			 * This logic handles multi-purchase mode with multiple $price_ids selected.
+			 *
+			 * $price_ids should be an array here.
+			 */
 			if ( ! edd_is_free_download( $download_id, $price_id ) ) {
 				wp_die( __( 'The requested product is not a free product! Please try again or contact support.', 'edd-free-downloads' ), __( 'Oops!', 'edd-free-downloads' ) );
 			}
 
-			$download_files[] = edd_get_download_files( $download_id, $price_id );
-
-			$cart_details[ $cart_id ] = array(
-				'name'        => get_the_title( $download_id ),
-				'id'          => $download_id,
-				'price'       => edd_format_amount( 0 ),
-				'subtotal'    => edd_format_amount( 0 ),
-				'quantity'    => 1,
-				'tax'         => edd_format_amount( 0 ),
-				'item_number' => array(
-					'id'       => $download_id,
-					'quantity' => 1,
-					'options'  => array(
-						'quantity' => 1,
-						'price_id' => $price_id
-					)
-				)
-			);
+			$payment->add_download( $download_id, array(
+				'price_id'   => $price_id,
+				'item_price' => 0
+			) );
 		}
-	} elseif ( isset( $price_ids ) && ! is_array( $price_ids ) ) {
+	} elseif ( isset( $price_ids ) && ! is_array( $price_ids ) && ! empty( $price_ids ) ) {
+		/**
+		 * This logic deals with variable pricing and accounts for if there is a
+		 * free product as well.
+		 *
+		 * In this situation there is only a single price id though the
+		 * variable is still $price_ids.
+		 *
+		 * $price_ids should be a single integer here.
+		 */
 		if ( ! edd_is_free_download( $download_id, $price_ids ) ) {
 			wp_die( __( 'The requested product is not a free product! Please try again or contact support.', 'edd-free-downloads' ), __( 'Oops!', 'edd-free-downloads' ) );
 		}
 
 		$download_files[] = edd_get_download_files( $download_id, $price_ids );
 
-		$cart_details[0] = array(
-			'name'        => get_the_title( $download_id ),
-			'id'          => $download_id,
-			'price'       => edd_format_amount( 0 ),
-			'subtotal'    => edd_format_amount( 0 ),
-			'quantity'    => 1,
-			'tax'         => edd_format_amount( 0 ),
-			'item_number' => array(
-				'id'       => $download_id,
-				'quantity' => 1,
-				'options'  => array(
-					'quantity' => 1,
-					'price_id' => $price_ids
-				)
-			)
-		);
+		$payment->add_download( $download_id, array(
+			'price_id'   => $price_ids,
+			'item_price' => 0
+		) );
 	} else {
+		/**
+		 * This logic deal with a free download.
+		 *
+		 * In this situation there is no price id set thus we
+		 * will set it to `false` below.
+		 */
 		if ( ! edd_is_free_download( $download_id ) ) {
 			wp_die( __( 'An internal error has occurred, please try again or contact support.', 'edd-free-downloads' ), __( 'Oops!', 'edd-free-downloads' ) );
 		}
 
-		$download_files[] = edd_get_download_files( $download_id, false );
-
-		$cart_details[0] = array(
-			'name'     => get_the_title( $download_id ),
-			'id'       => $download_id,
-			'price'    => edd_format_amount( 0 ),
-			'subtotal' => edd_format_amount( 0 ),
-			'quantity' => 1,
-			'tax'      => edd_format_amount( 0 )
-		);
+		$payment->add_download( $download_id, array(
+			'price_id'   => false, // We have a free download
+		) );
 	}
-
-	$date = date( 'Y-m-d H:i:s', current_time( 'timestamp' ) );
-
-	/**
-	 * Gateway set to manual because manual + free lists as 'Free Purchase' in order details
-	 */
-	$purchase_data = array(
-		'price'        => edd_format_amount( 0 ),
-		'tax'          => edd_format_amount( 0 ),
-		'post_date'    => $date,
-		'purchase_key' => strtolower( md5( uniqid() ) ),
-		'user_email'   => $email,
-		'user_info'    => $user_info,
-		'currency'     => edd_get_currency(),
-		'downloads'    => array( $download_id ),
-		'cart_details' => $cart_details,
-		'gateway'      => 'manual',
-		'status'       => 'pending',
-	);
-
-	$payment_id = edd_insert_payment( $purchase_data );
 
 	// Disable purchase emails
 	if ( edd_get_option( 'edd_free_downloads_disable_emails', false ) ) {
@@ -248,15 +212,19 @@ function edd_free_download_process() {
 		}
 	}
 
-	edd_update_payment_status( $payment_id, 'publish' );
-	edd_insert_payment_note( $payment_id, __( 'Purchased through EDD Free Downloads', 'edd-free-downloads' ) );
+	$payment->save();
+	$payment->status = 'publish';
+	$payment->save();
+	$payment->add_note( __( 'Purchased through EDD Free Downloads', 'edd-free-downloads' ) );
+
 	edd_empty_cart();
+	$purchase_data['purchase_key'] = $payment->key;
 	edd_set_purchase_session( $purchase_data );
 
 	if ( edd_get_option( 'edd_free_downloads_user_registration', false ) && ! is_user_logged_in() && ! class_exists( 'EDD_Auto_Register' ) ) {
 		$account = array(
-			'user_login' => trim( $_POST['edd_free_download_username'] ),
-			'user_pass'  => trim( $_POST['edd_free_download_pass'] ),
+			'user_login' => trim( sanitize_text_field( $_POST['edd_free_download_username'] ) ),
+			'user_pass'  => trim( sanitize_text_field( $_POST['edd_free_download_pass'] ) ),
 			'user_email' => $email,
 			'first_name' => $user_first,
 			'last_name'  => $user_last
@@ -321,15 +289,15 @@ function edd_free_download_process() {
 
 	// Support Conditional Success Redirects
 	if ( function_exists( 'edd_csr_is_redirect_active' ) && $redirect_url == $success_page ) {
-		if ( edd_csr_is_redirect_active( edd_csr_get_redirect_id( $payment_meta['cart_details'][0]['id'] ) ) ) {
-			$redirect_id = edd_csr_get_redirect_id( $payment_meta['cart_details'][0]['id'] );
+		if ( edd_csr_is_redirect_active( edd_csr_get_redirect_id( $payment->cart_details[0]['id'] ) ) ) {
+			$redirect_id = edd_csr_get_redirect_id( $payment->cart_details[0]['id'] );
 
 			$redirect_url = edd_csr_get_redirect_page_id( $redirect_id );
 			$redirect_url = get_permalink( $redirect_url );
 		}
 	}
 
-	wp_redirect( apply_filters( 'edd_free_downloads_redirect', $redirect_url, $payment_id ) );
+	wp_redirect( apply_filters( 'edd_free_downloads_redirect', add_query_arg( 'payment_key', $payment->key, $redirect_url ), $payment->ID ) );
 	edd_die();
 }
 add_action( 'edd_free_download_process', 'edd_free_download_process' );
