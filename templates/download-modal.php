@@ -1,5 +1,5 @@
 <?php
-global $post;
+// global $post;
 
 // Pull user data if available
 if ( is_user_logged_in() ) {
@@ -23,6 +23,14 @@ $label = edd_get_option( 'edd_free_downloads_modal_button_label', __( 'Download 
 // 		$post = get_post( $product_post_id[1] );
 // 	}
 // }
+
+if ( isset( $_GET['download_id'] ) && ! empty( $_GET['download_id'] ) ) {
+	$post = get_post( $_GET['download_id'] );
+} else {
+	global $post; // Leaving here for backwards compat.
+}
+
+
 ?>
 <form id="edd_free_download_form" method="post">
 	<?php do_action( 'edd_free_downloads_before_modal_form', $post ); ?>
@@ -129,7 +137,10 @@ $label = edd_get_option( 'edd_free_downloads_modal_button_label', __( 'Download 
 
 	<?php do_action( 'edd_free_downloads_after_download_button', $post ); ?>
 </form>
+
 <?php
-// if ( is_page() ) {
-// 	wp_reset_postdata();
-// }
+/**
+ * This template is called via AJAX and we switch the $post
+ * object, thus we will reset it here
+ */
+wp_reset_postdata();

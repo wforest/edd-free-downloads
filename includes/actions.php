@@ -307,9 +307,15 @@ add_action( 'wp_ajax_nopriv_edd_free_downloads_get_notes', 'edd_free_downloads_g
 
 function edd_free_downloads_get_modal() {
 
-echo "_GET\n<pre>";
-print_r($_GET);
-echo "</pre>\n\n";
+	echo "_GET\n<pre>";
+	print_r($_GET);
+	echo "</pre>\n\n";
+
+	// $post = new WP_Query( $_GET['download_id'] );
+
+	edd_get_template_part( 'download', 'modal' );
+
+	// wp_reset_postdata();
 
 	edd_die();
 }

@@ -29,9 +29,8 @@ jQuery(document.body).ready(function ($) {
 
                 console.log( data );
 
-            },
-             error: function( error ) {
-                console.log( error );
+                $( 'body' ).prepend( data );
+
             }
         });
 
