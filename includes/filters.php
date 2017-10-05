@@ -126,16 +126,13 @@ function edd_free_downloads_purchase_download_form( $purchase_form, $args ) {
 							 * to allow for end user to manipulate data as needed
 							 * per https://github.com/easydigitaldownloads/edd-free-downloads/issues/152
 							 */
-							// $download_post = new EDD_Download( $download_id );
-							// $download_post = json_encode( $download_post );
-
+							$download_post = new EDD_Download( $download_id );
 							echo apply_filters( 'edd_free_downloads_button_override', sprintf(
-								'<a class="edd-add-to-cart %1$s" href="' . $href . '" data-download-id="%3$s">%2$s</a>',
-
-								// '<a class="edd-add-to-cart %1$s" href="' . $href . '" data-download-id="%3$s" data-download-post="' . $download_post . '">%2$s</a>',
+								'<a class="edd-add-to-cart %1$s" href="' . $href . '" data-download-id="%3$s" data-download-title="%4$s">%2$s</a>',
 								$download_class,
 								$download_label,
-								$download_id
+								$download_id,
+								esc_attr( $download_post->get_name() )
 							), $download_id );
 						} else {
 							echo apply_filters( 'edd_free_downloads_button_override', sprintf(

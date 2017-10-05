@@ -17,16 +17,15 @@ $color = edd_get_option( 'checkout_color', 'blue' );
 $color = ( $color == 'inherit' ) ? '' : $color;
 $label = edd_get_option( 'edd_free_downloads_modal_button_label', __( 'Download Now', 'edd-free-downloads' ) );
 
-if ( is_page() ) {
-	preg_match('#\[purchase_link id="(\d+)"#', get_the_content(), $product_post_id );
-	if ( isset( $product_post_id[1] ) ) {
-		$post = get_post( $product_post_id[1] );
-	}
-}
+// if ( is_page() ) {
+// 	preg_match('#\[purchase_link id="(\d+)"#', get_the_content(), $product_post_id );
+// 	if ( isset( $product_post_id[1] ) ) {
+// 		$post = get_post( $product_post_id[1] );
+// 	}
+// }
 ?>
 <form id="edd_free_download_form" method="post">
 	<?php do_action( 'edd_free_downloads_before_modal_form', $post ); ?>
-
 	<p>
 		<label for="edd_free_download_email" class="edd-free-downloads-label"><?php _e( 'Email Address', 'edd-free-downloads' ); ?> <span class="edd-free-downloads-required">*</span></label>
 		<input type="text" name="edd_free_download_email" id="edd_free_download_email" class="edd-free-download-field" placeholder="<?php _e( 'Email Address', 'edd-free-downloads' ); ?>" value="<?php echo $email; ?>" />
@@ -130,6 +129,7 @@ if ( is_page() ) {
 
 	<?php do_action( 'edd_free_downloads_after_download_button', $post ); ?>
 </form>
-<?php if ( is_page() ) {
-	wp_reset_postdata();
-}
+<?php
+// if ( is_page() ) {
+// 	wp_reset_postdata();
+// }

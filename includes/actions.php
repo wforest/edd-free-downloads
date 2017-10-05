@@ -303,3 +303,21 @@ function edd_free_downloads_get_notes() {
 }
 add_action( 'wp_ajax_edd_free_downloads_get_notes', 'edd_free_downloads_get_notes' );
 add_action( 'wp_ajax_nopriv_edd_free_downloads_get_notes', 'edd_free_downloads_get_notes' );
+
+
+function edd_free_downloads_get_modal() {
+
+echo "_GET\n<pre>";
+print_r($_GET);
+echo "</pre>\n\n";
+
+	edd_die();
+}
+add_action( 'wp_ajax_edd_free_downloads_get_modal', 'edd_free_downloads_get_modal' );
+add_action( 'wp_ajax_nopriv_edd_free_downloads_get_modal', 'edd_free_downloads_get_modal' );
+
+
+
+
+
+

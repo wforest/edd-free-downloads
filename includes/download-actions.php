@@ -233,7 +233,7 @@ function edd_free_download_process() {
 		edd_register_and_login_new_user( $account );
 	}
 
-	$payment_meta       = edd_get_payment_meta( $payment_id );
+	$payment_meta       = edd_get_payment_meta( $payment->ID );
 	$on_complete        = edd_get_option( 'edd_free_downloads_on_complete', 'default' );
 	$success_page       = edd_get_success_page_uri();
 	$custom_url         = edd_get_option( 'edd_free_downloads_redirect', false );
