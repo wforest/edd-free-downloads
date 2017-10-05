@@ -11,12 +11,13 @@ body.edd-frozen {
     left: 0;
     background: rgba( 9, 9, 9, .8 );
     z-index: 999;
+    padding: 15% 0 0;
 }
 
 #edd-free-downloads-modal {
     background: #fff;
-    width: 27%;
-    margin: 10% auto;
+    width: 350px;
+    margin: 0 auto;
     border-radius: 5px;
     padding: 2%;
 }

@@ -3,19 +3,11 @@
 jQuery(document.body).ready(function ($) {
     'use strict';
 
-    // var newModal;
-
     // start new code
 
     $( 'a.edd-free-download' ).on( 'click', function() {
-        console.log( 'yup clicked' );
+
         var edd_download_id = $( this ).data( 'download-id' );
-
-        // console.log( title );
-
-        console.log( edd_download_id );
-
-        console.log( edd_free_downloads_vars );
 
         $.ajax({
             url: edd_free_downloads_vars.ajaxurl,
@@ -25,9 +17,7 @@ jQuery(document.body).ready(function ($) {
                 'download_id': edd_download_id,
             },
             success: function( data ) {
-                // console.log( title );
-
-                console.log( data );
+                // console.log( data );
 
                 var body = $( 'body' );
                 body.addClass( 'edd-frozen' );
@@ -61,8 +51,15 @@ jQuery(document.body).ready(function ($) {
                     }
                 });
 
-
-
+                /**
+                 * Allowing for pressing escape key to close modal
+                 */
+                body.on( 'keyup', function( e ) {
+                    if ( 27 === e.keyCode ) {
+                        $( '.edd-free-downloads-modal-wrapper' ).remove();
+                        body.removeClass( 'edd-frozen' );
+                    }
+                } );
             }
         });
 
