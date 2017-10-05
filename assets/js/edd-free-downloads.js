@@ -30,8 +30,14 @@ jQuery(document.body).ready(function ($) {
                 console.log( data );
 
                 var body = $( 'body' );
-                body.prepend( '<div class="edd-free-download-modal-wrapper"></div>' );
-                $('.edd-free-download-modal-wrapper').prepend( data );
+                body.addClass( 'edd-frozen' );
+                body.prepend( '<div class="edd-free-downloads-modal-wrapper"></div>' );
+                $('.edd-free-downloads-modal-wrapper').prepend( '<div id="edd-free-downloads-modal"></div>' );
+                $('#edd-free-downloads-modal').prepend( data );
+
+                // $( '#edd-free-downloads-modal' ).parent('.edd-free-downloads-modal-wrapper').on( 'click', function() {
+                //     $( this ).remove();
+                // } );
 
             }
         });

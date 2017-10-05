@@ -1,4 +1,26 @@
 /** Modal CSS **/
+body.edd-frozen {
+    overflow: hidden;
+}
+
+.edd-free-downloads-modal-wrapper {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: rgba( 9, 9, 9, .8 );
+    z-index: 999;
+}
+
+#edd-free-downloads-modal {
+    background: #fff;
+    width: 40%;
+    margin: 10% auto;
+    border-radius: 25px;
+    padding: 2%;
+}
+
 #edd-free-downloads-modal label {
     font-weight: bold;
     display: block;
@@ -27,9 +49,9 @@
     width: 100%;
 }
 
-.edd-free-downloads-hidden {
+/*.edd-free-downloads-hidden {
     display: none;
-}
+}*/
 
 .edd-free-downloads-mobile {
     padding: 25px;
