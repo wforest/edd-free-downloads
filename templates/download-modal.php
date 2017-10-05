@@ -1,5 +1,4 @@
 <?php
-// global $post;
 
 // Pull user data if available
 if ( is_user_logged_in() ) {
@@ -17,19 +16,14 @@ $color = edd_get_option( 'checkout_color', 'blue' );
 $color = ( $color == 'inherit' ) ? '' : $color;
 $label = edd_get_option( 'edd_free_downloads_modal_button_label', __( 'Download Now', 'edd-free-downloads' ) );
 
-// if ( is_page() ) {
-// 	preg_match('#\[purchase_link id="(\d+)"#', get_the_content(), $product_post_id );
-// 	if ( isset( $product_post_id[1] ) ) {
-// 		$post = get_post( $product_post_id[1] );
-// 	}
-// }
-
+/**
+ * Getting our download_id from our ajax call
+ */
 if ( isset( $_GET['download_id'] ) && ! empty( $_GET['download_id'] ) ) {
 	$post = get_post( $_GET['download_id'] );
 } else {
 	global $post; // Leaving here for backwards compat.
 }
-
 
 ?>
 <form id="edd_free_download_form" method="post">
