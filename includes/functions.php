@@ -457,14 +457,14 @@ function edd_free_downloads_set_download_method( $method ) {
  * @param       string $file_path The path to check
  * @return      string $hosted The hosting location
  */
-	function edd_free_downloads_get_host( $file_path ) {
+function edd_free_downloads_get_host( $file_path ) {
 	$hosted = '';
 
 	if ( strpos( $file_path, site_url() ) !== false ) {
 		$hosted = 'local';
 	} elseif ( strpos( $file_path, ABSPATH ) !== false ) {
 		$hosted = 'local';
-	} elseif ( filter_var( $file_path, FILTER_VALIDATE_URL ) === FALSE && strpos( $file_path, 'edd-dbfs' ) !== false ) {
+	} elseif ( strpos( $file_path, 'edd-dbfs' ) !== false ) {
 		$hosted = 'dropbox';
 	} elseif ( filter_var( $file_path, FILTER_VALIDATE_URL ) === FALSE && $file_path[0] !== '/' ) {
 		$hosted = 'amazon';
