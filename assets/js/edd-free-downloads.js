@@ -3,7 +3,7 @@
 jQuery(document.body).ready(function ($) {
     'use strict';
 
-    var newModal;
+    // var newModal;
 
     // start new code
 
@@ -35,9 +35,21 @@ jQuery(document.body).ready(function ($) {
                 $('.edd-free-downloads-modal-wrapper').prepend( '<div id="edd-free-downloads-modal"></div>' );
                 $('#edd-free-downloads-modal').prepend( data );
 
-                // $( '#edd-free-downloads-modal' ).parent('.edd-free-downloads-modal-wrapper').on( 'click', function() {
-                //     $( this ).remove();
-                // } );
+                /**
+                 * Stopping propagation here allows the user to click on the modal without closing it
+                 */
+                $( '#edd-free-downloads-modal' ).on( 'click', function(e) {
+                    e.stopPropagation();
+                } );
+
+                /**
+                 * If the user clicks outside the modal we remove it here
+                 */
+                $( '#edd-free-downloads-modal' ).parent('.edd-free-downloads-modal-wrapper').on( 'click', function() {
+                    $( this ).remove();
+                } );
+
+
 
             }
         });
