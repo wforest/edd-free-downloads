@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @since       1.0.1
  * @return      void
  */
-function edd_free_downloads_display_inline() {
+// function edd_free_downloads_display_inline() {
 	// echo '<div id="edd-free-downloads-modal" class="edd-free-downloads-hidden">';
 
 	// ob_start();
@@ -27,8 +27,8 @@ function edd_free_downloads_display_inline() {
 	// echo ob_get_clean();
 
 	// echo '</div>';
-}
-add_action( 'wp_footer', 'edd_free_downloads_display_inline' );
+// }
+// add_action( 'wp_footer', 'edd_free_downloads_display_inline' );
 
 /**
  * Listen for edd-free-download queries and handle accordingly

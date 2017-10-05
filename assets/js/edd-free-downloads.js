@@ -47,6 +47,7 @@ jQuery(document.body).ready(function ($) {
                  */
                 $( '#edd-free-downloads-modal' ).parent('.edd-free-downloads-modal-wrapper').on( 'click', function() {
                     $( this ).remove();
+                    body.removeClass( 'edd-frozen' );
                 } );
 
 
