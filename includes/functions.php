@@ -392,7 +392,7 @@ function edd_free_downloads_fetch_remote_file( $file_path, $hosted ) {
 			add_filter( 'edd_symlink_file_downloads', 'edd_free_downloads_disable_symlink' );
 
 			$dfs = new EDDDropboxFileStore();
-
+			$dfs->dbfsInit();
 			return $dfs->getDownloadURL( $file_path );
 
 		} else {
