@@ -124,7 +124,7 @@ if ( isset( $_GET['download_id'] ) && ! empty( $_GET['download_id'] ) ) {
 	</div>
 
 	<input type="hidden" name="edd_action" value="free_download_process" />
-	<input type="hidden" name="edd_free_download_id" />
+	<input type="hidden" name="edd_free_download_id" value="<?php echo intval( $_GET['download_id'] ); ?>" />
 	<button name="edd_free_download_submit" class="edd-free-download-submit edd-submit button <?php echo $color; ?>"><span><?php echo $label; ?></span></button>
 
 	<?php if ( edd_get_option( 'edd_free_downloads_direct_download' ) ) : ?>

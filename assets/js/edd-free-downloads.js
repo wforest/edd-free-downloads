@@ -29,7 +29,9 @@ jQuery(document.body).ready(function ($) {
 
                 console.log( data );
 
-                $( 'body' ).prepend( data );
+                var body = $( 'body' );
+                body.prepend( '<div class="edd-free-download-modal-wrapper"></div>' );
+                $('.edd-free-download-modal-wrapper').prepend( data );
 
             }
         });
