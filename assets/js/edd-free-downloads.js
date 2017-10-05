@@ -50,6 +50,17 @@ jQuery(document.body).ready(function ($) {
                     body.removeClass( 'edd-frozen' );
                 } );
 
+                /**
+                 * If you user is focused on the email field and presses enter
+                 * this will "click" the download botton
+                 */
+                body.on('keypress', '.edd-free-download-field', function (e) {
+                    if (e.which === 13) {
+                        $('.edd-free-download-submit').click();
+                        return false;
+                    }
+                });
+
 
 
             }
