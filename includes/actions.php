@@ -319,6 +319,15 @@ function edd_free_downloads_get_modal() {
 add_action( 'wp_ajax_edd_free_downloads_get_modal', 'edd_free_downloads_get_modal' );
 add_action( 'wp_ajax_nopriv_edd_free_downloads_get_modal', 'edd_free_downloads_get_modal' );
 
+/**
+ * [edd_free_downloads_add_modal_wrapper description]
+ * @return [type] [description]
+ */
+function edd_free_downloads_add_modal_wrapper() {
+	echo '<div class="edd-free-downloads-modal-wrapper hidden"></div>';
+}
+add_action( 'wp_footer', 'edd_free_downloads_add_modal_wrapper' );
+
 
 
 

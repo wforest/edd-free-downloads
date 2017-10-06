@@ -23,21 +23,16 @@ jQuery(document.body).ready(function ($) {
 
                 var body = $( 'body' );
                 body.addClass( 'edd-frozen' );
-                body.prepend( '<div class="edd-free-downloads-modal-wrapper"></div>' );
-                $('.edd-free-downloads-modal-wrapper').prepend( '<div id="edd-free-downloads-modal"></div>' );
+                $('.edd-free-downloads-modal-wrapper').prepend( '<div id="edd-free-downloads-modal"></div>' ).removeClass( 'hidden' );
                 $('#edd-free-downloads-modal').prepend( data );
                 $('#edd-free-downloads-modal .edd-free-download-submit').on( 'click', function() {
+
                     alert('working3'); // This works
 
-                    alert( 'working' );
+                    var fname = $( '.edd-free-downloads-modal-wrapper input[name="edd_free_download_fname"]' );
+                    var lname = $( '.edd-free-downloads-modal-wrapper input[name="edd_free_download_lname"]' );
 
-                    fname = $('input[name="edd_free_download_fname"]');
-                    lname = $('input[name="edd_free_download_lname"]');
-
-                    console.log( fname, lname );
-
-                    return;
-
+                    console.log( fname.val(), lname.val() );
 
                     if (fname.val() === '') {
                         $('#edd-free-download-error-fname-required').css('display', 'block');
