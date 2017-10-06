@@ -25,32 +25,41 @@ jQuery(document.body).ready(function ($) {
                 body.addClass( 'edd-frozen' );
                 $('.edd-free-downloads-modal-wrapper').prepend( '<div id="edd-free-downloads-modal"></div>' ).removeClass( 'hidden' );
                 $('#edd-free-downloads-modal').prepend( data );
-                $('#edd-free-downloads-modal .edd-free-download-submit').on( 'click', function() {
+                $('#edd-free-downloads-modal .edd-free-download-submit').on( 'click', function(e) {
 
-                    alert('working3'); // This works
+                    if ( 'true' === edd_free_downloads_vars.require_name ) {
+                        console.log( 'yup we need a name' );
+                        alert('working3'); // This works
 
-                    var fname = $( '.edd-free-downloads-modal-wrapper input[name="edd_free_download_fname"]' );
-                    var lname = $( '.edd-free-downloads-modal-wrapper input[name="edd_free_download_lname"]' );
+                        var fname = $( '.edd-free-downloads-modal-wrapper input[name="edd_free_download_fname"]' );
+                        var lname = $( '.edd-free-downloads-modal-wrapper input[name="edd_free_download_lname"]' );
+                        var has_error = 0;
 
-                    console.log( fname.val(), lname.val() );
+                        console.log( fname.val(), lname.val() );
 
-                    if (fname.val() === '') {
-                        $('#edd-free-download-error-fname-required').css('display', 'block');
-                        has_error++;
+                        if ('' === fname.val()) {
+                            alert( 'no first name' );
+                            $( '.edd-free-download-errors' ).show();
+                            $('#edd-free-download-error-fname-required').css('display', 'block');
 
-                    } else {
-                        $('#edd-free-download-error-fname-required').css('display', 'none');
-                    }
+                            // var div = $('.edd-free-downloads-modal-wrapper #edd-free-download-error-fname-required.edd-free-downloads.hidden');
+                            // div.removeClass( 'hidden' );
+                            e.preventDefault();
+                            // has_error++;
+                        } else {
+                            $('#edd-free-download-error-fname-required').css('display', 'none');
+                        }
 
-                    if (lname.val() === '') {
-                        $('#edd-free-download-error-lname-required').css('display', 'block');
+                        if ('' === lname.val()) {
+                            $('#edd-free-download-error-lname-required').css('display', 'block');
+                            e.preventDefault();
+                            // has_error++;
+                        } else {
+                            $('#edd-free-download-error-lname-required').css('display', 'none');
+                        }
+                    } // End true check on required_name
 
-                        has_error++;
-                    } else {
-                        $('#edd-free-download-error-lname-required').css('display', 'none');
-                    }
-
-                } ); // End require_name check
+                } ); // End validation checks
 
 
                 /**

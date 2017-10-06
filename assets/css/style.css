@@ -14,7 +14,7 @@ body.edd-frozen {
     padding: 15% 0 0;
 }
 
-.edd-free-downloads-modal-wrapper.hidden {
+.edd-free-downloads.hidden {
     display: none;
 }
 
