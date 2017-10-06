@@ -3,6 +3,8 @@
 jQuery(document.body).ready(function ($) {
     'use strict';
 
+    console.log( edd_free_downloads_vars );
+
     // start new code
 
     $( 'a.edd-free-download' ).on( 'click', function() {
@@ -24,6 +26,37 @@ jQuery(document.body).ready(function ($) {
                 body.prepend( '<div class="edd-free-downloads-modal-wrapper"></div>' );
                 $('.edd-free-downloads-modal-wrapper').prepend( '<div id="edd-free-downloads-modal"></div>' );
                 $('#edd-free-downloads-modal').prepend( data );
+                $('#edd-free-downloads-modal .edd-free-download-submit').on( 'click', function() {
+                    alert('working3'); // This works
+
+                    alert( 'working' );
+
+                    fname = $('input[name="edd_free_download_fname"]');
+                    lname = $('input[name="edd_free_download_lname"]');
+
+                    console.log( fname, lname );
+
+                    return;
+
+
+                    if (fname.val() === '') {
+                        $('#edd-free-download-error-fname-required').css('display', 'block');
+                        has_error++;
+
+                    } else {
+                        $('#edd-free-download-error-fname-required').css('display', 'none');
+                    }
+
+                    if (lname.val() === '') {
+                        $('#edd-free-download-error-lname-required').css('display', 'block');
+
+                        has_error++;
+                    } else {
+                        $('#edd-free-download-error-lname-required').css('display', 'none');
+                    }
+
+                } ); // End require_name check
+
 
                 /**
                  * Stopping propagation here allows the user to click on the modal without closing it
@@ -60,13 +93,22 @@ jQuery(document.body).ready(function ($) {
                         body.removeClass( 'edd-frozen' );
                     }
                 } );
-            }
-        });
 
+            } // End success.
 
-    });
+        }); // End AJAX call.
+
+    }); // End on click.
 
     // end new code
+
+
+
+
+
+
+
+
 
 
 
