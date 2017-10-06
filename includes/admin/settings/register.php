@@ -227,7 +227,7 @@ function edd_free_downloads_add_settings( $settings ) {
 		array(
 			'id'   => 'edd_free_downloads_direct_download_label',
 			'name' => __( 'Direct Download Label', 'edd-free-downloads' ),
-			'desc' => __( 'Enter the text do display for the direct download link', 'edd-free-downloads' ),
+			'desc' => __( 'Enter the text to display for the direct download link', 'edd-free-downloads' ),
 			'type' => 'text',
 			'std'  => __( 'No thanks, proceed to download', 'edd-free-downloads' )
 		),
