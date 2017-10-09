@@ -3,7 +3,7 @@
 jQuery(document.body).ready(function ($) {
     'use strict';
 
-    console.log( edd_free_downloads_vars );
+    console.log( 'edd_free_downloads_vars ' + JSON.stringify( edd_free_downloads_vars, null, "\t" ) );
 
     // start new code
 
@@ -21,10 +21,16 @@ jQuery(document.body).ready(function ($) {
             success: function( data ) {
                 // console.log( data );
 
-                var body = $( 'body' );
+
+                var body = $( 'body' ),
+                    closeButtonClass = '';
                 body.addClass( 'edd-frozen' );
+                if ( 'box' === edd_free_downloads_vars.close_button ) {
+                    console.log( 'yup show close button' );
+                    closeButtonClass = 'close-button';
+                }
                 $('.edd-free-downloads-modal-wrapper').prepend( '<div id="edd-free-downloads-modal"></div>' ).removeClass( 'hidden' );
-                $('#edd-free-downloads-modal').prepend( data );
+                $('#edd-free-downloads-modal').prepend( data ).addClass( closeButtonClass );
                 $('#edd-free-downloads-modal .edd-free-download-submit').on( 'click', function(e) {
 
                     if ( 'true' === edd_free_downloads_vars.require_name ) {
