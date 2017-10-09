@@ -14,7 +14,7 @@ jQuery(document.body).ready(function ($) {
     function eddFreeDownloadCloseModal() {
         $( '.edd-free-downloads-modal-wrapper' ).addClass( 'hidden' ); // Hidding the modal wrapper again
         $( '#edd-free-downloads-modal' ).remove(); // Removing the modal on clicking outside of the modal
-        $( 'body' );.removeClass( 'edd-frozen' );
+        $( 'body' ).removeClass( 'edd-frozen' );
     }
 
     /**
