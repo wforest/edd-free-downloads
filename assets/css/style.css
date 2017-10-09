@@ -14,6 +14,12 @@ body.edd-frozen {
     padding: 3% 0 0;
 }
 
+@media screen and ( max-width: 1200px ) {
+    .edd-free-downloads-modal-wrapper {
+        padding: 10% 0 0;
+    }
+}
+
 .edd-free-downloads.hidden {
     display: none;
 }
