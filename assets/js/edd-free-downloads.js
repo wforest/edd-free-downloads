@@ -23,14 +23,15 @@ jQuery(document.body).ready(function ($) {
 
 
                 var body = $( 'body' ),
-                    closeButtonClass = '';
+                    closeButtonDOM = '';
                 body.addClass( 'edd-frozen' );
                 if ( 'box' === edd_free_downloads_vars.close_button ) {
                     console.log( 'yup show close button' );
-                    closeButtonClass = 'close-button';
+                    closeButtonDOM = '<span class="dashicons dashicons-no-alt edd-free-downloads-modal-close"></span>';
                 }
                 $('.edd-free-downloads-modal-wrapper').prepend( '<div id="edd-free-downloads-modal"></div>' ).removeClass( 'hidden' );
-                $('#edd-free-downloads-modal').prepend( data ).addClass( closeButtonClass );
+                $('#edd-free-downloads-modal').prepend( data ).prepend( closeButtonDOM );
+
                 $('#edd-free-downloads-modal .edd-free-download-submit').on( 'click', function(e) {
 
                     if ( 'true' === edd_free_downloads_vars.require_name ) {
