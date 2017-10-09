@@ -41,22 +41,19 @@ jQuery(document.body).ready(function ($) {
                             alert( 'no first name' );
                             $( '.edd-free-download-errors' ).show();
                             $('#edd-free-download-error-fname-required').css('display', 'block');
-
-                            // var div = $('.edd-free-downloads-modal-wrapper #edd-free-download-error-fname-required.edd-free-downloads.hidden');
-                            // div.removeClass( 'hidden' );
                             e.preventDefault();
-                            // has_error++;
                         } else {
                             $('#edd-free-download-error-fname-required').css('display', 'none');
-                        }
+                        } // End checking first name
 
                         if ('' === lname.val()) {
+                            $( '.edd-free-download-errors' ).show();
                             $('#edd-free-download-error-lname-required').css('display', 'block');
                             e.preventDefault();
-                            // has_error++;
                         } else {
                             $('#edd-free-download-error-lname-required').css('display', 'none');
-                        }
+                        } // End checking last name
+
                     } // End true check on required_name
 
                 } ); // End validation checks
