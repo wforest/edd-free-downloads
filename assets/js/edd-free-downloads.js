@@ -7,6 +7,20 @@ jQuery(document.body).ready(function ($) {
 
     // start new code
 
+    /**
+     * This function controls the closing of the modal by either
+     * clicking the close 'x', outside the modal, or pressing the escape key.
+     */
+    function eddFreeDownloadCloseModal() {
+        $( '.edd-free-downloads-modal-wrapper' ).addClass( 'hidden' ); // Hidding the modal wrapper again
+        $( '#edd-free-downloads-modal' ).remove(); // Removing the modal on clicking outside of the modal
+        $( 'body' );.removeClass( 'edd-frozen' );
+    }
+
+    /**
+     * The user clicked the download button from the shortcode output.
+     * We will use an ajax call to populate the modal.
+     */
     $( 'a.edd-free-download' ).on( 'click', function() {
 
         var edd_download_id = $( this ).data( 'download-id' );
@@ -31,20 +45,18 @@ jQuery(document.body).ready(function ($) {
                 }
                 $('.edd-free-downloads-modal-wrapper').prepend( '<div id="edd-free-downloads-modal"></div>' ).removeClass( 'hidden' );
                 $('#edd-free-downloads-modal').prepend( data ).prepend( closeButtonDOM );
+                $( '.edd-free-downloads-modal-wrapper .edd-free-downloads-modal-close' ).on( 'click', function() {
+                    eddFreeDownloadCloseModal();
+                } );
 
                 $('#edd-free-downloads-modal .edd-free-download-submit').on( 'click', function(e) {
 
                     if ( 'true' === edd_free_downloads_vars.require_name ) {
-                        console.log( 'yup we need a name' );
-                        alert('working3'); // This works
 
                         var fname = $( '.edd-free-downloads-modal-wrapper input[name="edd_free_download_fname"]' );
                         var lname = $( '.edd-free-downloads-modal-wrapper input[name="edd_free_download_lname"]' );
 
-                        console.log( fname.val(), lname.val() );
-
                         if ('' === fname.val()) {
-                            alert( 'no first name' );
                             $( '.edd-free-download-errors' ).show();
                             $('#edd-free-download-error-fname-required').css('display', 'block');
                             e.preventDefault();
@@ -77,9 +89,7 @@ jQuery(document.body).ready(function ($) {
                  * and hide the wrapper again
                  */
                 $( '#edd-free-downloads-modal' ).parent('.edd-free-downloads-modal-wrapper').on( 'click', function() {
-                    $( '.edd-free-downloads-modal-wrapper' ).addClass( 'hidden' ); // Hidding the modal wrapper again
-                    $( '#edd-free-downloads-modal' ).remove(); // Removing the modal on clicking outside of the modal
-                    body.removeClass( 'edd-frozen' );
+                    eddFreeDownloadCloseModal();
                 } );
 
                 /**
@@ -98,9 +108,7 @@ jQuery(document.body).ready(function ($) {
                  */
                 body.on( 'keyup', function( e ) {
                     if ( 27 === e.keyCode ) {
-                        $( '.edd-free-downloads-modal-wrapper' ).addClass( 'hidden' ); // Hidding the modal wrapper again
-                        $( '#edd-free-downloads-modal' ).remove(); // Removing the modal on clicking outside of the modal
-                        body.removeClass( 'edd-frozen' );
+                        eddFreeDownloadCloseModal();
                     }
                 } );
 

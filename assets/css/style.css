@@ -43,6 +43,10 @@ body.edd-frozen {
     border-radius: 50%;
 }
 
+.edd-free-downloads-modal-close:hover {
+    cursor: pointer;
+}
+
 #edd-free-downloads-modal label {
     font-weight: bold;
     display: block;
