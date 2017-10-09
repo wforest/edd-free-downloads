@@ -33,11 +33,14 @@ jQuery(document.body).ready(function ($) {
                 'download_id': edd_download_id,
             },
             success: function( data ) {
-                // console.log( data );
 
-
+                /**
+                 * Caching `body` as it is used on key presses and clicks below.
+                 * Setting closeButtonDOM to allow for an empty value by default.
+                 */
                 var body = $( 'body' ),
                     closeButtonDOM = '';
+
                 body.addClass( 'edd-frozen' );
                 if ( 'box' === edd_free_downloads_vars.close_button ) {
                     console.log( 'yup show close button' );
