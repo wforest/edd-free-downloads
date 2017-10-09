@@ -33,7 +33,6 @@ jQuery(document.body).ready(function ($) {
 
                         var fname = $( '.edd-free-downloads-modal-wrapper input[name="edd_free_download_fname"]' );
                         var lname = $( '.edd-free-downloads-modal-wrapper input[name="edd_free_download_lname"]' );
-                        var has_error = 0;
 
                         console.log( fname.val(), lname.val() );
 
@@ -68,9 +67,11 @@ jQuery(document.body).ready(function ($) {
 
                 /**
                  * If the user clicks outside the modal we remove it here
+                 * and hide the wrapper again
                  */
                 $( '#edd-free-downloads-modal' ).parent('.edd-free-downloads-modal-wrapper').on( 'click', function() {
-                    $( this ).remove();
+                    $( '.edd-free-downloads-modal-wrapper' ).addClass( 'hidden' ); // Hidding the modal wrapper again
+                    $( '#edd-free-downloads-modal' ).remove(); // Removing the modal on clicking outside of the modal
                     body.removeClass( 'edd-frozen' );
                 } );
 
@@ -90,7 +91,8 @@ jQuery(document.body).ready(function ($) {
                  */
                 body.on( 'keyup', function( e ) {
                     if ( 27 === e.keyCode ) {
-                        $( '.edd-free-downloads-modal-wrapper' ).remove();
+                        $( '.edd-free-downloads-modal-wrapper' ).addClass( 'hidden' ); // Hidding the modal wrapper again
+                        $( '#edd-free-downloads-modal' ).remove(); // Removing the modal on clicking outside of the modal
                         body.removeClass( 'edd-frozen' );
                     }
                 } );

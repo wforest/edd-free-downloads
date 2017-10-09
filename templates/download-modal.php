@@ -80,19 +80,17 @@ if ( isset( $_GET['download_id'] ) && ! empty( $_GET['download_id'] ) ) {
 		<?php
 			$title = $content = '';
 
-			if ( is_singular( 'download' ) ) {
-				if ( ! edd_get_option( 'edd_free_downloads_disable_global_notes', false ) ) {
-					$title   = edd_get_option( 'edd_free_downloads_notes_title', '' );
-					$content = edd_get_option( 'edd_free_downloads_notes', '' );
-				}
+			if ( ! edd_get_option( 'edd_free_downloads_disable_global_notes', false ) ) {
+				$title   = edd_get_option( 'edd_free_downloads_notes_title', '' );
+				$content = edd_get_option( 'edd_free_downloads_notes', '' );
+			}
 
-				if ( $download_title = get_post_meta( $post->ID, '_edd_free_downloads_notes_title', true ) ) {
-					$title = $download_title;
-				}
+			if ( $download_title = get_post_meta( $post->ID, '_edd_free_downloads_notes_title', true ) ) {
+				$title = $download_title;
+			}
 
-				if ( $download_note = get_post_meta( $post->ID, '_edd_free_downloads_notes', true ) ) {
-					$content = $download_note;
-				}
+			if ( $download_note = get_post_meta( $post->ID, '_edd_free_downloads_notes', true ) ) {
+				$content = $download_note;
 			}
 		?>
 		<div class="edd-free-downloads-note-wrapper">
